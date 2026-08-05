@@ -1,0 +1,6 @@
+{
+  "name": "MCQ Image Generator",
+  "description": "Bulk generate styled MCQ quiz images from Excel files with custom templates and JPG auto-download.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
