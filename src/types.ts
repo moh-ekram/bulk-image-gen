@@ -1,9 +1,13 @@
 export type TemplateId = 
-  | 'playful_quiz'      // Image 1 style: Quiz Time, reaction bar, yellow note card
-  | 'classic_bengali'   // Image 2 style: Academic Bengali format with ornate divider
-  | 'aesthetic_story'   // Image 3 style: Teal aesthetic story/reel format
-  | 'dark_neon'         // Sleek dark futuristic gaming theme
-  | 'minimal_clean';    // Minimal white high-contrast style
+  | 'playful_quiz'      // Quiz Time style with reactions
+  | 'classic_bengali'   // Classic academic exam paper format
+  | 'aesthetic_story'   // Aesthetic story/reel format
+  | 'dark_neon'         // Dark futuristic glowing theme
+  | 'minimal_clean'     // Minimal white high-contrast style
+  | 'gradient_poster'   // Vibrant multi-color gradient poster
+  | 'academic_formal'   // Official board exam layout
+  | 'modern_magazine'   // Elegant magazine editorial
+  | 'tech_terminal';    // Developer console terminal theme
 
 export type AspectRatio = '1:1' | '4:5' | '9:16';
 
@@ -32,13 +36,20 @@ export interface DesignConfig {
   highlightCorrect: boolean;
   correctBadgeColor: string;
   watermarkText: string;
+  watermarkOpacity: number;
+  watermarkPosition: 'bottom' | 'top' | 'center';
   watermarkLogoUrl?: string;
   titleFontSize: number;      // in px relative to base
   questionFontSize: number;   // in px
   optionsFontSize: number;    // in px
   showReactionsBar: boolean;  // for playful template
   showDecorativeBorder: boolean;
-  questionPrefix: string;     // e.g. "প্রশ্ন:" or "Question:"
+  borderWidth: number;        // 0, 1, 2, 4, 8
+  cardCornerRadius: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  cardPadding: 'compact' | 'normal' | 'relaxed';
+  badgeStyle: 'badge' | 'pill' | 'outline' | 'none';
+  questionPrefix: string;     // e.g. "Question:" or "Q:"
+  showCategoryTag: boolean;
 }
 
 export interface ExcelColumnMapping {

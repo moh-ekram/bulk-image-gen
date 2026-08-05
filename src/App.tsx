@@ -28,12 +28,19 @@ export default function App() {
     highlightCorrect: false,
     correctBadgeColor: '#22c55e',
     watermarkText: 'MCQ Image Studio',
+    watermarkOpacity: 0.8,
+    watermarkPosition: 'bottom',
     titleFontSize: 26,
     questionFontSize: 18,
     optionsFontSize: 16,
     showReactionsBar: true,
     showDecorativeBorder: true,
-    questionPrefix: 'প্রশ্ন:',
+    borderWidth: 1,
+    cardCornerRadius: 'md',
+    cardPadding: 'normal',
+    badgeStyle: 'badge',
+    questionPrefix: 'Question:',
+    showCategoryTag: true,
   });
 
   const handleMcqsLoaded = (loadedMcqs: McqItem[]) => {
@@ -68,10 +75,10 @@ export default function App() {
             </div>
             <div>
               <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
-                এমসিকিউ ফটো জেনারেটরে স্বাগতম!
+                Welcome to MCQ Canvas Studio!
               </h2>
               <p className="text-xs text-slate-600 mt-0.5">
-                এক্সেল ফাইল আপলোড করে অটোমেটিক প্রফেশনাল এমসিকিউ পোস্টার এবং ইমেজ তৈরি করুন।
+                Upload Excel spreadsheets or edit MCQs directly to generate high-resolution social media posters in bulk.
               </p>
             </div>
           </div>
@@ -81,7 +88,7 @@ export default function App() {
             className="flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs transition-all cursor-pointer shrink-0"
           >
             <Sparkles className="w-4 h-4" />
-            <span>সকল {mcqs.length} টি ছবি বাল্ক জেনারেট করুন</span>
+            <span>Bulk Export All {mcqs.length} Images</span>
           </button>
         </div>
 
@@ -100,7 +107,7 @@ export default function App() {
                 }`}
               >
                 <Palette className="w-4 h-4" />
-                <span>১. ডিজাইন ও কাস্টমাইজেশন</span>
+                <span>1. Design & Templates</span>
               </button>
 
               <button
@@ -112,7 +119,7 @@ export default function App() {
                 }`}
               >
                 <FileSpreadsheet className="w-4 h-4" />
-                <span>২. এক্সেল ফাইল আপলোড</span>
+                <span>2. Upload Excel</span>
               </button>
 
               <button
@@ -124,7 +131,7 @@ export default function App() {
                 }`}
               >
                 <ListFilter className="w-4 h-4" />
-                <span>৩. প্রশ্ন এডিটর ({mcqs.length})</span>
+                <span>3. MCQ Questions ({mcqs.length})</span>
               </button>
             </div>
 
@@ -166,7 +173,7 @@ export default function App() {
             ) : (
               <div className="p-8 bg-white border border-slate-200 rounded-lg text-center text-slate-500 shadow-xs">
                 <HelpCircle className="w-8 h-8 mx-auto mb-2 text-slate-400" />
-                <p className="text-sm font-semibold">কোনো প্রশ্ন লোড করা নেই</p>
+                <p className="text-sm font-semibold">No MCQ questions loaded</p>
               </div>
             )}
           </div>
@@ -178,10 +185,10 @@ export default function App() {
         <div className="flex items-center gap-2">
           <span className="font-semibold text-slate-700">MCQ Canvas Studio</span>
           <span>•</span>
-          <span>Geometric Balance Layout</span>
+          <span>Professional Image Generator Engine</span>
         </div>
         <div className="text-[11px] text-slate-400">
-          রিয়েলটাইম প্রিভিউ ও জেপিজি/পিএনজি এক্সপোর্ট ইঞ্জিন
+          Realtime HD Preview & Bulk PNG/ZIP Export
         </div>
       </footer>
 

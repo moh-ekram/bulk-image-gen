@@ -26,7 +26,7 @@ export const Navbar: React.FC<Props> = ({ mcqCount, onOpenBulkModal, onResetSamp
               </span>
             </h1>
             <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
-              বাল্ক এমসিকিউ সোশ্যাল মিডিয়া ফটো জেনারেটর
+              Bulk MCQ Social Media Image Generator
             </p>
           </div>
         </div>
@@ -41,16 +41,16 @@ export const Navbar: React.FC<Props> = ({ mcqCount, onOpenBulkModal, onResetSamp
           <button
             onClick={downloadSampleExcel}
             className="hidden md:flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded text-xs font-medium transition-all cursor-pointer"
-            title="স্যাম্পল এক্সেল ফাইল ডাউনলোড করুন"
+            title="Download Sample Excel File"
           >
             <FileSpreadsheet className="w-4 h-4 text-indigo-600" />
-            <span>স্যাম্পল এক্সেল</span>
+            <span>Sample Excel</span>
           </button>
 
           <button
             onClick={onResetSampleMcqs}
             className="p-2 text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded transition-all cursor-pointer"
-            title="স্যাম্পল ডাটা লোড করুন"
+            title="Reset to Sample MCQs"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -60,8 +60,8 @@ export const Navbar: React.FC<Props> = ({ mcqCount, onOpenBulkModal, onResetSamp
             className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-sm transition-all cursor-pointer"
           >
             <Sparkles className="w-4 h-4" />
-            <span className="hidden sm:inline">বাল্ক জেনারেট করুন</span>
-            <span className="sm:hidden">ডাউনলোড</span>
+            <span className="hidden sm:inline">Bulk Generate Images</span>
+            <span className="sm:hidden">Bulk</span>
             <span className="bg-indigo-800 text-white font-bold px-2 py-0.5 rounded text-[10px]">
               {mcqCount}
             </span>

@@ -71,10 +71,10 @@ export const SinglePreviewCard: React.FC<Props> = ({
           </div>
           <div>
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              লাইভ ফটো প্রিভিউ (Live Preview)
+              Live Photo Preview
             </h3>
             <p className="text-xs text-slate-500">
-              প্রশ্ন {currentIndex + 1} / {totalCount}
+              Question {currentIndex + 1} of {totalCount}
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@ export const SinglePreviewCard: React.FC<Props> = ({
       <div className="w-full pt-4 mt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="text-xs text-slate-500 flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-          <span>হাই-রেজোলিউশন ১০৮০x১০৮০px ক্লিয়ার JPG/PNG</span>
+          <span>High-Resolution HD Export (JPG / PNG)</span>
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -123,12 +123,12 @@ export const SinglePreviewCard: React.FC<Props> = ({
             {copiedMsg ? (
               <>
                 <Check className="w-3.5 h-3.5 text-green-600" />
-                <span>কপি হয়েছে</span>
+                <span>Copied!</span>
               </>
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span>কপি করুন</span>
+                <span>Copy Data URL</span>
               </>
             )}
           </button>
@@ -139,7 +139,7 @@ export const SinglePreviewCard: React.FC<Props> = ({
             className="flex-1 sm:flex-none px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
-            <span>{isDownloading ? 'প্রসেস হচ্ছে...' : 'JPG ডাউনলোড করুন'}</span>
+            <span>{isDownloading ? 'Exporting...' : 'Download JPG'}</span>
           </button>
         </div>
       </div>

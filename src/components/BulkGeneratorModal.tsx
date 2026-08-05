@@ -134,13 +134,13 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                বাল্ক ইমেজ প্রসেসিং ও অটো ডাউনলোড
+                Bulk Image Processing & Auto Download
                 <span className="text-[11px] bg-indigo-100 text-indigo-700 px-2.5 py-0.5 rounded uppercase font-bold">
-                  {mcqs.length} টি MCQ
+                  {mcqs.length} MCQ Items
                 </span>
               </h2>
               <p className="text-xs text-slate-500">
-                সবগুলো প্রশ্নের ছবি তৈরি হয়ে গেলে একসাথে ZIP নামান অথবা অটো ডাউনলোড করুন
+                Once rendering completes, download all images as a single ZIP archive or auto-download sequentially
               </p>
             </div>
           </div>
@@ -161,7 +161,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
               <div className="flex items-center justify-between text-sm font-bold text-indigo-800">
                 <span className="flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 animate-spin text-indigo-600" />
-                  ফটো রেন্ডার করা হচ্ছে ({currentIndex + 1} / {mcqs.length})...
+                  Rendering Images ({currentIndex + 1} / {mcqs.length})...
                 </span>
                 <span>{progressPercent}%</span>
               </div>
@@ -184,10 +184,10 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
                 <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0" />
                 <div>
                   <h3 className="text-sm font-bold text-green-900">
-                    সবগুলো ({results.length}) MCQ ফটো সফলভাবে জেনারেট হয়েছে!
+                    All {results.length} MCQ images generated successfully!
                   </h3>
                   <p className="text-xs text-green-700">
-                    নিচের যে কোনো একটি পদ্ধতিতে আপনার কম্পিউটারে ডাউনলোড করে নিন।
+                    Choose one of the bulk download options below to save them to your computer.
                   </p>
                 </div>
               </div>
@@ -197,7 +197,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
                 className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded border border-slate-200 flex items-center gap-1.5 cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                <span>পুনরায় জেনারেট করুন</span>
+                <span>Re-generate All</span>
               </button>
             </div>
           )}
@@ -211,7 +211,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
                 className="p-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded shadow-xs flex items-center justify-center gap-3 cursor-pointer transition-all disabled:opacity-50"
               >
                 <FileArchive className="w-5 h-5" />
-                <span>{isZipping ? 'জিপ তৈরি হচ্ছে...' : 'সবকিছু এক ক্লিকের ZIP ফাইল নামান'}</span>
+                <span>{isZipping ? 'Creating ZIP...' : 'Download All as ZIP File'}</span>
               </button>
 
               <button
@@ -220,7 +220,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
                 className="p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-sm rounded shadow-xs flex items-center justify-center gap-3 cursor-pointer transition-all disabled:opacity-50"
               >
                 <Download className="w-5 h-5 text-indigo-600" />
-                <span>{autoDownloading ? 'ডাউনলোড হচ্ছে...' : 'একটি একটি করে অটো ডাউনলোড করুন'}</span>
+                <span>{autoDownloading ? 'Downloading...' : 'Auto-Download Files Sequentially'}</span>
               </button>
             </div>
           )}
@@ -230,7 +230,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
             <div className="space-y-3 pt-2">
               <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-indigo-600" />
-                জেনারেট হওয়া সকল ফটোর গ্যালারি ({results.length})
+                Generated Image Gallery ({results.length})
               </h4>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -259,7 +259,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
                       className="w-full py-1.5 bg-white hover:bg-indigo-600 hover:text-white text-slate-700 text-[11px] font-semibold rounded border border-slate-200 transition-colors flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <Download className="w-3 h-3" />
-                      <span>ডাউনলোড JPG</span>
+                      <span>Download JPG</span>
                     </button>
                   </div>
                 ))}

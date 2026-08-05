@@ -97,7 +97,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
 
     const jsonData: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet, { defval: '' });
     if (jsonData.length === 0) {
-      setErrorMsg('মনোনীত শিটটি খালি বা কোনো তথ্য পাওয়া যায়নি!');
+      setErrorMsg('The selected worksheet is empty or contains no data rows.');
       return;
     }
 
@@ -129,7 +129,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
         processWorkbookSheet(wb, firstSheet);
       } catch (err) {
         console.error(err);
-        setErrorMsg('ফাইলের ফরম্যাট সঠিক নয়। .xlsx, .xls অথবা .csv ফাইল আপলোড করুন।');
+        setErrorMsg('Invalid file format. Please upload a .XLSX, .XLS, or .CSV file.');
       }
     };
 
@@ -145,7 +145,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
 
   const handleConfirmMapping = () => {
     if (!mapping.questionCol) {
-      setErrorMsg('অনুগ্রহ করে প্রশ্ন (Question) কলামটি সিলেক্ট করুন!');
+      setErrorMsg('Please select the Question column mapping.');
       return;
     }
 
@@ -201,7 +201,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
       .filter((item): item is McqItem => item !== null);
 
     if (mcqList.length === 0) {
-      setErrorMsg('কোনো বৈধ এমসিকিউ ডাটা পাওয়া যায়নি। ফাইল কলাম চেক করুন!');
+      setErrorMsg('No valid MCQ items found in this spreadsheet. Please verify column mappings.');
       return;
     }
 
@@ -217,13 +217,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-              বাল্ক এমসিকিউ এক্সেল আপলোড
+              Bulk MCQ Excel Import
               <span className="text-[11px] bg-indigo-100 text-indigo-700 font-bold px-2.5 py-0.5 rounded uppercase tracking-wider">
                 Bulk XLSX / CSV
               </span>
             </h2>
             <p className="text-xs text-slate-500">
-              এক্সেল ফাইল আপলোড করে এক ক্লিকে শত শত MCQ ছবি জেনারেট করুন
+              Upload spreadsheets to generate hundreds of MCQ poster cards automatically
             </p>
           </div>
         </div>
@@ -233,7 +233,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
           className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-xs font-semibold text-slate-700 transition-all cursor-pointer shrink-0"
         >
           <Download className="w-4 h-4 text-indigo-600" />
-          স্যাম্পল এক্সেল ফাইল (Sample XLSX)
+          Sample Excel Template (.XLSX)
         </button>
       </div>
 
@@ -259,10 +259,10 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
               <div>
                 <p className="font-bold text-base text-slate-800">
-                  এখানে ফাইল ছেড়ে দিন অথবা <span className="text-indigo-600 underline">ব্রাউজ করুন</span>
+                  Drop your Excel spreadsheet here or <span className="text-indigo-600 underline">Browse files</span>
                 </p>
                 <p className="text-xs text-slate-500 mt-1">
-                  সমর্থিত ফাইল: .XLSX, .XLS, .CSV
+                  Supported Formats: .XLSX, .XLS, .CSV
                 </p>
               </div>
             </div>
@@ -273,10 +273,10 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
             <div className="flex items-center justify-between text-indigo-900 font-bold text-sm border-b border-slate-200 pb-3">
               <div className="flex items-center gap-2">
                 <Info className="w-4 h-4 text-indigo-600 shrink-0" />
-                <span>এক্সেল ফাইল আপলোড নির্দেশিকা ও ২ টি সমর্থিত ফরমেট</span>
+                <span>Excel Spreadsheet Upload Guidelines & Supported Formats</span>
               </div>
               <span className="text-[11px] bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded">
-                ২ টি সহজ ফরমেট
+                2 Easy Formats
               </span>
             </div>
 
@@ -284,30 +284,30 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               <div className="bg-white p-4 rounded border border-slate-200 space-y-2.5">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
                   <Table className="w-4 h-4 text-indigo-600" />
-                  <span>ফরমেট ১: পৃথক Correct Answer কলাম</span>
+                  <span>Format 1: Dedicated Correct Answer Column</span>
                 </div>
                 <p className="leading-relaxed">
-                  আলাদা <strong className="text-slate-800">"Correct Answer"</strong> কলামে সঠিক উত্তরটি টাইপ করে রাখুন (যেমন: A, B, C, D অথবা উত্তরের টেক্সট):
+                  Provide a separate <strong className="text-slate-800">"Correct Answer"</strong> column specifying the correct option (e.g., A, B, C, or D):
                 </p>
                 <ul className="space-y-1 text-slate-700 font-mono text-[11px] bg-slate-50 p-2.5 rounded border border-slate-100">
-                  <li>• <strong className="text-slate-900">Question:</strong> প্রশ্ন লিখুন</li>
-                  <li>• <strong className="text-slate-900">Option A - D:</strong> ৪টি অপশন</li>
-                  <li>• <strong className="text-slate-900">Correct Answer:</strong> A / B / C / D বা উত্তর</li>
+                  <li>• <strong className="text-slate-900">Question:</strong> Full question string</li>
+                  <li>• <strong className="text-slate-900">Option A - D:</strong> 4 multiple choice options</li>
+                  <li>• <strong className="text-slate-900">Correct Answer:</strong> A / B / C / D</li>
                 </ul>
               </div>
 
               <div className="bg-white p-4 rounded border border-slate-200 space-y-2.5">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
                   <FileCheck className="w-4 h-4 text-indigo-600" />
-                  <span>ফরমেট ২: হ্যাশট্যাগ (#) দিয়ে চিহ্নিত অপশন (NEW)</span>
+                  <span>Format 2: Hashtag (#) Option Marker</span>
                 </div>
                 <p className="leading-relaxed">
-                  আলাদা উত্তর কলাম না রেখে যেকোনো অপশনের সাথে <strong className="text-indigo-600 font-bold">#</strong> চিহ্ন দিন (যেমন: <span className="bg-amber-100 text-amber-900 font-mono px-1 rounded">#ঢাকা</span>)।
+                  Prefix or suffix the correct option with a <strong className="text-indigo-600 font-bold">#</strong> symbol (e.g., <span className="bg-amber-100 text-amber-900 font-mono px-1 rounded">#Dhaka</span>).
                 </p>
                 <ul className="space-y-1 text-slate-700 text-[11px] bg-indigo-50/60 p-2.5 rounded border border-indigo-100">
-                  <li>• অপশনের সাথে <code className="text-indigo-700 font-bold">#</code> থাকলে সেটি সঠিক উত্তর হিসেবে অটো-ডিটেক্ট হবে।</li>
-                  <li>• ছবি তৈরির সময় অপশন থেকে <code className="text-indigo-700 font-bold">#</code> চিহ্নটি স্বয়ংক্রিয়ভাবে মুছে যাবে।</li>
-                  <li>• অতিরিক্ত কোনো 'Correct Answer' কলাম রাখার প্রয়োজন নেই।</li>
+                  <li>• The option containing <code className="text-indigo-700 font-bold">#</code> is automatically identified as correct.</li>
+                  <li>• The <code className="text-indigo-700 font-bold">#</code> tag is automatically stripped before rendering images.</li>
+                  <li>• No separate "Correct Answer" column is required.</li>
                 </ul>
               </div>
             </div>
@@ -319,7 +319,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
                 <div className="font-semibold text-slate-800 text-xs flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Table className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>উদাহরণ ১: পৃথক Correct Answer কলাম বিশিষ্ট এক্সেল</span>
+                    <span>Example 1: Spreadsheet with Correct Answer Column</span>
                   </span>
                   <span className="text-[10px] bg-slate-100 text-slate-600 font-mono px-1.5 py-0.5 rounded">
                     Format 1
@@ -339,11 +339,11 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
                     </thead>
                     <tbody className="divide-y divide-slate-100 bg-white">
                       <tr>
-                        <td className="p-2 font-medium border-r border-slate-200">বাংলাদেশের রাজধানী কোনটি?</td>
-                        <td className="p-2 border-r border-slate-200">ঢাকা</td>
-                        <td className="p-2 border-r border-slate-200">চট্টগ্রাম</td>
-                        <td className="p-2 border-r border-slate-200">সিলেট</td>
-                        <td className="p-2 border-r border-slate-200">খুলনা</td>
+                        <td className="p-2 font-medium border-r border-slate-200">What is the capital of Bangladesh?</td>
+                        <td className="p-2 border-r border-slate-200">Dhaka</td>
+                        <td className="p-2 border-r border-slate-200">Chittagong</td>
+                        <td className="p-2 border-r border-slate-200">Sylhet</td>
+                        <td className="p-2 border-r border-slate-200">Khulna</td>
                         <td className="p-2 font-medium text-emerald-700">A</td>
                       </tr>
                     </tbody>
@@ -356,7 +356,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
                 <div className="font-semibold text-indigo-900 text-xs flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <FileCheck className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>উদাহরণ ২: অপশনে # চিহ্ন দিয়ে সঠিক উত্তর চিহ্নিত এক্সেল</span>
+                    <span>Example 2: Option Tagged with # Hashtag</span>
                   </span>
                   <span className="text-[10px] bg-indigo-100 text-indigo-700 font-bold font-mono px-1.5 py-0.5 rounded">
                     # Hashtag Format
@@ -375,11 +375,11 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
                     </thead>
                     <tbody className="divide-y divide-indigo-100/50 bg-white">
                       <tr>
-                        <td className="p-2 font-medium border-r border-slate-200">বাংলাদেশের রাজধানী কোনটি?</td>
-                        <td className="p-2 border-r border-slate-200 font-bold text-indigo-700 bg-indigo-50/80">#ঢাকা</td>
-                        <td className="p-2 border-r border-slate-200">চট্টগ্রাম</td>
-                        <td className="p-2 border-r border-slate-200">সিলেট</td>
-                        <td className="p-2">খুলনা</td>
+                        <td className="p-2 font-medium border-r border-slate-200">What is the capital of Bangladesh?</td>
+                        <td className="p-2 border-r border-slate-200 font-bold text-indigo-700 bg-indigo-50/80">#Dhaka</td>
+                        <td className="p-2 border-r border-slate-200">Chittagong</td>
+                        <td className="p-2 border-r border-slate-200">Sylhet</td>
+                        <td className="p-2">Khulna</td>
                       </tr>
                       <tr>
                         <td className="p-2 font-medium border-r border-slate-200">What is the capital of France?</td>
@@ -400,7 +400,7 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
           {/* Sheet Selector if multiple */}
           {sheetNames.length > 1 && (
             <div className="flex items-center gap-3 bg-slate-50 p-3 rounded border border-slate-200">
-              <label className="text-xs font-bold text-slate-700">ওয়ার্কশিট বেছে নিন:</label>
+              <label className="text-xs font-bold text-slate-700">Select Worksheet:</label>
               <select
                 value={selectedSheet}
                 onChange={(e) => handleSheetChange(e.target.value)}
@@ -415,23 +415,23 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
 
           <div className="bg-slate-50 p-4 rounded border border-slate-200">
             <h3 className="text-sm font-bold text-indigo-800 mb-3 flex items-center gap-2">
-              কলাম ম্যাপিং সমন্বয় করুন (Column Mapping)
+              Configure Excel Column Mapping
             </h3>
             <p className="text-xs text-slate-600 mb-4">
-              আপনার এক্সেল ফাইলের কলামগুলো নিচে সংজ্ঞায়িত করুন:
+              Map your Excel sheet columns to the corresponding MCQ fields:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  প্রশ্ন (Question) <span className="text-red-500">*</span>
+                  Question Text <span className="text-red-500">*</span>
                 </label>
                 <select
                   value={mapping.questionCol}
                   onChange={(e) => setMapping({ ...mapping, questionCol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- কলাম বেছে নিন --</option>
+                  <option value="">-- Select Column --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -439,13 +439,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">অপশন A (Option A)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Option A</label>
                 <select
                   value={mapping.optionACol}
                   onChange={(e) => setMapping({ ...mapping, optionACol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- কলাম বেছে নিন --</option>
+                  <option value="">-- Select Column --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -453,13 +453,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">অপশন B (Option B)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Option B</label>
                 <select
                   value={mapping.optionBCol}
                   onChange={(e) => setMapping({ ...mapping, optionBCol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- কলাম বেছে নিন --</option>
+                  <option value="">-- Select Column --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -467,13 +467,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">অপশন C (Option C)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Option C</label>
                 <select
                   value={mapping.optionCCol}
                   onChange={(e) => setMapping({ ...mapping, optionCCol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- অপশনাল --</option>
+                  <option value="">-- Optional --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -481,13 +481,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">অপশন D (Option D)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Option D</label>
                 <select
                   value={mapping.optionDCol}
                   onChange={(e) => setMapping({ ...mapping, optionDCol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- অপশনাল --</option>
+                  <option value="">-- Optional --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -495,13 +495,13 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">সঠিক উত্তর (Correct Answer)</label>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Correct Answer</label>
                 <select
                   value={mapping.correctCol}
                   onChange={(e) => setMapping({ ...mapping, correctCol: e.target.value })}
                   className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900 focus:border-indigo-600"
                 >
-                  <option value="">-- অপশনাল --</option>
+                  <option value="">-- Optional --</option>
                   {headers.map((h) => (
                     <option key={h} value={h}>{h}</option>
                   ))}
@@ -518,14 +518,14 @@ export const ExcelUploader: React.FC<Props> = ({ onMcqsLoaded }) => {
               }}
               className="px-4 py-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
             >
-              ← অন্য ফাইল নির্বাচন করুন
+              ← Choose Another File
             </button>
 
             <button
               onClick={handleConfirmMapping}
               className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs transition-all cursor-pointer"
             >
-              <span>{rawRows.length} টি MCQ ডাটা ইমপোর্ট করুন</span>
+              <span>Import {rawRows.length} MCQ Questions</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

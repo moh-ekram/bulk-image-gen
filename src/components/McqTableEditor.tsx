@@ -48,13 +48,13 @@ export const McqTableEditor: React.FC<Props> = ({
   const handleAddNew = () => {
     const newMcq: McqItem = {
       id: `mcq-manual-${Date.now()}`,
-      question: 'নতুন প্রশ্ন এখানে লিখুন...',
-      optionA: 'অপশন ১',
-      optionB: 'অপশন ২',
-      optionC: 'অপশন ৩',
-      optionD: 'অপশন ৪',
+      question: 'Type your new question here...',
+      optionA: 'Option 1',
+      optionB: 'Option 2',
+      optionC: 'Option 3',
+      optionD: 'Option 4',
       correctAnswer: 'A',
-      category: 'সাধারণ',
+      category: 'General',
     };
     onUpdateMcqs([...mcqs, newMcq]);
     onSelectIndex(mcqs.length);
@@ -71,10 +71,10 @@ export const McqTableEditor: React.FC<Props> = ({
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              এমসিকিউ তালিকা ({mcqs.length} টি)
+              MCQ Questions ({mcqs.length})
             </h3>
             <p className="text-xs text-slate-500">
-              যেকোনো প্রশ্নের ওপর ক্লিক করে লাইভ প্রিভিউ দেখুন বা এডিট করুন
+              Click any question to view live preview or edit content
             </p>
           </div>
         </div>
@@ -87,7 +87,7 @@ export const McqTableEditor: React.FC<Props> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="খুঁজুন..."
+              placeholder="Search..."
               className="bg-slate-50 border border-slate-200 rounded pl-9 pr-3 py-1.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 w-36 sm:w-48"
             />
           </div>
@@ -97,7 +97,7 @@ export const McqTableEditor: React.FC<Props> = ({
             className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs transition-all cursor-pointer shrink-0"
           >
             <Plus className="w-4 h-4" />
-            <span>নতুন যোগ করুন</span>
+            <span>Add New</span>
           </button>
         </div>
       </div>
@@ -107,8 +107,8 @@ export const McqTableEditor: React.FC<Props> = ({
         {filteredMcqs.length === 0 ? (
           <div className="py-12 text-center text-slate-500">
             <HelpCircle className="w-10 h-10 mx-auto mb-2 text-slate-400" />
-            <p className="text-sm font-semibold">কোনো প্রশ্ন পাওয়া যায়নি</p>
-            <p className="text-xs mt-1">এক্সেল আপলোড করুন অথবা 'নতুন যোগ করুন' বাটনে চাপ দিন</p>
+            <p className="text-sm font-semibold">No MCQ questions found</p>
+            <p className="text-xs mt-1">Upload an Excel spreadsheet or click 'Add New'</p>
           </div>
         ) : (
           filteredMcqs.map((item, idx) => {
@@ -129,13 +129,13 @@ export const McqTableEditor: React.FC<Props> = ({
                 {isEditing ? (
                   <div className="space-y-3 p-1" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-bold text-indigo-700">প্রশ্ন সম্পাদনা:</span>
+                      <span className="text-xs font-bold text-indigo-700">Edit Question:</span>
                       <button
                         onClick={handleSaveEdit}
                         className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs rounded flex items-center gap-1 cursor-pointer"
                       >
                         <Check className="w-3.5 h-3.5" />
-                        সংরক্ষণ করুন
+                        Save
                       </button>
                     </div>
 
@@ -143,7 +143,7 @@ export const McqTableEditor: React.FC<Props> = ({
                       type="text"
                       value={editForm.question || ''}
                       onChange={(e) => setEditForm({ ...editForm, question: e.target.value })}
-                      placeholder="প্রশ্ন"
+                      placeholder="Question"
                       className="w-full bg-white border border-slate-200 rounded p-2 text-xs text-slate-900"
                     />
 
@@ -201,7 +201,7 @@ export const McqTableEditor: React.FC<Props> = ({
                           handleStartEdit(item);
                         }}
                         className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-slate-100 rounded transition-colors cursor-pointer"
-                        title="সম্পাদনা করুন"
+                        title="Edit"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
@@ -211,7 +211,7 @@ export const McqTableEditor: React.FC<Props> = ({
                           handleDelete(item.id, originalIndex);
                         }}
                         className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-slate-100 rounded transition-colors cursor-pointer"
-                        title="মুছে ফেলুন"
+                        title="Delete"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
