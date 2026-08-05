@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import JSZip from 'jszip';
-import { Download, FileArchive, CheckCircle2, RefreshCw, X, Image as ImageIcon, Zap, Sparkles, Facebook, ExternalLink, Send } from 'lucide-react';
+import { Download, FileArchive, CheckCircle2, RefreshCw, X, Image as ImageIcon, Zap, Sparkles, Facebook, ExternalLink, Send, Calendar, Clock, Shuffle, ChevronDown, ChevronUp, Settings } from 'lucide-react';
 import { McqItem, DesignConfig, GeneratedImageResult, FacebookPageConfig } from '../types';
 import { McqCardRenderer } from './mcq-templates/McqCardRenderer';
 import { nodeToDataUrl, triggerDownload } from '../utils/imageExporter';
@@ -31,7 +31,28 @@ export const BulkGeneratorModal: React.FC<Props> = ({
   // Bulk Facebook Posting states
   const [isBulkPostingToFb, setIsBulkPostingToFb] = useState(false);
   const [fbPostingIndex, setFbPostingIndex] = useState(0);
-  const [fbPostLogs, setFbPostLogs] = useState<{ id: string; success: boolean; url?: string; error?: string }[]>([]);
+  const [fbPostLogs, setFbPostLogs] = useState<{ id: string; success: boolean; url?: string; error?: string; scheduledTimeText?: string }[]>([]);
+
+  // Facebook Schedule Configuration States
+  const [publishMode, setPublishMode] = useState<'now' | 'scheduled'>('now');
+
+  const getDefaultStartTime = () => {
+    const d = new Date(Date.now() + 20 * 60 * 1000); // 20 minutes in future
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
+  const [startDateTime, setStartDateTime] = useState<string>(getDefaultStartTime);
+  const [intervalType, setIntervalType] = useState<'fixed' | 'random_range'>('fixed');
+  const [fixedIntervalMins, setFixedIntervalMins] = useState<number>(30);
+  const [randomMinMins, setRandomMinMins] = useState<number>(15);
+  const [randomMaxMins, setRandomMaxMins] = useState<number>(45);
+  const [showScheduleList, setShowScheduleList] = useState<boolean>(false);
+  const [randomSeed, setRandomSeed] = useState<number>(0);
 
   const hiddenCardRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +61,32 @@ export const BulkGeneratorModal: React.FC<Props> = ({
       startBulkGeneration();
     }
   }, [isOpen, mcqs]);
+
+  // Calculate projected schedule times array
+  const getCalculatedScheduleTimes = (): Date[] => {
+    const times: Date[] = [];
+    const baseDate = new Date(startDateTime);
+    let current = isNaN(baseDate.getTime()) ? new Date(Date.now() + 20 * 60 * 1000) : new Date(baseDate);
+
+    for (let i = 0; i < results.length; i++) {
+      if (i === 0) {
+        times.push(new Date(current));
+      } else {
+        let addMins = fixedIntervalMins;
+        if (intervalType === 'random_range') {
+          const min = Math.min(randomMinMins, randomMaxMins);
+          const max = Math.max(randomMinMins, randomMaxMins);
+          // Pseudo-random calculation bound to item index & randomSeed for preview consistency
+          const rand = Math.sin((randomSeed + 1) * 999 + i * 17) * 10000;
+          const norm = Math.abs(rand - Math.floor(rand));
+          addMins = Math.floor(norm * (max - min + 1)) + min;
+        }
+        current = new Date(current.getTime() + addMins * 60 * 1000);
+        times.push(new Date(current));
+      }
+    }
+    return times;
+  };
 
   const startBulkGeneration = async () => {
     setIsProcessing(true);
@@ -133,6 +180,19 @@ export const BulkGeneratorModal: React.FC<Props> = ({
 
     if (results.length === 0) return;
 
+    let scheduledTimes: Date[] = [];
+    if (publishMode === 'scheduled') {
+      scheduledTimes = getCalculatedScheduleTimes();
+      const firstTime = scheduledTimes[0];
+      const diffMins = (firstTime.getTime() - Date.now()) / (1000 * 60);
+
+      if (isNaN(firstTime.getTime()) || diffMins < 10) {
+        alert('শিডিউল করার সময় বর্তমান সময় থেকে কমপক্ষে ১০ মিনিট ভবিষ্যতের হতে হবে। প্রথম পোস্টের সময় আপডেট করা হলো।');
+        setStartDateTime(getDefaultStartTime());
+        return;
+      }
+    }
+
     setIsBulkPostingToFb(true);
     setFbPostingIndex(0);
     setFbPostLogs([]);
@@ -152,6 +212,18 @@ export const BulkGeneratorModal: React.FC<Props> = ({
       }
       text += `\n#MCQ #Quiz #Education #StudyGram #BanglaMCQ`;
 
+      let scheduledPublishTimeSec: number | undefined = undefined;
+      let scheduledText: string | undefined = undefined;
+
+      if (publishMode === 'scheduled' && scheduledTimes[i]) {
+        const targetDate = scheduledTimes[i];
+        scheduledPublishTimeSec = Math.floor(targetDate.getTime() / 1000);
+        scheduledText = targetDate.toLocaleString('bn-BD', {
+          dateStyle: 'medium',
+          timeStyle: 'short',
+        });
+      }
+
       try {
         const res = await fetch('/api/facebook/publish', {
           method: 'POST',
@@ -161,7 +233,8 @@ export const BulkGeneratorModal: React.FC<Props> = ({
             pageAccessToken: facebookConfig.pageAccessToken,
             imageBase64: resItem.dataUrl,
             caption: text,
-            published: true,
+            published: publishMode === 'now',
+            scheduledPublishTime: scheduledPublishTimeSec,
           }),
         });
 
@@ -169,7 +242,12 @@ export const BulkGeneratorModal: React.FC<Props> = ({
         if (data.success) {
           setFbPostLogs((prev) => [
             ...prev,
-            { id: resItem.id, success: true, url: data.postUrl },
+            {
+              id: resItem.id,
+              success: true,
+              url: data.postUrl,
+              scheduledTimeText: scheduledText,
+            },
           ]);
         } else {
           setFbPostLogs((prev) => [
@@ -184,7 +262,7 @@ export const BulkGeneratorModal: React.FC<Props> = ({
         ]);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      await new Promise((resolve) => setTimeout(resolve, 800));
     }
 
     setIsBulkPostingToFb(false);
@@ -281,17 +359,17 @@ export const BulkGeneratorModal: React.FC<Props> = ({
             </div>
           )}
 
-          {/* Quick Actions Bar */}
+          {/* Quick Actions & Facebook Auto-Posting Control Center */}
           {!isProcessing && (
             <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   onClick={handleDownloadZip}
                   disabled={isZipping || results.length === 0}
                   className="p-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
                 >
                   <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>{isZipping ? 'Creating ZIP...' : 'Download All as ZIP'}</span>
+                  <span>{isZipping ? 'Creating ZIP...' : 'Download All as ZIP File'}</span>
                 </button>
 
                 <button
@@ -300,21 +378,321 @@ export const BulkGeneratorModal: React.FC<Props> = ({
                   className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
                 >
                   <Download className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
-                  <span>{autoDownloading ? 'Downloading...' : 'Auto-Download Files'}</span>
+                  <span>{autoDownloading ? 'Downloading...' : 'Auto-Download Files Sequentially'}</span>
                 </button>
+              </div>
 
+              {/* Facebook Auto-Posting & Scheduling Control Center */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center font-bold">
+                      <Facebook className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-xs sm:text-sm font-bold text-slate-900">
+                        ফেসবুক পেজ অটো-পোস্টিং ও শিডিউলিং (Facebook Auto Publisher)
+                      </h3>
+                      <p className="text-[11px] text-slate-500">
+                        {facebookConfig?.isConnected && facebookConfig.pageName
+                          ? `কানেক্টেড পেজ: ${facebookConfig.pageName}`
+                          : 'ফেসবুক পেজে সরাসরি পোস্ট বা ভবিষ্যতের জন্য সময়সূচী শিডিউল করুন'}
+                      </p>
+                    </div>
+                  </div>
+
+                  {facebookConfig?.isConnected ? (
+                    <button
+                      onClick={onOpenFacebookSettings}
+                      className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1 self-start sm:self-auto cursor-pointer"
+                    >
+                      <Settings className="w-3.5 h-3.5" />
+                      <span>পেজ চেঞ্জ করুন</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={onOpenFacebookSettings}
+                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg shadow-xs cursor-pointer"
+                    >
+                      পেজ কানেক্ট করুন
+                    </button>
+                  )}
+                </div>
+
+                {/* Mode Selection: Publish Now vs Scheduled */}
+                <div className="grid grid-cols-2 gap-2 bg-slate-200/60 p-1 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => setPublishMode('now')}
+                    className={`py-2 px-3 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      publishMode === 'now'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    <span>এখনই পোস্ট করুন (Instant)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPublishMode('scheduled')}
+                    className={`py-2 px-3 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      publishMode === 'scheduled'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <Calendar className="w-4 h-4" />
+                    <span>টাইম শিডিউল পোস্ট (Scheduled)</span>
+                  </button>
+                </div>
+
+                {/* Schedule Configuration Panel */}
+                {publishMode === 'scheduled' && (
+                  <div className="bg-white p-4 rounded-lg border border-blue-100 shadow-2xs space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Start Date & Time */}
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-blue-600" />
+                          <span>প্রথম পোস্ট শুরুর সময় (Start Date & Time)</span>
+                        </label>
+                        <input
+                          type="datetime-local"
+                          value={startDateTime}
+                          onChange={(e) => setStartDateTime(e.target.value)}
+                          className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs text-slate-900 font-semibold focus:outline-none focus:border-blue-600"
+                        />
+                        <div className="flex gap-1.5 pt-0.5">
+                          <button
+                            type="button"
+                            onClick={() => setStartDateTime(getDefaultStartTime())}
+                            className="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-[10px] font-medium text-slate-700 rounded cursor-pointer"
+                          >
+                            +২০ মিনিট পর
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const d = new Date();
+                              d.setHours(18, 0, 0, 0);
+                              if (d.getTime() < Date.now()) d.setDate(d.getDate() + 1);
+                              const year = d.getFullYear();
+                              const month = String(d.getMonth() + 1).padStart(2, '0');
+                              const day = String(d.getDate()).padStart(2, '0');
+                              setStartDateTime(`${year}-${month}-${day}T18:00`);
+                            }}
+                            className="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-[10px] font-medium text-slate-700 rounded cursor-pointer"
+                          >
+                            আজ সন্ধ্যা ৬:০০
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const d = new Date();
+                              d.setDate(d.getDate() + 1);
+                              d.setHours(9, 0, 0, 0);
+                              const year = d.getFullYear();
+                              const month = String(d.getMonth() + 1).padStart(2, '0');
+                              const day = String(d.getDate()).padStart(2, '0');
+                              setStartDateTime(`${year}-${month}-${day}T09:00`);
+                            }}
+                            className="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-[10px] font-medium text-slate-700 rounded cursor-pointer"
+                          >
+                            আগামীকাল সকাল ৯:০০
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Interval Strategy Switcher */}
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                          <Shuffle className="w-3.5 h-3.5 text-blue-600" />
+                          <span>পোস্টিং টাইম ইন্টারভাল (Interval Type)</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setIntervalType('fixed')}
+                            className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                              intervalType === 'fixed'
+                                ? 'bg-blue-50 border-blue-500 text-blue-900'
+                                : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            <Clock className="w-3.5 h-3.5" />
+                            <span>নির্দিষ্ট সময় (Fixed)</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => setIntervalType('random_range')}
+                            className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                              intervalType === 'random_range'
+                                ? 'bg-purple-50 border-purple-500 text-purple-900'
+                                : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            <Shuffle className="w-3.5 h-3.5" />
+                            <span>র্যান্ডম সময় (Random Range)</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Fixed Interval Controls */}
+                    {intervalType === 'fixed' && (
+                      <div className="space-y-2 pt-1 border-t border-slate-100">
+                        <span className="text-[11px] font-bold text-slate-600">
+                          প্রতিটি পোস্টের মধ্যবর্তী সময়:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {[
+                            { label: '১৫ মিনিট', mins: 15 },
+                            { label: '৩০ মিনিট', mins: 30 },
+                            { label: '১ ঘণ্টা', mins: 60 },
+                            { label: '২ ঘণ্টা', mins: 120 },
+                            { label: '৪ ঘণ্টা', mins: 240 },
+                            { label: '৬ ঘণ্টা', mins: 360 },
+                            { label: '১২ ঘণ্টা', mins: 720 },
+                            { label: '২৪ ঘণ্টা', mins: 1440 },
+                          ].map((preset) => (
+                            <button
+                              key={preset.mins}
+                              type="button"
+                              onClick={() => setFixedIntervalMins(preset.mins)}
+                              className={`px-3 py-1 rounded-full text-xs font-semibold cursor-pointer transition-all ${
+                                fixedIntervalMins === preset.mins
+                                  ? 'bg-blue-600 text-white shadow-xs'
+                                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                              }`}
+                            >
+                              {preset.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Random Range Controls */}
+                    {intervalType === 'random_range' && (
+                      <div className="space-y-3 pt-1 border-t border-slate-100">
+                        <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                          <span>র্যান্ডম সময় রেন্জ (Min to Max Minutes):</span>
+                          <button
+                            type="button"
+                            onClick={() => setRandomSeed((prev) => prev + 1)}
+                            className="text-purple-700 hover:underline text-[11px] flex items-center gap-1 cursor-pointer font-semibold"
+                          >
+                            <RefreshCw className="w-3 h-3" />
+                            <span>র্যান্ডম সময় রিফ্রেশ করুন</span>
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                              সর্বনিম্ন বিরতি (মিনিট):
+                            </label>
+                            <input
+                              type="number"
+                              min={10}
+                              max={1440}
+                              value={randomMinMins}
+                              onChange={(e) => setRandomMinMins(Math.max(10, parseInt(e.target.value) || 10))}
+                              className="w-full bg-slate-50 border border-slate-300 rounded p-2 text-xs font-bold text-slate-900"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                              সর্বোচ্চ বিরতি (মিনিট):
+                            </label>
+                            <input
+                              type="number"
+                              min={randomMinMins}
+                              max={2880}
+                              value={randomMaxMins}
+                              onChange={(e) => setRandomMaxMins(Math.max(randomMinMins, parseInt(e.target.value) || 30))}
+                              className="w-full bg-slate-50 border border-slate-300 rounded p-2 text-xs font-bold text-slate-900"
+                            />
+                          </div>
+                        </div>
+
+                        <p className="text-[11px] text-purple-900 bg-purple-50 p-2.5 rounded border border-purple-100 leading-relaxed">
+                          💡 <strong>হিউম্যান পোস্টিং প্যাটার্ন:</strong> প্রতিটি পোস্ট আগের পোস্ট থেকে{' '}
+                          <span className="font-bold underline">{randomMinMins}</span> থেকে{' '}
+                          <span className="font-bold underline">{randomMaxMins}</span> মিনিটের মধ্যে এলোমেলো সময়ে শিডিউল হবে।
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Schedule Timeline Preview Box */}
+                    <div className="bg-slate-50 rounded-lg p-3 border border-slate-200 space-y-2">
+                      <div
+                        onClick={() => setShowScheduleList(!showScheduleList)}
+                        className="flex items-center justify-between cursor-pointer text-xs font-bold text-slate-800"
+                      >
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4 text-blue-600" />
+                          <span>
+                            গণনাকৃত শিডিউল সময়সূচী ({results.length}টি পোস্ট)
+                          </span>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {getCalculatedScheduleTimes().length > 0 && (
+                            <span className="text-[10px] bg-blue-100 text-blue-800 font-mono px-2 py-0.5 rounded">
+                              {getCalculatedScheduleTimes()[0]?.toLocaleDateString('bn-BD', { month: 'short', day: 'numeric' })} →{' '}
+                              {getCalculatedScheduleTimes()[results.length - 1]?.toLocaleDateString('bn-BD', { month: 'short', day: 'numeric' })}
+                            </span>
+                          )}
+                          {showScheduleList ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </div>
+                      </div>
+
+                      {showScheduleList && (
+                        <div className="max-h-40 overflow-y-auto space-y-1.5 pt-2 border-t border-slate-200 text-[11px]">
+                          {getCalculatedScheduleTimes().map((time, idx) => (
+                            <div
+                              key={idx}
+                              className="flex items-center justify-between bg-white p-2 rounded border border-slate-200"
+                            >
+                              <span className="font-bold text-slate-700">Question #{idx + 1}</span>
+                              <span className="text-blue-900 font-semibold font-mono">
+                                {time.toLocaleString('bn-BD', {
+                                  weekday: 'short',
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Primary Post Trigger Button */}
                 <button
                   onClick={handleBulkFacebookPost}
-                  disabled={isBulkPostingToFb || results.length === 0}
-                  className="p-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                  disabled={isBulkPostingToFb}
+                  className={`w-full p-3.5 text-white font-bold text-xs sm:text-sm rounded-lg shadow-md flex items-center justify-center gap-2.5 cursor-pointer transition-all disabled:opacity-50 ${
+                    publishMode === 'scheduled'
+                      ? 'bg-purple-600 hover:bg-purple-700'
+                      : 'bg-blue-600 hover:bg-blue-700'
+                  }`}
                 >
                   <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>
                     {isBulkPostingToFb
-                      ? `Posting (${fbPostingIndex}/${results.length})...`
-                      : facebookConfig?.isConnected
-                      ? 'Post All to Facebook Page'
-                      : 'Connect FB Page & Auto-Post'}
+                      ? `প্রসেসিং চলছে (${fbPostingIndex}/${results.length})...`
+                      : publishMode === 'scheduled'
+                      ? `সকল ${results.length}টি পোস্ট ফেসবুক শিডিউলে যোগ করুন`
+                      : `সকল ${results.length}টি পোস্ট ফেসবুকে এখনই পোস্ট করুন`}
                   </span>
                 </button>
               </div>
@@ -340,21 +718,30 @@ export const BulkGeneratorModal: React.FC<Props> = ({
                     />
                   </div>
 
-                  {/* Published Post Links */}
-                  <div className="max-h-32 overflow-y-auto space-y-1 pt-1 text-[11px]">
+                  {/* Published / Scheduled Post Links */}
+                  <div className="max-h-36 overflow-y-auto space-y-1 pt-1 text-[11px]">
                     {fbPostLogs.map((log, idx) => (
                       <div key={log.id} className="flex items-center justify-between bg-white p-2 rounded border border-blue-100">
-                        <span className="font-mono text-slate-700">Question #{idx + 1}</span>
+                        <span className="font-mono text-slate-700 font-semibold">Question #{idx + 1}</span>
                         {log.success ? (
-                          <a
-                            href={log.url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-emerald-700 font-bold hover:underline flex items-center gap-1"
-                          >
-                            <span>Published on Facebook</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
+                          <div className="flex items-center gap-2">
+                            {log.scheduledTimeText ? (
+                              <span className="text-purple-800 font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200 flex items-center gap-1">
+                                <Calendar className="w-3 h-3 text-purple-600" />
+                                <span>Scheduled: {log.scheduledTimeText}</span>
+                              </span>
+                            ) : (
+                              <a
+                                href={log.url}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-emerald-700 font-bold hover:underline flex items-center gap-1"
+                              >
+                                <span>Published on Facebook</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                          </div>
                         ) : (
                           <span className="text-rose-600 font-semibold">{log.error || 'Failed'}</span>
                         )}

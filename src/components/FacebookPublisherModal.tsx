@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Facebook, CheckCircle2, AlertCircle, RefreshCw, X, Send, ExternalLink, Sparkles, FileText } from 'lucide-react';
+import { Facebook, CheckCircle2, AlertCircle, RefreshCw, X, Send, ExternalLink, Sparkles, FileText, Calendar, Clock } from 'lucide-react';
 import { FacebookPageConfig, McqItem } from '../types';
 
 interface FacebookPublisherModalProps {
@@ -35,13 +35,26 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
     return text;
   };
 
+  const getInitialScheduleTime = () => {
+    const d = new Date(Date.now() + 20 * 60 * 1000); // 20 mins in future
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
+
   const [caption, setCaption] = useState(() => buildDefaultCaption(mcq));
   const [isPublishing, setIsPublishing] = useState(false);
+  const [isScheduled, setIsScheduled] = useState(false);
+  const [scheduleDateTime, setScheduleDateTime] = useState(getInitialScheduleTime);
   const [publishResult, setPublishResult] = useState<{
     success: boolean;
     postUrl?: string;
     postId?: string;
     error?: string;
+    scheduledText?: string;
   } | null>(null);
 
   if (!isOpen) return null;
@@ -53,6 +66,22 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
         error: 'আপনার ফেসবুক পেজ সংযুক্ত করা নেই। অনুগ্রহ করে প্রথমে সেটিংস থেকে পেজ সংযুক্ত করুন।',
       });
       return;
+    }
+
+    let scheduledSec = undefined;
+    if (isScheduled) {
+      const targetDate = new Date(scheduleDateTime);
+      const now = new Date();
+      const diffMins = (targetDate.getTime() - now.getTime()) / (1000 * 60);
+
+      if (isNaN(targetDate.getTime()) || diffMins < 10) {
+        setPublishResult({
+          success: false,
+          error: 'শিডিউল সময় বর্তমান সময় থেকে কমপক্ষে ১০ মিনিট ভবিষ্যতের হতে হবে।',
+        });
+        return;
+      }
+      scheduledSec = Math.floor(targetDate.getTime() / 1000);
     }
 
     setIsPublishing(true);
@@ -67,17 +96,26 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
           pageAccessToken: facebookConfig.pageAccessToken,
           imageBase64: imageDataUrl,
           caption: caption,
-          published: true,
+          published: !isScheduled,
+          scheduledPublishTime: scheduledSec,
         }),
       });
 
       const data = await res.json();
 
       if (data.success) {
+        const formattedDate = isScheduled
+          ? new Date(scheduleDateTime).toLocaleString('bn-BD', {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            })
+          : undefined;
+
         setPublishResult({
           success: true,
           postId: data.postId,
           postUrl: data.postUrl,
+          scheduledText: formattedDate,
         });
       } else {
         setPublishResult({
@@ -177,9 +215,37 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                 <textarea
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
-                  rows={8}
+                  rows={6}
                   className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-800 focus:outline-none focus:border-blue-600 font-sans leading-relaxed"
                 />
+              </div>
+
+              {/* Schedule Option Toggle */}
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                    <input
+                      type="checkbox"
+                      checked={isScheduled}
+                      onChange={(e) => setIsScheduled(e.target.checked)}
+                      className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+                    />
+                    <Calendar className="w-4 h-4 text-blue-600" />
+                    <span>পোস্ট শিডিউল করুন (Schedule Post for Later)</span>
+                  </label>
+                </div>
+
+                {isScheduled && (
+                  <div className="pt-2 border-t border-slate-200 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-slate-500 shrink-0" />
+                    <input
+                      type="datetime-local"
+                      value={scheduleDateTime}
+                      onChange={(e) => setScheduleDateTime(e.target.value)}
+                      className="bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-blue-600 w-full"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Status Result Message */}
@@ -195,7 +261,11 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2 font-bold text-emerald-900">
                         <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                        <span>সফলভাবে ফেসবুক পেজে পোস্ট করা হয়েছে!</span>
+                        <span>
+                          {publishResult.scheduledText
+                            ? `পোস্টটি ${publishResult.scheduledText} এর জন্য সফলভাবে শিডিউল করা হয়েছে!`
+                            : 'সফলভাবে ফেসবুক পেজে পোস্ট করা হয়েছে!'}
+                        </span>
                       </div>
                       {publishResult.postUrl && (
                         <a
