@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Download, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles, Check, Copy } from 'lucide-react';
+import { Download, ChevronLeft, ChevronRight, Image as ImageIcon, Sparkles, Check, Copy, Facebook } from 'lucide-react';
 import { McqItem, DesignConfig } from '../types';
 import { McqCardRenderer } from './mcq-templates/McqCardRenderer';
 import { nodeToDataUrl, triggerDownload } from '../utils/imageExporter';
@@ -11,6 +11,7 @@ interface Props {
   totalCount: number;
   onPrev: () => void;
   onNext: () => void;
+  onOpenFacebookPost?: (mcq: McqItem, imageDataUrl: string) => void;
 }
 
 export const SinglePreviewCard: React.FC<Props> = ({
@@ -20,10 +21,30 @@ export const SinglePreviewCard: React.FC<Props> = ({
   totalCount,
   onPrev,
   onNext,
+  onOpenFacebookPost,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const [copiedMsg, setCopiedMsg] = useState(false);
+  const [isPreparingFb, setIsPreparingFb] = useState(false);
+
+  const handleOpenFbModal = async () => {
+    if (!cardRef.current || !onOpenFacebookPost) return;
+    setIsPreparingFb(true);
+
+    try {
+      const dataUrl = await nodeToDataUrl(cardRef.current, {
+        pixelRatio: 2.5,
+        quality: 0.95,
+        type: 'png',
+      });
+      onOpenFacebookPost(mcq, dataUrl);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsPreparingFb(false);
+    }
+  };
 
   const handleDownload = async (format: 'jpeg' | 'png' = 'jpeg') => {
     if (!cardRef.current) return;
@@ -115,7 +136,19 @@ export const SinglePreviewCard: React.FC<Props> = ({
           <span>High-Resolution HD Export (JPG / PNG)</span>
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          {onOpenFacebookPost && (
+            <button
+              onClick={handleOpenFbModal}
+              disabled={isPreparingFb}
+              className="flex-1 sm:flex-none px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all disabled:opacity-50"
+              title="Post image directly to connected Facebook Page"
+            >
+              <Facebook className="w-4 h-4" />
+              <span>{isPreparingFb ? 'Preparing...' : 'Post to Facebook Page'}</span>
+            </button>
+          )}
+
           <button
             onClick={handleCopyDataUrl}
             className="flex-1 sm:flex-none px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded text-xs font-semibold text-slate-700 flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
@@ -136,7 +169,7 @@ export const SinglePreviewCard: React.FC<Props> = ({
           <button
             onClick={() => handleDownload('jpeg')}
             disabled={isDownloading}
-            className="flex-1 sm:flex-none px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+            className="flex-1 sm:flex-none px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
           >
             <Download className="w-4 h-4" />
             <span>{isDownloading ? 'Exporting...' : 'Download JPG'}</span>

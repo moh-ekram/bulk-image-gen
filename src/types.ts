@@ -69,3 +69,21 @@ export interface GeneratedImageResult {
   blob: Blob;
   filename: string;
 }
+
+export interface FacebookPageConfig {
+  pageId: string;
+  pageAccessToken: string;
+  pageName?: string;
+  pagePictureUrl?: string;
+  category?: string;
+  followersCount?: number;
+  isConnected?: boolean;
+}
+
+export interface FacebookPublishOptions {
+  caption: string;
+  includeAnswerInCaption?: boolean;
+  hashtags?: string;
+  delaySeconds?: number;
+}
+

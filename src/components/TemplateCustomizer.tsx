@@ -80,13 +80,50 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
     { id: '9:16', label: '9:16 Story/Reel', desc: '1080x1920 (Reels/TikTok)', iconStr: '📱' },
   ];
 
-  const fonts = [
-    { id: 'Hind Siliguri', name: 'Hind Siliguri (Bengali Standard)' },
-    { id: 'Noto Sans Bengali', name: 'Noto Sans Bengali (Bengali Modern)' },
-    { id: 'Tiro Bangla', name: 'Tiro Bangla (Bengali Serif)' },
-    { id: 'Poppins', name: 'Poppins (English Sans)' },
-    { id: 'Playfair Display', name: 'Playfair Display (English Serif)' },
-    { id: 'Inter', name: 'Inter (Clean Sans)' },
+  const fontGroups = [
+    {
+      group: 'Bengali Typography (বাংলা ফন্ট)',
+      fonts: [
+        { id: 'Hind Siliguri', name: 'Hind Siliguri — Standard Bengali Sans' },
+        { id: 'Noto Sans Bengali', name: 'Noto Sans Bengali — Modern Clean Sans' },
+        { id: 'Tiro Bangla', name: 'Tiro Bangla — Classic Academic Serif' },
+        { id: 'Anek Bangla', name: 'Anek Bangla — Bold Multi-Weight' },
+        { id: 'Mina', name: 'Mina — Soft Rounded Bengali' },
+        { id: 'Galada', name: 'Galada — Stylized Decorative Calligraphy' },
+      ],
+    },
+    {
+      group: 'Modern Sans-Serif (English / Multi)',
+      fonts: [
+        { id: 'Poppins', name: 'Poppins — Geometric Sans' },
+        { id: 'Inter', name: 'Inter — Clean Tech Sans' },
+        { id: 'Montserrat', name: 'Montserrat — Bold Marketing' },
+        { id: 'Space Grotesk', name: 'Space Grotesk — Futuristic UI' },
+      ],
+    },
+    {
+      group: 'Editorial & Classic Serif',
+      fonts: [
+        { id: 'Playfair Display', name: 'Playfair Display — Elegant Serif' },
+        { id: 'Merriweather', name: 'Merriweather — Editorial Journal' },
+      ],
+    },
+    {
+      group: 'Poster & High Impact Display',
+      fonts: [
+        { id: 'Oswald', name: 'Oswald — Condensed Impact' },
+        { id: 'Fredoka', name: 'Fredoka — Soft Rounded Display' },
+        { id: 'Bangers', name: 'Bangers — Action Quiz Display' },
+      ],
+    },
+    {
+      group: 'Handwritten & Tech Monospace',
+      fonts: [
+        { id: 'Caveat', name: 'Caveat — Casual Note Script' },
+        { id: 'Pacifico', name: 'Pacifico — Retro Brush Script' },
+        { id: 'Fira Code', name: 'Fira Code — Developer Monospace' },
+      ],
+    },
   ];
 
   const presetColors = [
@@ -192,14 +229,26 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
           <select
             value={config.fontFamily}
             onChange={(e) => onChange({ ...config, fontFamily: e.target.value })}
-            className="w-full bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 cursor-pointer"
+            className="w-full bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 cursor-pointer font-medium"
           >
-            {fonts.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.name}
-              </option>
+            {fontGroups.map((group) => (
+              <optgroup key={group.group} label={group.group} className="font-bold text-slate-700 bg-slate-100">
+                {group.fonts.map((f) => (
+                  <option key={f.id} value={f.id} className="font-normal text-slate-900 bg-white">
+                    {f.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
           </select>
+
+          {/* Font Sample Preview Card */}
+          <div className="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-center">
+            <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block mb-1">Font Preview ({config.fontFamily})</span>
+            <p className="text-sm text-slate-900 leading-tight" style={{ fontFamily: `'${config.fontFamily}', sans-serif` }}>
+              MCQ Quiz Canvas • প্রশ্নের নমুনা ১
+            </p>
+          </div>
 
           {/* Question Prefix Option */}
           <div className="mt-3">

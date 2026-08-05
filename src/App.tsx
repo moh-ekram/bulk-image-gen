@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileSpreadsheet, Palette, ListFilter, Sparkles, Image as ImageIcon, HelpCircle, CheckCircle2 } from 'lucide-react';
-import { McqItem, DesignConfig } from './types';
+import { McqItem, DesignConfig, FacebookPageConfig } from './types';
 import { SAMPLE_MCQS } from './data/sampleMcqs';
 import { Navbar } from './components/Navbar';
 import { ExcelUploader } from './components/ExcelUploader';
@@ -8,12 +8,41 @@ import { TemplateCustomizer } from './components/TemplateCustomizer';
 import { McqTableEditor } from './components/McqTableEditor';
 import { SinglePreviewCard } from './components/SinglePreviewCard';
 import { BulkGeneratorModal } from './components/BulkGeneratorModal';
+import { FacebookSettingsModal } from './components/FacebookSettingsModal';
+import { FacebookPublisherModal } from './components/FacebookPublisherModal';
 
 export default function App() {
   const [mcqs, setMcqs] = useState<McqItem[]>(SAMPLE_MCQS);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<'uploader' | 'customizer' | 'editor'>('customizer');
   const [isBulkModalOpen, setIsBulkModalOpen] = useState<boolean>(false);
+
+  // Facebook Integration state
+  const [facebookConfig, setFacebookConfig] = useState<FacebookPageConfig>(() => {
+    try {
+      const saved = localStorage.getItem('mcq_facebook_config');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+    return {
+      pageId: '',
+      pageAccessToken: '',
+      isConnected: false,
+    };
+  });
+
+  const [isFbSettingsOpen, setIsFbSettingsOpen] = useState<boolean>(false);
+  const [fbPostTarget, setFbPostTarget] = useState<{ mcq: McqItem; imageDataUrl: string } | null>(null);
+
+  const handleSaveFbConfig = (newCfg: FacebookPageConfig) => {
+    setFacebookConfig(newCfg);
+    try {
+      localStorage.setItem('mcq_facebook_config', JSON.stringify(newCfg));
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const [designConfig, setDesignConfig] = useState<DesignConfig>({
     templateId: 'playful_quiz',
@@ -63,6 +92,8 @@ export default function App() {
         mcqCount={mcqs.length}
         onOpenBulkModal={() => setIsBulkModalOpen(true)}
         onResetSampleMcqs={handleResetSample}
+        facebookConfig={facebookConfig}
+        onOpenFacebookSettings={() => setIsFbSettingsOpen(true)}
       />
 
       {/* Main Workspace Layout */}
@@ -169,6 +200,7 @@ export default function App() {
                 totalCount={mcqs.length}
                 onPrev={() => setSelectedIndex((prev) => Math.max(0, prev - 1))}
                 onNext={() => setSelectedIndex((prev) => Math.min(mcqs.length - 1, prev + 1))}
+                onOpenFacebookPost={(item, imgUrl) => setFbPostTarget({ mcq: item, imageDataUrl: imgUrl })}
               />
             ) : (
               <div className="p-8 bg-white border border-slate-200 rounded-lg text-center text-slate-500 shadow-xs">
@@ -188,7 +220,7 @@ export default function App() {
           <span>Professional Image Generator Engine</span>
         </div>
         <div className="text-[11px] text-slate-400">
-          Realtime HD Preview & Bulk PNG/ZIP Export
+          Realtime HD Preview, Facebook Page Direct Post & Bulk Export
         </div>
       </footer>
 
@@ -198,7 +230,32 @@ export default function App() {
         config={designConfig}
         isOpen={isBulkModalOpen}
         onClose={() => setIsBulkModalOpen(false)}
+        facebookConfig={facebookConfig}
+        onOpenFacebookSettings={() => setIsFbSettingsOpen(true)}
       />
+
+      {/* Facebook Page Settings Modal */}
+      <FacebookSettingsModal
+        isOpen={isFbSettingsOpen}
+        onClose={() => setIsFbSettingsOpen(false)}
+        config={facebookConfig}
+        onSaveConfig={handleSaveFbConfig}
+      />
+
+      {/* Facebook Single Publisher Modal */}
+      {fbPostTarget && (
+        <FacebookPublisherModal
+          isOpen={!!fbPostTarget}
+          onClose={() => setFbPostTarget(null)}
+          mcq={fbPostTarget.mcq}
+          imageDataUrl={fbPostTarget.imageDataUrl}
+          facebookConfig={facebookConfig}
+          onOpenSettings={() => {
+            setFbPostTarget(null);
+            setIsFbSettingsOpen(true);
+          }}
+        />
+      )}
     </div>
   );
 }

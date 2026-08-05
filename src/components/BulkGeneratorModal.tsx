@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import JSZip from 'jszip';
-import { Download, FileArchive, CheckCircle2, RefreshCw, X, Image as ImageIcon, Zap, Sparkles } from 'lucide-react';
-import { McqItem, DesignConfig, GeneratedImageResult } from '../types';
+import { Download, FileArchive, CheckCircle2, RefreshCw, X, Image as ImageIcon, Zap, Sparkles, Facebook, ExternalLink, Send } from 'lucide-react';
+import { McqItem, DesignConfig, GeneratedImageResult, FacebookPageConfig } from '../types';
 import { McqCardRenderer } from './mcq-templates/McqCardRenderer';
 import { nodeToDataUrl, triggerDownload } from '../utils/imageExporter';
 
@@ -10,14 +10,28 @@ interface Props {
   config: DesignConfig;
   isOpen: boolean;
   onClose: () => void;
+  facebookConfig?: FacebookPageConfig;
+  onOpenFacebookSettings?: () => void;
 }
 
-export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onClose }) => {
+export const BulkGeneratorModal: React.FC<Props> = ({
+  mcqs,
+  config,
+  isOpen,
+  onClose,
+  facebookConfig,
+  onOpenFacebookSettings,
+}) => {
   const [results, setResults] = useState<GeneratedImageResult[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isZipping, setIsZipping] = useState(false);
   const [autoDownloading, setAutoDownloading] = useState(false);
+
+  // Bulk Facebook Posting states
+  const [isBulkPostingToFb, setIsBulkPostingToFb] = useState(false);
+  const [fbPostingIndex, setFbPostingIndex] = useState(0);
+  const [fbPostLogs, setFbPostLogs] = useState<{ id: string; success: boolean; url?: string; error?: string }[]>([]);
 
   const hiddenCardRef = useRef<HTMLDivElement>(null);
 
@@ -111,6 +125,71 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
     setAutoDownloading(false);
   };
 
+  const handleBulkFacebookPost = async () => {
+    if (!facebookConfig || !facebookConfig.isConnected || !facebookConfig.pageId || !facebookConfig.pageAccessToken) {
+      if (onOpenFacebookSettings) onOpenFacebookSettings();
+      return;
+    }
+
+    if (results.length === 0) return;
+
+    setIsBulkPostingToFb(true);
+    setFbPostingIndex(0);
+    setFbPostLogs([]);
+
+    for (let i = 0; i < results.length; i++) {
+      const resItem = results[i];
+      setFbPostingIndex(i + 1);
+
+      let text = `📌 ${resItem.mcq.category ? `[${resItem.mcq.category}] ` : ''}MCQ Quiz Question (${i + 1}/${results.length})\n\n`;
+      text += `❓ ${resItem.mcq.question}\n\n`;
+      text += `A) ${resItem.mcq.optionA}\n`;
+      text += `B) ${resItem.mcq.optionB}\n`;
+      if (resItem.mcq.optionC) text += `C) ${resItem.mcq.optionC}\n`;
+      if (resItem.mcq.optionD) text += `D) ${resItem.mcq.optionD}\n`;
+      if (resItem.mcq.correctAnswer) {
+        text += `\n💡 Correct Answer: Option ${resItem.mcq.correctAnswer}\n`;
+      }
+      text += `\n#MCQ #Quiz #Education #StudyGram #BanglaMCQ`;
+
+      try {
+        const res = await fetch('/api/facebook/publish', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pageId: facebookConfig.pageId,
+            pageAccessToken: facebookConfig.pageAccessToken,
+            imageBase64: resItem.dataUrl,
+            caption: text,
+            published: true,
+          }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          setFbPostLogs((prev) => [
+            ...prev,
+            { id: resItem.id, success: true, url: data.postUrl },
+          ]);
+        } else {
+          setFbPostLogs((prev) => [
+            ...prev,
+            { id: resItem.id, success: false, error: data.error || 'Failed' },
+          ]);
+        }
+      } catch (err: any) {
+        setFbPostLogs((prev) => [
+          ...prev,
+          { id: resItem.id, success: false, error: err.message },
+        ]);
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+    }
+
+    setIsBulkPostingToFb(false);
+  };
+
   if (!isOpen) return null;
 
   const progressPercent = mcqs.length > 0 ? Math.round(((currentIndex + 1) / mcqs.length) * 100) : 0;
@@ -202,26 +281,88 @@ export const BulkGeneratorModal: React.FC<Props> = ({ mcqs, config, isOpen, onCl
             </div>
           )}
 
-          {/* Quick Download Buttons */}
+          {/* Quick Actions Bar */}
           {!isProcessing && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button
-                onClick={handleDownloadZip}
-                disabled={isZipping || results.length === 0}
-                className="p-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded shadow-xs flex items-center justify-center gap-3 cursor-pointer transition-all disabled:opacity-50"
-              >
-                <FileArchive className="w-5 h-5" />
-                <span>{isZipping ? 'Creating ZIP...' : 'Download All as ZIP File'}</span>
-              </button>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  onClick={handleDownloadZip}
+                  disabled={isZipping || results.length === 0}
+                  className="p-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                >
+                  <FileArchive className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>{isZipping ? 'Creating ZIP...' : 'Download All as ZIP'}</span>
+                </button>
 
-              <button
-                onClick={handleAutoDownloadQueue}
-                disabled={autoDownloading || results.length === 0}
-                className="p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-sm rounded shadow-xs flex items-center justify-center gap-3 cursor-pointer transition-all disabled:opacity-50"
-              >
-                <Download className="w-5 h-5 text-indigo-600" />
-                <span>{autoDownloading ? 'Downloading...' : 'Auto-Download Files Sequentially'}</span>
-              </button>
+                <button
+                  onClick={handleAutoDownloadQueue}
+                  disabled={autoDownloading || results.length === 0}
+                  className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                >
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600" />
+                  <span>{autoDownloading ? 'Downloading...' : 'Auto-Download Files'}</span>
+                </button>
+
+                <button
+                  onClick={handleBulkFacebookPost}
+                  disabled={isBulkPostingToFb || results.length === 0}
+                  className="p-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50"
+                >
+                  <Facebook className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>
+                    {isBulkPostingToFb
+                      ? `Posting (${fbPostingIndex}/${results.length})...`
+                      : facebookConfig?.isConnected
+                      ? 'Post All to Facebook Page'
+                      : 'Connect FB Page & Auto-Post'}
+                  </span>
+                </button>
+              </div>
+
+              {/* Facebook Bulk Post Progress & Logs Box */}
+              {(isBulkPostingToFb || fbPostLogs.length > 0) && (
+                <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-blue-900">
+                    <span className="flex items-center gap-2">
+                      <Facebook className="w-4 h-4 text-blue-600" />
+                      <span>ফেসবুক পেজ বাল্ক পোস্টিং স্ট্যাটাস</span>
+                    </span>
+                    <span>
+                      {fbPostingIndex} / {results.length} Completed
+                    </span>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="w-full bg-blue-200 h-2 rounded-full overflow-hidden">
+                    <div
+                      className="bg-blue-600 h-full transition-all duration-300"
+                      style={{ width: `${Math.round((fbPostLogs.length / results.length) * 100)}%` }}
+                    />
+                  </div>
+
+                  {/* Published Post Links */}
+                  <div className="max-h-32 overflow-y-auto space-y-1 pt-1 text-[11px]">
+                    {fbPostLogs.map((log, idx) => (
+                      <div key={log.id} className="flex items-center justify-between bg-white p-2 rounded border border-blue-100">
+                        <span className="font-mono text-slate-700">Question #{idx + 1}</span>
+                        {log.success ? (
+                          <a
+                            href={log.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-emerald-700 font-bold hover:underline flex items-center gap-1"
+                          >
+                            <span>Published on Facebook</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        ) : (
+                          <span className="text-rose-600 font-semibold">{log.error || 'Failed'}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
