@@ -7,6 +7,9 @@ import {
   ShoppingBag,
   HelpCircle,
   Package,
+  ShieldCheck,
+  Lock,
+  LogIn,
 } from 'lucide-react';
 import {
   McqItem,
@@ -16,9 +19,16 @@ import {
   CartItem,
   CustomerOrder,
   TShirtSize,
+  AdminUser,
+  StoreSettings,
 } from './types';
 import { SAMPLE_MCQS } from './data/sampleMcqs';
 import { INITIAL_PUBLISHED_PRODUCTS } from './data/tshirtPresets';
+import {
+  DEFAULT_ADMIN_USER,
+  DEFAULT_ADMIN_PASSWORD_HASH,
+  DEFAULT_STORE_SETTINGS,
+} from './data/adminDefaults';
 import { Navbar, AppMainSection } from './components/Navbar';
 import { ExcelUploader } from './components/ExcelUploader';
 import { TemplateCustomizer } from './components/TemplateCustomizer';
@@ -28,16 +38,80 @@ import { BulkGeneratorModal } from './components/BulkGeneratorModal';
 import { FacebookSettingsModal } from './components/FacebookSettingsModal';
 import { FacebookPublisherModal } from './components/FacebookPublisherModal';
 
-// T-Shirt Components
+// T-Shirt & Admin Components
 import { TShirtStorefront } from './components/tshirt/TShirtStorefront';
 import { TShirtBulkStudio } from './components/tshirt/TShirtBulkStudio';
 import { TShirtCartDrawer } from './components/tshirt/TShirtCartDrawer';
 import { TShirtCheckoutModal } from './components/tshirt/TShirtCheckoutModal';
 import { TShirtOrdersModal } from './components/tshirt/TShirtOrdersModal';
+import { AdminManagementPanel } from './components/admin/AdminManagementPanel';
+import { AdminLoginModal } from './components/admin/AdminLoginModal';
 
 export default function App() {
-  // Top-level Navigation Mode: 'tshirt_store' | 'tshirt_studio' | 'mcq_studio'
+  // Top-level Navigation Mode: 'tshirt_store' | 'tshirt_studio' | 'admin_panel' | 'mcq_studio'
   const [activeSection, setActiveSection] = useState<AppMainSection>('tshirt_store');
+
+  // ================= ADMIN & STORE SETTINGS STATE =================
+  const [adminUser, setAdminUser] = useState<AdminUser | null>(() => {
+    try {
+      const saved = localStorage.getItem('admin_session_auth');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  });
+
+  const [adminPassword, setAdminPassword] = useState<string>(() => {
+    try {
+      const saved = localStorage.getItem('admin_master_password');
+      if (saved) return saved;
+    } catch (e) {
+      console.error(e);
+    }
+    return DEFAULT_ADMIN_PASSWORD_HASH;
+  });
+
+  const [storeSettings, setStoreSettings] = useState<StoreSettings>(() => {
+    try {
+      const saved = localStorage.getItem('store_settings_config');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error(e);
+    }
+    return DEFAULT_STORE_SETTINGS;
+  });
+
+  const [isAdminLoginModalOpen, setIsAdminLoginModalOpen] = useState(false);
+
+  // Sync Admin Auth & Settings
+  useEffect(() => {
+    try {
+      if (adminUser) {
+        localStorage.setItem('admin_session_auth', JSON.stringify(adminUser));
+      } else {
+        localStorage.removeItem('admin_session_auth');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [adminUser]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('admin_master_password', adminPassword);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [adminPassword]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('store_settings_config', JSON.stringify(storeSettings));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [storeSettings]);
 
   // ================= T-SHIRT STATE =================
   const [products, setProducts] = useState<TShirtProduct[]>(() => {
@@ -122,6 +196,33 @@ export default function App() {
       console.error(e);
     }
   }, [orders]);
+
+  // Admin Actions
+  const handleAdminLogin = (user: AdminUser) => {
+    setAdminUser(user);
+    setActiveSection('admin_panel');
+  };
+
+  const handleAdminLogout = () => {
+    setAdminUser(null);
+    setActiveSection('tshirt_store');
+  };
+
+  const handleUpdateProduct = (updated: TShirtProduct) => {
+    setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+    setProducts((prev) => prev.filter((p) => p.id !== productId));
+  };
+
+  const handleAddProduct = (newProd: TShirtProduct) => {
+    setProducts((prev) => [newProd, ...prev]);
+  };
+
+  const handleDeleteOrder = (orderId: string) => {
+    setOrders((prev) => prev.filter((o) => o.id !== orderId));
+  };
 
   // Cart actions
   const handleAddToCart = (
@@ -255,13 +356,22 @@ export default function App() {
 
   const currentMcq = mcqs[selectedIndex] || mcqs[0];
   const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const pendingOrdersCount = orders.filter((o) => o.status === 'Pending').length;
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       {/* Global Navbar */}
       <Navbar
         activeSection={activeSection}
-        onSelectSection={(sec) => setActiveSection(sec)}
+        onSelectSection={(sec) => {
+          if (sec === 'admin_panel' && !adminUser) {
+            setIsAdminLoginModalOpen(true);
+            return;
+          }
+          setActiveSection(sec);
+        }}
+        adminUser={adminUser}
+        onOpenAdminLogin={() => setIsAdminLoginModalOpen(true)}
         mcqCount={mcqs.length}
         onOpenBulkModal={() => setIsBulkModalOpen(true)}
         onResetSampleMcqs={handleResetSample}
@@ -269,8 +379,15 @@ export default function App() {
         onOpenFacebookSettings={() => setIsFbSettingsOpen(true)}
         cartItemsCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenOrders={() => setIsOrdersOpen(true)}
+        onOpenOrders={() => {
+          if (adminUser) {
+            setActiveSection('admin_panel');
+          } else {
+            setIsOrdersOpen(true);
+          }
+        }}
         ordersCount={orders.length}
+        pendingOrdersCount={pendingOrdersCount}
         publishedProductsCount={products.filter((p) => p.isPublished).length}
       />
 
@@ -282,7 +399,13 @@ export default function App() {
             products={products}
             onAddToCart={handleAddToCart}
             onDirectCheckout={handleDirectCheckout}
-            onOpenStudio={() => setActiveSection('tshirt_studio')}
+            onOpenStudio={() => {
+              if (!adminUser) {
+                setIsAdminLoginModalOpen(true);
+              } else {
+                setActiveSection('tshirt_studio');
+              }
+            }}
           />
         )}
 
@@ -295,7 +418,55 @@ export default function App() {
           />
         )}
 
-        {/* SECTION 3: MCQ QUIZ IMAGE GENERATOR */}
+        {/* SECTION 3: ADMIN MANAGEMENT PANEL (SECURE ACCESS GATE) */}
+        {activeSection === 'admin_panel' && (
+          adminUser ? (
+            <AdminManagementPanel
+              adminUser={adminUser}
+              onLogout={handleAdminLogout}
+              orders={orders}
+              products={products}
+              storeSettings={storeSettings}
+              onUpdateOrderStatus={handleUpdateOrderStatus}
+              onDeleteOrder={handleDeleteOrder}
+              onUpdateProduct={handleUpdateProduct}
+              onDeleteProduct={handleDeleteProduct}
+              onAddProduct={handleAddProduct}
+              onUpdateStoreSettings={(newSettings) => setStoreSettings(newSettings)}
+              onUpdateAdminPassword={(newPass) => setAdminPassword(newPass)}
+              onNavigateToStore={() => setActiveSection('tshirt_store')}
+              onNavigateToStudio={() => setActiveSection('tshirt_studio')}
+            />
+          ) : (
+            /* Unauthenticated Admin Lock Screen Gate */
+            <div className="max-w-md mx-auto my-12 bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-xl space-y-6 animate-in zoom-in-95">
+              <div className="w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-500 mx-auto">
+                <Lock className="w-8 h-8" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-black text-slate-900">Admin Authentication Required</h2>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  The Management Panel is strictly restricted to authenticated store managers and administrators. Please log in with your master credentials to continue.
+                </p>
+              </div>
+
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1">
+                <span className="font-bold text-slate-900 block">Default Credentials:</span>
+                <span className="font-mono text-indigo-700 font-bold block">User: admin | Pass: admin123</span>
+              </div>
+
+              <button
+                onClick={() => setIsAdminLoginModalOpen(true)}
+                className="w-full py-3 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Log In as Administrator</span>
+              </button>
+            </div>
+          )
+        )}
+
+        {/* SECTION 4: MCQ QUIZ IMAGE GENERATOR */}
         {activeSection === 'mcq_studio' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Feature Welcome / Instruction Strip */}
@@ -417,16 +588,42 @@ export default function App() {
       {/* Global Footer */}
       <footer className="mt-auto border-t border-slate-200 bg-white py-4 px-4 sm:px-8 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-800">T-Shirt E-Commerce & MCQ Canvas Studio</span>
+          <span className="font-bold text-slate-800">{storeSettings.storeName}</span>
           <span>•</span>
-          <span>Bulk Mockup & Ordering Engine</span>
+          <span>E-Commerce & MCQ Canvas Studio</span>
         </div>
-        <div className="text-[11px] text-slate-400">
-          3D Cotton Mockups • Cash on Delivery Store • Facebook Auto-Poster
+        <div className="text-[11px] text-slate-400 flex items-center gap-2">
+          <span>COD Delivery</span>
+          <span>•</span>
+          <span>bKash / Nagad</span>
+          <span>•</span>
+          <span>Steadfast & Pathao Courier</span>
+          <span>•</span>
+          <button
+            onClick={() => {
+              if (adminUser) {
+                setActiveSection('admin_panel');
+              } else {
+                setIsAdminLoginModalOpen(true);
+              }
+            }}
+            className="text-slate-600 hover:text-indigo-600 font-semibold cursor-pointer underline"
+          >
+            {adminUser ? 'Admin Console' : 'Admin Login'}
+          </button>
         </div>
       </footer>
 
       {/* ================= MODALS & DRAWERS ================= */}
+
+      {/* Admin Login Modal */}
+      <AdminLoginModal
+        isOpen={isAdminLoginModalOpen}
+        onClose={() => setIsAdminLoginModalOpen(false)}
+        onLoginSuccess={handleAdminLogin}
+        storedPassword={adminPassword}
+        storedUser={DEFAULT_ADMIN_USER}
+      />
 
       {/* T-Shirt Cart Slide-over Drawer */}
       <TShirtCartDrawer
@@ -489,3 +686,4 @@ export default function App() {
     </div>
   );
 }
+

@@ -113,6 +113,7 @@ export interface TShirtProduct {
   availableColors: string[]; // Hex list
   availableSizes: TShirtSize[];
   mockupStyle?: 'crewneck' | 'oversized' | 'hoodie';
+  customMockupImage?: string; // Optional user uploaded photo mockup base
   rating: number;
   reviewsCount: number;
   badge?: string;
@@ -160,7 +161,49 @@ export interface BulkDesignDraft {
   designPositionY: number;
   designPositionX: number;
   mockupStyle?: 'crewneck' | 'oversized' | 'hoodie';
+  customMockupImage?: string;
   isSelected: boolean;
 }
+
+export interface AdminUser {
+  username: string;
+  name: string;
+  email: string;
+  role: 'Super Admin' | 'Store Manager' | 'Operations Admin';
+  avatar?: string;
+  lastLogin?: number;
+}
+
+export interface StoreSettings {
+  storeName: string;
+  tagline: string;
+  currency: string;
+  hotlinePhone: string;
+  supportEmail: string;
+  address: string;
+  deliveryInsideDhaka: number;
+  deliveryOutsideDhaka: number;
+  freeShippingThreshold: number;
+  bkashNumber: string;
+  nagadNumber: string;
+  enableCod: boolean;
+  enableBkash: boolean;
+  enableNagad: boolean;
+  announcementText: string;
+  enableAnnouncement: boolean;
+}
+
+export interface CustomerProfile {
+  id: string;
+  name: string;
+  phone: string;
+  address: string;
+  district: string;
+  totalOrders: number;
+  totalSpent: number;
+  lastOrderDate: number;
+  orders: CustomerOrder[];
+}
+
 
 

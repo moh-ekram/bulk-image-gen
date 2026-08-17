@@ -74,6 +74,7 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
                     <TShirtMockupView
                       color={item.selectedColor}
                       designImage={item.product.designImage}
+                      customMockupImage={item.product.customMockupImage}
                       designScale={50}
                     />
                   </div>

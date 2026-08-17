@@ -238,6 +238,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     <TShirtMockupView
                       color={currentColor}
                       designImage={product.designImage}
+                      customMockupImage={product.customMockupImage}
                       designScale={product.designScale}
                       designPositionX={product.designPositionX}
                       designPositionY={product.designPositionY}
@@ -355,6 +356,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 <TShirtMockupView
                   color={modalColor}
                   designImage={previewProduct.designImage}
+                  customMockupImage={previewProduct.customMockupImage}
                   designScale={previewProduct.designScale}
                   designPositionX={previewProduct.designPositionX}
                   designPositionY={previewProduct.designPositionY}

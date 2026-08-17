@@ -68,11 +68,32 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
   });
 
   const [activeEditingDraft, setActiveEditingDraft] = useState<BulkDesignDraft | null>(null);
-  const [editingViewMode, setEditingViewMode] = useState<TShirtViewMode>('front');
+  const [editingViewMode, setEditingViewMode] = useState<TShirtViewMode>('back');
+  const [customMockupBase, setCustomMockupBase] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [publishSuccessMsg, setPublishSuccessMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const mockupBaseInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle Custom Base Mockup Photo Upload (e.g. user's own t-shirt photo)
+  const handleBaseMockupUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setCustomMockupBase(dataUrl);
+      // Also apply to existing drafts if desired
+      setDrafts((prev) =>
+        prev.map((d) => ({
+          ...d,
+          customMockupImage: dataUrl,
+        }))
+      );
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Handle Multi-file Upload (PNG / JPG)
   const handleFiles = (files: FileList | File[]) => {
@@ -220,6 +241,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
       availableColors: [draft.color, '#18181b', '#0f172a', '#450a0a', '#064e3b', '#94a3b8'],
       availableSizes: draft.availableSizes.length > 0 ? draft.availableSizes : ['S', 'M', 'L', 'XL', 'XXL'],
       mockupStyle: draft.mockupStyle,
+      customMockupImage: draft.customMockupImage || customMockupBase || undefined,
       rating: 5.0,
       reviewsCount: Math.floor(Math.random() * 30) + 12,
       badge: idx % 2 === 0 ? '🔥 Hot Drop' : '★ New Arrival',
@@ -363,6 +385,84 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <Plus className="w-4 h-4" />
               <span>Browse Local Files</span>
             </div>
+          </div>
+
+          {/* Custom Base Mockup Photo Template Uploader */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <h3 className="text-sm font-bold text-slate-900">
+                  T-Shirt Base Mockup Template
+                </h3>
+              </div>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                customMockupBase ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'
+              }`}>
+                {customMockupBase ? 'Custom Photo Active' : '3D Realistic Studio Mode'}
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-500 leading-relaxed">
+              Upload your own real photoshoot or custom T-shirt photo (PNG/JPG) to use as the base mockup for all designs.
+            </p>
+
+            <input
+              ref={mockupBaseInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              onChange={handleBaseMockupUpload}
+              className="hidden"
+            />
+
+            {customMockupBase ? (
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={customMockupBase}
+                    alt="Active Custom Base Mockup"
+                    className="w-14 h-14 object-contain rounded-lg bg-white border border-slate-200"
+                  />
+                  <div className="flex-1 min-w-0 space-y-0.5">
+                    <span className="text-xs font-bold text-slate-800 block truncate">
+                      Custom T-Shirt Photo Template
+                    </span>
+                    <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Applied to all designs
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => mockupBaseInputRef.current?.click()}
+                    className="flex-1 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Change Photo
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCustomMockupBase(null);
+                      setDrafts((prev) => prev.map((d) => ({ ...d, customMockupImage: undefined })));
+                    }}
+                    className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => mockupBaseInputRef.current?.click()}
+                className="w-full py-2.5 px-4 bg-slate-50 hover:bg-indigo-50 border-2 border-dashed border-slate-300 hover:border-indigo-400 text-slate-700 hover:text-indigo-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Upload Custom T-Shirt Photo Template</span>
+              </button>
+            )}
           </div>
 
           {/* Global Default Presets Card */}
@@ -621,6 +721,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                       id={`draft-mockup-${draft.id}`}
                       color={draft.color}
                       designImage={draft.designDataUrl}
+                      customMockupImage={draft.customMockupImage || customMockupBase || undefined}
                       designScale={draft.designScale}
                       designPositionX={draft.designPositionX}
                       designPositionY={draft.designPositionY}
@@ -726,6 +827,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 <TShirtMockupView
                   color={activeEditingDraft.color}
                   designImage={activeEditingDraft.designDataUrl}
+                  customMockupImage={activeEditingDraft.customMockupImage || customMockupBase || undefined}
                   designScale={activeEditingDraft.designScale}
                   designPositionX={activeEditingDraft.designPositionX}
                   designPositionY={activeEditingDraft.designPositionY}

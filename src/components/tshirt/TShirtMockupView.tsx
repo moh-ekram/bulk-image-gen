@@ -5,6 +5,7 @@ export type TShirtViewMode = 'front' | 'back';
 interface TShirtMockupViewProps {
   color?: string; // Hex color code (default #18181b jet black)
   designImage?: string; // PNG base64 or URL
+  customMockupImage?: string; // Custom uploaded mockup photo/image base
   designScale?: number; // 20 - 100%
   designPositionX?: number; // -50 to 50
   designPositionY?: number; // -50 to 50
@@ -21,6 +22,7 @@ interface TShirtMockupViewProps {
 export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
   color = '#18181b', // Default Jet Black as in reference images
   designImage,
+  customMockupImage,
   designScale = 52,
   designPositionX = 0,
   designPositionY = -4,
@@ -32,7 +34,7 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
   className = '',
   id,
 }) => {
-  const [internalViewMode, setInternalViewMode] = useState<TShirtViewMode>('front');
+  const [internalViewMode, setInternalViewMode] = useState<TShirtViewMode>('back');
   const currentView = controlledViewMode || internalViewMode;
 
   const handleToggle = (mode: TShirtViewMode) => {
@@ -88,12 +90,22 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
         </div>
       )}
 
-      {/* Main Oversized Boxy Streetwear T-Shirt SVG Canvas */}
-      <svg
-        viewBox="0 0 640 640"
-        className="w-full h-full drop-shadow-sm"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      {/* Main Oversized Boxy Streetwear Mockup Base (Photo Mode or Vector SVG) */}
+      {customMockupImage ? (
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+          <img
+            src={customMockupImage}
+            alt="Custom T-Shirt Mockup Template"
+            crossOrigin="anonymous"
+            className="w-full h-full object-contain pointer-events-none"
+          />
+        </div>
+      ) : (
+        <svg
+          viewBox="0 0 640 640"
+          className="w-full h-full drop-shadow-sm"
+          xmlns="http://www.w3.org/2000/svg"
+        >
         <defs>
           {/* Realistic Floor Shadow Filter */}
           <filter id={`floor-blur-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
@@ -436,6 +448,7 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
           )}
         </g>
       </svg>
+      )}
 
       {/* Graphic Artwork Placement & Printable Bounds Overlay */}
       <div
