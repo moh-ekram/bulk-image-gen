@@ -87,3 +87,80 @@ export interface FacebookPublishOptions {
   delaySeconds?: number;
 }
 
+export type TShirtSize = 'S' | 'M' | 'L' | 'XL' | 'XXL';
+
+export interface TShirtColorOption {
+  name: string;
+  hex: string;
+  textColor: 'light' | 'dark';
+}
+
+export interface TShirtProduct {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  originalPrice: number;
+  stock: number;
+  category: string;
+  tags?: string[];
+  designImage: string; // PNG base64 or URL
+  designScale: number; // 20 to 100%
+  designPositionY: number; // -50 to 50
+  designPositionX: number; // -50 to 50
+  designBlendMode?: 'normal' | 'multiply';
+  defaultColor: string; // Hex e.g. "#18181b"
+  availableColors: string[]; // Hex list
+  availableSizes: TShirtSize[];
+  mockupStyle?: 'crewneck' | 'oversized' | 'hoodie';
+  rating: number;
+  reviewsCount: number;
+  badge?: string;
+  createdAt: number;
+  isPublished: boolean;
+}
+
+export interface CartItem {
+  id: string; // Unique cart item ID (product.id + size + color)
+  product: TShirtProduct;
+  selectedSize: TShirtSize;
+  selectedColor: string;
+  quantity: number;
+}
+
+export interface CustomerOrder {
+  id: string;
+  customerName: string;
+  phone: string;
+  address: string;
+  district: string;
+  deliveryFee: number;
+  paymentMethod: 'cod' | 'bkash' | 'nagad';
+  specialNotes?: string;
+  items: CartItem[];
+  subtotal: number;
+  total: number;
+  status: 'Pending' | 'Confirmed' | 'Shipped' | 'Delivered' | 'Cancelled';
+  createdAt: number;
+}
+
+export interface BulkDesignDraft {
+  id: string;
+  fileName: string;
+  designDataUrl: string;
+  title: string;
+  description: string;
+  price: number;
+  originalPrice: number;
+  stock: number;
+  category: string;
+  color: string;
+  availableSizes: TShirtSize[];
+  designScale: number;
+  designPositionY: number;
+  designPositionX: number;
+  mockupStyle?: 'crewneck' | 'oversized' | 'hoodie';
+  isSelected: boolean;
+}
+
+

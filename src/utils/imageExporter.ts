@@ -66,11 +66,20 @@ export async function nodeToBlob(
 /**
  * Triggers browser download of a data URL or Blob
  */
-export function triggerDownload(dataUrl: string, filename: string) {
+export function triggerDownload(dataUrlOrBlob: string | Blob, filename: string) {
   const link = document.createElement('a');
   link.download = filename;
-  link.href = dataUrl;
+  let objectUrl: string | null = null;
+  if (typeof dataUrlOrBlob === 'string') {
+    link.href = dataUrlOrBlob;
+  } else {
+    objectUrl = URL.createObjectURL(dataUrlOrBlob);
+    link.href = objectUrl;
+  }
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  if (objectUrl) {
+    URL.revokeObjectURL(objectUrl);
+  }
 }

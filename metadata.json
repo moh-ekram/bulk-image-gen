@@ -1,6 +1,6 @@
 {
-  "name": "MCQ Image Generator",
-  "description": "Bulk generate styled MCQ quiz images from Excel files with custom templates and JPG auto-download.",
+  "name": "MCQ & T-Shirt E-Commerce Studio",
+  "description": "Bulk MCQ Quiz Image Generator with Facebook Publishing & T-Shirt E-Commerce Store with Bulk PNG Mockup Generator.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
