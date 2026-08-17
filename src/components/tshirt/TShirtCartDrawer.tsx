@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, ShieldCheck, Truck } from 'lucide-react';
+import { ShoppingBag, X, Plus, Minus, Trash2, ArrowRight, Truck } from 'lucide-react';
 import { CartItem } from '../../types';
 import { TShirtMockupView } from './TShirtMockupView';
 
@@ -32,9 +32,9 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
           <div className="p-5 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ShoppingBag className="w-5 h-5 text-indigo-600" />
-              <h2 className="font-bold text-slate-900 text-base">আপনার শপিং কার্ট</h2>
+              <h2 className="font-bold text-slate-900 text-base">Shopping Cart</h2>
               <span className="text-xs bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full">
-                {items.length} আইটেম
+                {items.length} {items.length === 1 ? 'item' : 'items'}
               </span>
             </div>
             <button
@@ -52,15 +52,15 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
                 <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
                   <ShoppingBag className="w-8 h-8" />
                 </div>
-                <h3 className="font-bold text-slate-800 text-sm">আপনার কার্ট খালি</h3>
+                <h3 className="font-bold text-slate-800 text-sm">Your Cart is Empty</h3>
                 <p className="text-xs text-slate-500">
-                  আপনার পছন্দের কোনো টিশার্ট কার্টে যুক্ত করুন।
+                  Explore our streetwear collection and add your favorite tees!
                 </p>
                 <button
                   onClick={onClose}
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs cursor-pointer"
                 >
-                  টিশার্ট দেখতে যান
+                  Browse T-Shirts
                 </button>
               </div>
             ) : (
@@ -128,7 +128,7 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
                   <button
                     onClick={() => onRemoveItem(item.id)}
                     className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg cursor-pointer transition-colors"
-                    title="রিমুভ করুন"
+                    title="Remove item"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -141,13 +141,13 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
           {items.length > 0 && (
             <div className="p-5 border-t border-slate-100 bg-slate-50 space-y-3">
               <div className="flex items-center justify-between text-xs text-slate-600">
-                <span>সাবটোটাল:</span>
+                <span>Subtotal:</span>
                 <span className="text-sm font-extrabold text-slate-900">৳{subtotal}</span>
               </div>
 
               <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
                 <Truck className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                <span>ডেলিভারি চার্জ চেকআউটের সময় যুক্ত হবে</span>
+                <span>Delivery fees calculated at checkout</span>
               </div>
 
               <button
@@ -157,7 +157,7 @@ export const TShirtCartDrawer: React.FC<TShirtCartDrawerProps> = ({
                 }}
                 className="w-full py-3.5 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-all"
               >
-                <span>অর্ডার করতে এগিয়ে যান</span>
+                <span>Proceed to Checkout</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

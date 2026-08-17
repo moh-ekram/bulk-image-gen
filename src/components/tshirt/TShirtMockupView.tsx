@@ -1,275 +1,463 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+export type TShirtViewMode = 'front' | 'back';
 
 interface TShirtMockupViewProps {
-  color?: string; // Hex color code
+  color?: string; // Hex color code (default #18181b jet black)
   designImage?: string; // PNG base64 or URL
   designScale?: number; // 20 - 100%
   designPositionX?: number; // -50 to 50
   designPositionY?: number; // -50 to 50
   designBlendMode?: 'normal' | 'multiply';
   mockupStyle?: 'crewneck' | 'oversized' | 'hoodie';
+  viewMode?: TShirtViewMode;
+  onToggleViewMode?: (mode: TShirtViewMode) => void;
+  showViewToggle?: boolean;
   showPrintAreaGuide?: boolean;
   className?: string;
   id?: string;
 }
 
 export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
-  color = '#18181b', // Default Black as requested
+  color = '#18181b', // Default Jet Black as in reference images
   designImage,
   designScale = 52,
   designPositionX = 0,
-  designPositionY = -6,
+  designPositionY = -4,
   designBlendMode = 'normal',
-  mockupStyle = 'crewneck',
+  viewMode: controlledViewMode,
+  onToggleViewMode,
+  showViewToggle = false,
   showPrintAreaGuide = false,
   className = '',
   id,
 }) => {
-  // Determine if color is very light (to adjust seams/lighting)
-  const isLightColor = ['#ffffff', '#f8fafc', '#f1f5f9', '#e2e8f0', '#94a3b8', '#d6c7b2'].includes(color.toLowerCase());
+  const [internalViewMode, setInternalViewMode] = useState<TShirtViewMode>('front');
+  const currentView = controlledViewMode || internalViewMode;
+
+  const handleToggle = (mode: TShirtViewMode) => {
+    if (onToggleViewMode) {
+      onToggleViewMode(mode);
+    } else {
+      setInternalViewMode(mode);
+    }
+  };
+
+  // Determine if color is very light (to adjust seam stitches, shadows, and contrast)
+  const isLightColor = ['#ffffff', '#f8fafc', '#f1f5f9', '#e2e8f0', '#94a3b8', '#d6c7b2'].includes(
+    color.toLowerCase()
+  );
+
+  const uid = id || 'mockup_uid';
 
   return (
     <div
       id={id}
-      className={`relative w-full aspect-square flex items-center justify-center select-none overflow-hidden rounded-xl ${className}`}
+      className={`relative w-full aspect-square flex items-center justify-center select-none overflow-hidden rounded-2xl ${className}`}
       style={{
-        background: 'radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%)',
+        background: 'radial-gradient(circle at 50% 40%, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%)',
       }}
     >
-      {/* Dynamic T-Shirt Realistic SVG Canvas */}
+      {/* View Toggle Badge (Front / Back) */}
+      {showViewToggle && (
+        <div className="absolute top-3 right-3 z-20 flex items-center bg-slate-900/80 backdrop-blur-md p-0.5 rounded-lg border border-slate-700/50 shadow-md text-[10px] font-bold">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggle('front');
+            }}
+            className={`px-2 py-1 rounded-md transition-all cursor-pointer ${
+              currentView === 'front' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            Front
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggle('back');
+            }}
+            className={`px-2 py-1 rounded-md transition-all cursor-pointer ${
+              currentView === 'back' ? 'bg-indigo-600 text-white shadow-xs' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            Back
+          </button>
+        </div>
+      )}
+
+      {/* Main Oversized Boxy Streetwear T-Shirt SVG Canvas */}
       <svg
-        viewBox="0 0 600 600"
-        className="w-full h-full drop-shadow-xl"
+        viewBox="0 0 640 640"
+        className="w-full h-full drop-shadow-sm"
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          {/* Subtle 3D Fabric Lighting Gradients */}
-          <linearGradient id={`fabric-lighting-${id || 'base'}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity={isLightColor ? 0.25 : 0.15} />
-            <stop offset="35%" stopColor="#ffffff" stopOpacity={isLightColor ? 0.1 : 0.05} />
-            <stop offset="70%" stopColor="#000000" stopOpacity={0.12} />
-            <stop offset="100%" stopColor="#000000" stopOpacity={0.25} />
+          {/* Realistic Floor Shadow Filter */}
+          <filter id={`floor-blur-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="14" />
+          </filter>
+
+          {/* 3D Directional Fabric Studio Lighting */}
+          <linearGradient id={`streetwear-lighting-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity={isLightColor ? 0.35 : 0.16} />
+            <stop offset="30%" stopColor="#ffffff" stopOpacity={isLightColor ? 0.15 : 0.06} />
+            <stop offset="65%" stopColor="#000000" stopOpacity={0.08} />
+            <stop offset="100%" stopColor="#000000" stopOpacity={0.28} />
           </linearGradient>
 
-          {/* Chest & Shoulder Wrinkle Shadow */}
-          <radialGradient id={`chest-shadow-${id || 'base'}`} cx="50%" cy="40%" r="55%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.08" />
-            <stop offset="60%" stopColor="#000000" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+          {/* Torso & Drop-Shoulder Ambient Occlusion */}
+          <radialGradient id={`streetwear-depth-${uid}`} cx="50%" cy="45%" r="60%">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity={0.08} />
+            <stop offset="60%" stopColor="#000000" stopOpacity={0.05} />
+            <stop offset="100%" stopColor="#000000" stopOpacity={0.35} />
           </radialGradient>
 
-          {/* Realistic Crewneck Collar Ribbing Pattern */}
-          <linearGradient id={`collar-rib-${id || 'base'}`} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#000000" stopOpacity="0.35" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.12" />
-            <stop offset="100%" stopColor="#000000" stopOpacity="0.4" />
+          {/* Ribbed Crewneck Collar Gradient */}
+          <linearGradient id={`collar-gradient-${uid}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#000000" stopOpacity={0.4} />
+            <stop offset="45%" stopColor="#ffffff" stopOpacity={0.15} />
+            <stop offset="100%" stopColor="#000000" stopOpacity={0.45} />
           </linearGradient>
 
-          {/* Inner Neck Shadow */}
-          <linearGradient id={`inner-neck-${id || 'base'}`} x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#0a0a0a" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#202020" stopOpacity="0.6" />
+          {/* Inner Collar Back Cavity */}
+          <linearGradient id={`inner-cavity-${uid}`} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#09090b" stopOpacity={0.95} />
+            <stop offset="100%" stopColor="#18181b" stopOpacity={0.7} />
           </linearGradient>
 
-          {/* Drop shadow filter for realism */}
-          <filter id={`tshirt-shadow-${id || 'base'}`} x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="16" stdDeviation="18" floodColor="#0f172a" floodOpacity="0.18" />
+          {/* Drop-Shadow Filter for Realistic T-Shirt Edge */}
+          <filter id={`shirt-edge-shadow-${uid}`} x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" floodColor="#0f172a" floodOpacity="0.22" />
           </filter>
         </defs>
 
-        {/* Outer Group with Shadow */}
-        <g filter={`url(#tshirt-shadow-${id || 'base'})`}>
-          {/* Inner Collar Back Fabric */}
-          <path
-            d="M235,115 C260,135 340,135 365,115 C355,100 245,100 235,115 Z"
-            fill={`url(#inner-neck-${id || 'base'})`}
-          />
+        {/* 1. Realistic Floating Studio Floor Drop Shadow (Matching user reference) */}
+        <g opacity="0.45">
+          <ellipse cx="320" cy="558" rx="200" ry="22" fill="#09090b" filter={`url(#floor-blur-${uid})`} />
+          <ellipse cx="320" cy="554" rx="140" ry="12" fill="#000000" filter={`url(#floor-blur-${uid})`} opacity="0.6" />
+        </g>
 
-          {/* Woven Size / Brand Neck Label Tag */}
-          <rect x="286" y="112" width="28" height="18" rx="2" fill="#e2e8f0" opacity="0.9" />
-          <line x1="290" y1="120" x2="310" y2="120" stroke="#0284c7" strokeWidth="2" strokeLinecap="round" />
-          <text x="300" y="127" fontSize="5" fontWeight="bold" fill="#334155" textAnchor="middle">M • 100% COTTON</text>
+        {/* 2. Main Oversized Streetwear T-Shirt Body Group */}
+        <g filter={`url(#shirt-edge-shadow-${uid})`}>
+          {currentView === 'front' ? (
+            /* ================= FRONT VIEW ================= */
+            <>
+              {/* Inner Collar Cavity (Back fabric inside neck) */}
+              <path
+                d="M245,108 C275,130 365,130 395,108 C382,90 258,90 245,108 Z"
+                fill={`url(#inner-cavity-${uid})`}
+              />
 
-          {/* Main T-Shirt Body & Sleeves Base Silhouettes */}
-          {mockupStyle === 'oversized' ? (
-            /* Drop Shoulder Oversized Tee Silhouette */
-            <path
-              d="M235,115 C265,140 335,140 365,115 
-                 L480,165 C485,168 495,185 488,275 C485,285 465,290 435,280 
-                 L410,230 L430,490 C430,505 420,510 400,510 
-                 L200,510 C180,510 170,505 170,490 
-                 L190,230 L165,280 C135,290 115,285 112,275 C105,185 115,168 120,165 Z"
-              fill={color}
-            />
+              {/* Woven Neck Label Tag */}
+              <rect x="306" y="102" width="28" height="18" rx="2" fill="#f1f5f9" opacity="0.95" />
+              <line x1="310" y1="110" x2="330" y2="110" stroke="#4f46e5" strokeWidth="2" strokeLinecap="round" />
+              <text x="320" y="117" fontSize="5.5" fontWeight="bold" fill="#0f172a" textAnchor="middle">
+                XL • 240 GSM
+              </text>
+
+              {/* Front Oversized Streetwear Silhouette (Boxy, Drop-Shoulder, Wide Elbow-Length Sleeves) */}
+              <path
+                d="M246,108 C278,142 362,142 394,108 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={color}
+              />
+
+              {/* Lighting & Volume Depth Layers */}
+              <path
+                d="M246,108 C278,142 362,142 394,108 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={`url(#streetwear-lighting-${uid})`}
+              />
+
+              <path
+                d="M246,108 C278,142 362,142 394,108 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={`url(#streetwear-depth-${uid})`}
+              />
+
+              {/* Drop Shoulder Seams (Sloping outwards) */}
+              <path
+                d="M246,108 L142,150"
+                stroke={isLightColor ? '#475569' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.35 : 0.22}
+                fill="none"
+              />
+              <path
+                d="M394,108 L498,150"
+                stroke={isLightColor ? '#475569' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.35 : 0.22}
+                fill="none"
+              />
+
+              {/* Armpit Shadow Creases */}
+              <path
+                d="M198,218 Q216,232 208,270"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.35 : 0.6}
+                fill="none"
+              />
+              <path
+                d="M442,218 Q424,232 432,270"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.35 : 0.6}
+                fill="none"
+              />
+
+              {/* Wide Sleeve Hem Stitches */}
+              <path
+                d="M122,268 C138,278 156,282 172,274"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+              <path
+                d="M518,268 C502,278 484,282 468,274"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+
+              {/* Bottom Boxy Hem Stitches */}
+              <path
+                d="M184,522 C240,526 400,526 456,522"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+
+              {/* Front Crewneck Ribbing Collar Rim */}
+              <path
+                d="M246,108 C278,142 362,142 394,108 C388,122 355,152 320,152 C285,152 252,122 246,108 Z"
+                fill={color}
+              />
+              <path
+                d="M246,108 C278,142 362,142 394,108 C388,122 355,152 320,152 C285,152 252,122 246,108 Z"
+                fill={`url(#collar-gradient-${uid})`}
+              />
+              <path
+                d="M246,108 C278,142 362,142 394,108"
+                stroke={isLightColor ? '#334155' : '#000000'}
+                strokeWidth="2.8"
+                opacity="0.65"
+                fill="none"
+              />
+              <path
+                d="M252,122 C280,152 360,152 388,122"
+                stroke={isLightColor ? '#64748b' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="2,2"
+                opacity={isLightColor ? 0.45 : 0.22}
+                fill="none"
+              />
+
+              {/* Natural Streetwear Heavy Fabric Wrinkle Accents */}
+              <path
+                d="M215,330 Q250,344 285,334 Q320,324 355,336"
+                stroke="#000000"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.12 : 0.24}
+                fill="none"
+              />
+              <path
+                d="M285,420 Q325,432 365,424 Q405,415 425,430"
+                stroke="#000000"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.1 : 0.2}
+                fill="none"
+              />
+            </>
           ) : (
-            /* Classic Crewneck Fitted Tee Silhouette */
-            <path
-              d="M238,114 C268,142 332,142 362,114 
-                 L465,152 C472,156 480,172 472,250 C468,260 450,265 425,255 
-                 L398,212 L412,492 C412,504 402,510 385,510 
-                 L215,510 C198,510 188,504 188,492 
-                 L202,212 L175,255 C150,265 132,260 128,250 C120,172 128,156 135,152 Z"
-              fill={color}
-            />
+            /* ================= BACK VIEW ================= */
+            <>
+              {/* Back Oversized Streetwear Silhouette (Matching Reference Image 1) */}
+              <path
+                d="M250,96 C280,106 360,106 390,96 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={color}
+              />
+
+              {/* Back Lighting & Volume Depth Layers */}
+              <path
+                d="M250,96 C280,106 360,106 390,96 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={`url(#streetwear-lighting-${uid})`}
+              />
+
+              <path
+                d="M250,96 C280,106 360,106 390,96 
+                   L505,148 C515,152 528,168 522,272 C518,284 496,290 464,280 
+                   L442,218 L460,518 C460,530 450,536 430,536 
+                   L210,536 C190,536 180,530 180,518 
+                   L198,218 L176,280 C144,290 122,284 118,272 C112,168 125,152 135,148 Z"
+                fill={`url(#streetwear-depth-${uid})`}
+              />
+
+              {/* Back Drop Shoulder Seams */}
+              <path
+                d="M250,96 L142,150"
+                stroke={isLightColor ? '#475569' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.35 : 0.22}
+                fill="none"
+              />
+              <path
+                d="M390,96 L498,150"
+                stroke={isLightColor ? '#475569' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.35 : 0.22}
+                fill="none"
+              />
+
+              {/* Back Armpit Crease Shadows */}
+              <path
+                d="M198,218 Q216,232 208,270"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.35 : 0.6}
+                fill="none"
+              />
+              <path
+                d="M442,218 Q424,232 432,270"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.35 : 0.6}
+                fill="none"
+              />
+
+              {/* Back Wide Sleeve Hem Stitches */}
+              <path
+                d="M122,268 C138,278 156,282 172,274"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+              <path
+                d="M518,268 C502,278 484,282 468,274"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+
+              {/* Back Bottom Boxy Hem Stitches */}
+              <path
+                d="M184,522 C240,526 400,526 456,522"
+                stroke={isLightColor ? '#334155' : '#ffffff'}
+                strokeWidth="1.4"
+                strokeDasharray="3,2"
+                opacity={isLightColor ? 0.45 : 0.25}
+                fill="none"
+              />
+
+              {/* Back High Crew Neck Collar Ribbing */}
+              <path
+                d="M250,96 C280,106 360,106 390,96 C385,112 355,124 320,124 C285,124 255,112 250,96 Z"
+                fill={color}
+              />
+              <path
+                d="M250,96 C280,106 360,106 390,96 C385,112 355,124 320,124 C285,124 255,112 250,96 Z"
+                fill={`url(#collar-gradient-${uid})`}
+              />
+              <path
+                d="M250,96 C280,106 360,106 390,96"
+                stroke={isLightColor ? '#334155' : '#000000'}
+                strokeWidth="2.5"
+                opacity="0.6"
+                fill="none"
+              />
+              <path
+                d="M254,110 C280,122 360,122 386,110"
+                stroke={isLightColor ? '#64748b' : '#ffffff'}
+                strokeWidth="1.2"
+                strokeDasharray="2,2"
+                opacity={isLightColor ? 0.4 : 0.2}
+                fill="none"
+              />
+
+              {/* Upper Back Yoke / Spine Shading */}
+              <path
+                d="M240,160 Q320,175 400,160"
+                stroke="#000000"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.1 : 0.2}
+                fill="none"
+              />
+              <path
+                d="M230,340 Q320,355 410,340"
+                stroke="#000000"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                opacity={isLightColor ? 0.1 : 0.2}
+                fill="none"
+              />
+            </>
           )}
-
-          {/* Lighting & Depth Gradients Layer */}
-          <path
-            d="M238,114 C268,142 332,142 362,114 
-               L465,152 C472,156 480,172 472,250 C468,260 450,265 425,255 
-               L398,212 L412,492 C412,504 402,510 385,510 
-               L215,510 C198,510 188,504 188,492 
-               L202,212 L175,255 C150,265 132,260 128,250 C120,172 128,156 135,152 Z"
-            fill={`url(#fabric-lighting-${id || 'base'})`}
-          />
-
-          <path
-            d="M238,114 C268,142 332,142 362,114 
-               L465,152 C472,156 480,172 472,250 C468,260 450,265 425,255 
-               L398,212 L412,492 C412,504 402,510 385,510 
-               L215,510 C198,510 188,504 188,492 
-               L202,212 L175,255 C150,265 132,260 128,250 C120,172 128,156 135,152 Z"
-            fill={`url(#chest-shadow-${id || 'base'})`}
-          />
-
-          {/* Sleeve Underarm Creases & Shadows */}
-          <path
-            d="M202,212 Q215,225 210,255"
-            stroke="#000000"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            opacity={isLightColor ? 0.35 : 0.55}
-            fill="none"
-          />
-          <path
-            d="M398,212 Q385,225 390,255"
-            stroke="#000000"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            opacity={isLightColor ? 0.35 : 0.55}
-            fill="none"
-          />
-
-          {/* Shoulder Seam Stitching */}
-          <path
-            d="M238,114 L142,154"
-            stroke={isLightColor ? '#475569' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="2,2"
-            opacity={isLightColor ? 0.4 : 0.25}
-            fill="none"
-          />
-          <path
-            d="M362,114 L458,154"
-            stroke={isLightColor ? '#475569' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="2,2"
-            opacity={isLightColor ? 0.4 : 0.25}
-            fill="none"
-          />
-
-          {/* Sleeve Hem Double Stitches */}
-          <path
-            d="M132,246 C145,256 160,259 173,251"
-            stroke={isLightColor ? '#334155' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="3,2"
-            opacity={isLightColor ? 0.4 : 0.25}
-            fill="none"
-          />
-          <path
-            d="M468,246 C455,256 440,259 427,251"
-            stroke={isLightColor ? '#334155' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="3,2"
-            opacity={isLightColor ? 0.4 : 0.25}
-            fill="none"
-          />
-
-          {/* Bottom Hem Seam Line */}
-          <path
-            d="M192,492 C245,498 355,498 408,492"
-            stroke={isLightColor ? '#334155' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="3,2"
-            opacity={isLightColor ? 0.4 : 0.25}
-            fill="none"
-          />
-
-          {/* Front Crewneck Collar Ribbing Ring */}
-          <path
-            d="M238,114 C268,142 332,142 362,114 C358,124 330,154 300,154 C270,154 242,124 238,114 Z"
-            fill={color}
-          />
-          <path
-            d="M238,114 C268,142 332,142 362,114 C358,124 330,154 300,154 C270,154 242,124 238,114 Z"
-            fill={`url(#collar-rib-${id || 'base'})`}
-          />
-          <path
-            d="M238,114 C268,142 332,142 362,114"
-            stroke={isLightColor ? '#334155' : '#000000'}
-            strokeWidth="2.5"
-            opacity="0.6"
-            fill="none"
-          />
-          <path
-            d="M242,124 C270,154 330,154 358,124"
-            stroke={isLightColor ? '#64748b' : '#ffffff'}
-            strokeWidth="1.2"
-            strokeDasharray="2,2"
-            opacity={isLightColor ? 0.4 : 0.2}
-            fill="none"
-          />
-
-          {/* Natural Fabric Subtle Wrinkles Across Torso */}
-          <path
-            d="M210,320 Q240,335 270,325 Q300,315 330,328"
-            stroke="#000000"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity={isLightColor ? 0.12 : 0.2}
-            fill="none"
-          />
-          <path
-            d="M270,410 Q305,422 340,414 Q375,405 395,420"
-            stroke="#000000"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity={isLightColor ? 0.1 : 0.18}
-            fill="none"
-          />
-          <path
-            d="M220,440 Q250,450 280,444"
-            stroke="#000000"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            opacity={isLightColor ? 0.1 : 0.18}
-            fill="none"
-          />
         </g>
       </svg>
 
-      {/* Chest Printable Area & Graphic Placement Overlay */}
+      {/* Graphic Artwork Placement & Printable Bounds Overlay */}
       <div
         className="absolute"
         style={{
-          width: '42%',
-          height: '48%',
-          top: '28%',
-          left: '29%',
+          width: currentView === 'back' ? '50%' : '44%',
+          height: currentView === 'back' ? '54%' : '48%',
+          top: currentView === 'back' ? '22%' : '26%',
+          left: currentView === 'back' ? '25%' : '28%',
           pointerEvents: 'none',
         }}
       >
-        {/* Admin Print Area Bounding Box Guide */}
+        {/* Printable Area Visual Guide */}
         {showPrintAreaGuide && (
-          <div className="absolute inset-0 border-2 border-dashed border-sky-400/70 rounded-lg flex items-start justify-center p-1 pointer-events-none">
-            <span className="bg-sky-500/80 text-white font-mono text-[9px] px-1.5 py-0.5 rounded shadow-xs">
-              Chest Print Area
+          <div className="absolute inset-0 border-2 border-dashed border-indigo-400/80 rounded-xl flex items-start justify-center p-1 pointer-events-none">
+            <span className="bg-indigo-600 text-white font-mono text-[9px] px-2 py-0.5 rounded shadow-sm">
+              {currentView === 'front' ? 'Chest Print Area' : 'Oversized Back Print Area'}
             </span>
           </div>
         )}
 
-        {/* Graphic Design Art Container */}
+        {/* Scaled & Offset Design Art Image */}
         {designImage ? (
           <div
             className="w-full h-full flex items-center justify-center transition-all duration-150"
@@ -279,35 +467,36 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
           >
             <img
               src={designImage}
-              alt="T-Shirt Graphic Design"
+              alt="T-Shirt Graphic Artwork"
               crossOrigin="anonymous"
               className="max-h-full object-contain pointer-events-none transition-transform duration-100"
               style={{
                 width: `${designScale}%`,
                 mixBlendMode: designBlendMode === 'multiply' ? 'multiply' : 'normal',
                 filter: isLightColor
-                  ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.12))'
-                  : 'drop-shadow(0 2px 5px rgba(0,0,0,0.35))',
+                  ? 'drop-shadow(0 3px 6px rgba(0,0,0,0.14))'
+                  : 'drop-shadow(0 3px 8px rgba(0,0,0,0.45))',
               }}
             />
           </div>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">
-            <div className="w-12 h-12 rounded-full border border-dashed border-slate-400 flex items-center justify-center text-slate-400 mb-1">
+            <div className="w-12 h-12 rounded-full border border-dashed border-slate-400/60 flex items-center justify-center text-slate-400 mb-1">
               +
             </div>
-            <span className="text-[10px] font-bold text-slate-400">
-              No Design Placed
+            <span className="text-[10px] font-semibold text-slate-400">
+              No Graphic Placed
             </span>
           </div>
         )}
       </div>
 
-      {/* Realistic Fabric Lighting Gloss Highlight Overlay */}
+      {/* Subtle Studio Fabric Gloss Specular */}
       <div
-        className="absolute inset-0 pointer-events-none rounded-xl"
+        className="absolute inset-0 pointer-events-none rounded-2xl"
         style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 45%, rgba(0,0,0,0.05) 100%)',
+          background:
+            'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.06) 100%)',
         }}
       />
     </div>

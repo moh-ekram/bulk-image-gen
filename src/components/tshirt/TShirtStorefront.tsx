@@ -4,24 +4,19 @@ import {
   Heart,
   Star,
   Search,
-  Filter,
-  SlidersHorizontal,
   Truck,
   ShieldCheck,
   RotateCcw,
-  Sparkles,
   CheckCircle2,
   Plus,
   Minus,
-  Eye,
-  ArrowRight,
-  Flame,
   Zap,
   Info,
+  Sparkles,
 } from 'lucide-react';
 import { TShirtProduct, TShirtSize } from '../../types';
-import { TSHIRT_COLORS, TSHIRT_CATEGORIES, TSHIRT_SIZES, SIZE_CHART } from '../../data/tshirtPresets';
-import { TShirtMockupView } from './TShirtMockupView';
+import { TSHIRT_COLORS, TSHIRT_CATEGORIES, SIZE_CHART } from '../../data/tshirtPresets';
+import { TShirtMockupView, TShirtViewMode } from './TShirtMockupView';
 
 interface TShirtStorefrontProps {
   products: TShirtProduct[];
@@ -43,6 +38,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
   const [modalColor, setModalColor] = useState<string>('#18181b');
   const [modalSize, setModalSize] = useState<TShirtSize>('L');
   const [modalQty, setModalQty] = useState<number>(1);
+  const [modalViewMode, setModalViewMode] = useState<TShirtViewMode>('front');
   const [showSizeGuide, setShowSizeGuide] = useState<boolean>(false);
   const [activeCardColors, setActiveCardColors] = useState<Record<string, string>>({});
   const [toastMsg, setToastMsg] = useState<string | null>(null);
@@ -72,11 +68,12 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
     setModalColor(activeCardColors[product.id] || product.defaultColor || '#18181b');
     setModalSize(product.availableSizes[0] || 'L');
     setModalQty(1);
+    setModalViewMode('front');
   };
 
   const handleAddToCartWithToast = (product: TShirtProduct, size: TShirtSize, color: string, qty: number) => {
     onAddToCart(product, size, color, qty);
-    setToastMsg(`"${product.title.slice(0, 24)}..." কার্টে যুক্ত করা হয়েছে!`);
+    setToastMsg(`"${product.title.slice(0, 24)}..." added to cart!`);
     setTimeout(() => setToastMsg(null), 3000);
   };
 
@@ -94,31 +91,31 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
       <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10 lg:p-12 shadow-xl border border-slate-800">
         <div className="relative z-10 max-w-2xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-bold">
-            <Flame className="w-4 h-4 text-amber-400" />
-            <span>১০০% কম্বড কটন • ক্যাশ অন ডেলিভারি সারা বাংলাদেশ</span>
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>240+ GSM Heavyweight Combed Cotton • Streetwear Drop Shoulder Cut</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-            প্রিমিয়াম গ্রাফিক টিশার্ট কালেকশন
+            Premium Oversized Graphic Tee Collection
           </h1>
 
           <p className="text-xs sm:text-base text-slate-300 leading-relaxed font-normal">
-            ১৮০+ জিএসএম পিওর ব্রিদেবল কটন ও হাই-ডেফিনিশন ড্রপ শোল্ডার টিশার্ট। আপনার পছন্দের কালার ও সাইজ সিলেক্ট করে ঘরে বসেই অর্ডার করুন।
+            Ultra-soft, heavyweight combed cotton with high-density durable prints. Choose your custom shade, select your size, and enjoy fast doorstep delivery.
           </p>
 
-          {/* Quick Perks Pill */}
+          {/* Quick Perks */}
           <div className="flex flex-wrap items-center gap-4 pt-2 text-[11px] sm:text-xs text-slate-300 font-medium">
             <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
               <Truck className="w-3.5 h-3.5 text-indigo-400" />
-              <span>৪৮ ঘণ্টার মধ্যে ডেলিভারি</span>
+              <span>Fast Doorstep Delivery</span>
             </div>
             <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>১০০% কালার ও ফেব্রিক গ্যারান্টি</span>
+              <span>100% Cotton & Print Guarantee</span>
             </div>
             <div className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
               <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
-              <span>৭ দিনের সহজ রিটার্ন</span>
+              <span>7-Day Easy Exchange</span>
             </div>
           </div>
         </div>
@@ -162,7 +159,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="টিশার্ট বা ডিজাইন খুঁজুন..."
+                placeholder="Search t-shirts & designs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 shadow-2xs"
@@ -174,22 +171,22 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none shadow-2xs cursor-pointer"
             >
-              <option value="featured">ফিচার্ড (নতুন ড্রপ)</option>
-              <option value="price-low">দাম: কম থেকে বেশি</option>
-              <option value="price-high">দাম: বেশি থেকে কম</option>
-              <option value="rating">সর্বোচ্চ রেটিং</option>
+              <option value="featured">Featured Drops</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Top Customer Rating</option>
             </select>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
-          <span>মোট {filteredProducts.length}টি টিশার্ট ডিজাইন পাওয়া গেছে</span>
+          <span>Found {filteredProducts.length} premium design{filteredProducts.length !== 1 ? 's' : ''}</span>
           {products.length === 0 && (
             <button
               onClick={onOpenStudio}
               className="text-indigo-600 hover:underline font-bold"
             >
-              এডমিন স্টুডিও থেকে ডিজাইন আপলোড করুন
+              Upload PNG designs from Admin Studio
             </button>
           )}
         </div>
@@ -202,16 +199,16 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
             <ShoppingBag className="w-8 h-8" />
           </div>
           <div className="space-y-1 max-w-sm mx-auto">
-            <h3 className="text-base font-bold text-slate-900">কোনো টিশার্ট পাওয়া যায়নি</h3>
+            <h3 className="text-base font-bold text-slate-900">No Products Found</h3>
             <p className="text-xs text-slate-500">
-              সার্চ ফিল্টার রিসেট করুন অথবা এডমিন স্টুডিও থেকে বাল্ক PNG আপলোড করে নতুন টিশার্ট লিস্ট করুন।
+              Try resetting your search query or upload fresh PNG designs in the Bulk Mockup Studio.
             </p>
           </div>
           <button
             onClick={onOpenStudio}
             className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs cursor-pointer"
           >
-            বাল্ক মকআপ স্টুডিওতে যান
+            Go to Bulk Mockup Studio
           </button>
         </div>
       ) : (
@@ -233,7 +230,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     </span>
                   )}
 
-                  {/* Interactive 3D Mockup */}
+                  {/* Interactive 3D Oversized Mockup */}
                   <div
                     onClick={() => handleOpenDetailModal(product)}
                     className="cursor-pointer transition-transform duration-300 group-hover:scale-[1.02]"
@@ -245,6 +242,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       designPositionX={product.designPositionX}
                       designPositionY={product.designPositionY}
                       mockupStyle={product.mockupStyle}
+                      showViewToggle={true}
                     />
                   </div>
 
@@ -263,13 +261,13 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                             currentColor === hex ? 'border-indigo-600 scale-125 ring-1 ring-indigo-300' : 'border-slate-300 hover:scale-110'
                           }`}
                           style={{ backgroundColor: hex }}
-                          title={`রং পরিবর্তন করুন: ${hex}`}
+                          title={`Color: ${hex}`}
                         />
                       ))}
                     </div>
 
                     <span className="text-[10px] font-bold text-slate-500">
-                      {product.availableColors.length} Colors
+                      {product.availableColors.length} Shades
                     </span>
                   </div>
                 </div>
@@ -309,7 +307,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       </div>
 
                       <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                        স্টকে আছে ({product.stock} pcs)
+                        In Stock ({product.stock})
                       </span>
                     </div>
 
@@ -320,7 +318,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                         className="py-2 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                       >
                         <ShoppingBag className="w-3.5 h-3.5 text-indigo-600" />
-                        <span>কার্ট</span>
+                        <span>Add to Cart</span>
                       </button>
 
                       <button
@@ -329,7 +327,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                         className="py-2 px-2.5 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                       >
                         <Zap className="w-3.5 h-3.5 text-amber-400" />
-                        <span>অর্ডার করুন</span>
+                        <span>Buy Now</span>
                       </button>
                     </div>
                   </div>
@@ -352,7 +350,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
             </button>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              {/* Big Interactive Mockup View */}
+              {/* Big Interactive Mockup View with Front/Back Toggle */}
               <div className="bg-slate-50 rounded-2xl p-2 border border-slate-200 relative">
                 <TShirtMockupView
                   color={modalColor}
@@ -361,9 +359,12 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                   designPositionX={previewProduct.designPositionX}
                   designPositionY={previewProduct.designPositionY}
                   mockupStyle={previewProduct.mockupStyle}
+                  viewMode={modalViewMode}
+                  onToggleViewMode={setModalViewMode}
+                  showViewToggle={true}
                 />
                 <div className="text-center pt-2 pb-1 text-[11px] font-bold text-slate-500">
-                  ৩ডি টিশার্ট রিয়েল-টাইম ফ্যাব্রিক প্রিভিউ
+                  Streetwear 3D Boxy Cut • Click Front / Back to Preview
                 </div>
               </div>
 
@@ -382,9 +383,9 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       <span className="ml-1">{previewProduct.rating.toFixed(1)}</span>
                     </div>
                     <span>•</span>
-                    <span>{previewProduct.reviewsCount} কাস্টমার রিভিউ</span>
+                    <span>{previewProduct.reviewsCount} reviews</span>
                     <span>•</span>
-                    <span className="text-emerald-600 font-bold">ইন স্টক ({previewProduct.stock} pcs)</span>
+                    <span className="text-emerald-600 font-bold">In Stock ({previewProduct.stock} pcs)</span>
                   </div>
                 </div>
 
@@ -399,14 +400,14 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     </span>
                   )}
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded ml-auto">
-                    ক্যাশ অন ডেলিভারি
+                    Cash on Delivery
                   </span>
                 </div>
 
                 {/* Color Selection Palette */}
                 <div className="space-y-2">
                   <label className="block text-xs font-bold text-slate-800">
-                    পছন্দের কালার সিলেক্ট করুন:
+                    Select Fabric Color:
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {TSHIRT_COLORS.map((c) => (
@@ -429,14 +430,14 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 {/* Size Selection & Size Guide */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-800">সাইজ সিলেক্ট করুন:</label>
+                    <label className="text-xs font-bold text-slate-800">Select Size:</label>
                     <button
                       type="button"
                       onClick={() => setShowSizeGuide(!showSizeGuide)}
                       className="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Info className="w-3 h-3" />
-                      <span>সাইজ চার্ট গাইড</span>
+                      <span>Size Guide Chart</span>
                     </button>
                   </div>
 
@@ -460,7 +461,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                   {/* Size Guide Table Toggle */}
                   {showSizeGuide && (
                     <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] space-y-2 animate-in fade-in">
-                      <div className="font-bold text-slate-800">মেজারমেন্ট চার্ট (ইঞ্চি):</div>
+                      <div className="font-bold text-slate-800">Measurement Chart (Inches):</div>
                       <div className="grid grid-cols-4 gap-1 text-slate-600 font-mono text-center">
                         <div className="font-bold bg-slate-200 py-1 rounded">Size</div>
                         <div className="font-bold bg-slate-200 py-1 rounded">Chest</div>
@@ -481,7 +482,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
 
                 {/* Quantity */}
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-800">পরিমাণ:</span>
+                  <span className="text-xs font-bold text-slate-800">Quantity:</span>
                   <div className="flex items-center border border-slate-300 rounded-xl overflow-hidden bg-slate-50">
                     <button
                       type="button"
@@ -512,7 +513,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
                     <ShoppingBag className="w-4 h-4 text-indigo-600" />
-                    <span>কার্টে যোগ করুন</span>
+                    <span>Add to Cart</span>
                   </button>
 
                   <button
@@ -524,7 +525,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     className="py-3 px-4 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
                     <Zap className="w-4 h-4 text-amber-400" />
-                    <span>এখনই কিনুন</span>
+                    <span>Buy Now</span>
                   </button>
                 </div>
               </div>

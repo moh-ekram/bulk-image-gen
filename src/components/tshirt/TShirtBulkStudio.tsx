@@ -6,24 +6,16 @@ import {
   Sliders,
   CheckCircle2,
   Trash2,
-  Eye,
   FileArchive,
   ShoppingBag,
-  Palette,
-  RotateCcw,
   Plus,
-  Layers,
-  ChevronRight,
   Send,
-  HelpCircle,
-  Tag,
-  DollarSign,
   Package,
   Check,
 } from 'lucide-react';
-import { BulkDesignDraft, TShirtColorOption, TShirtProduct, TShirtSize } from '../../types';
-import { TSHIRT_COLORS, TSHIRT_CATEGORIES, TSHIRT_SIZES, SAMPLE_GRAPHIC_DESIGNS } from '../../data/tshirtPresets';
-import { TShirtMockupView } from './TShirtMockupView';
+import { BulkDesignDraft, TShirtProduct, TShirtSize } from '../../types';
+import { TSHIRT_COLORS, TSHIRT_CATEGORIES, SAMPLE_GRAPHIC_DESIGNS } from '../../data/tshirtPresets';
+import { TShirtMockupView, TShirtViewMode } from './TShirtMockupView';
 import { nodeToDataUrl, triggerDownload } from '../../utils/imageExporter';
 
 interface TShirtBulkStudioProps {
@@ -39,29 +31,28 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 }) => {
   // Global Default Config for all uploads
   const [globalDefaults, setGlobalDefaults] = useState({
-    titlePrefix: 'প্রিমিয়াম গ্রাফিক টিশার্ট: ',
-    description: '১৮০+ জিএসএম ১০০% পিওর কম্বড কটন ফেব্রিক। কালার ও প্রিন্ট ১০০% গ্যারান্টিযুক্ত। ক্যাজুয়াল আড্ডা ও প্রতিদিনের ব্যবহারে সর্বোচ্চ আরাম।',
+    titlePrefix: 'Oversized Streetwear Tee: ',
+    description: '240+ GSM 100% pure combed heavyweight cotton fabric. Color and high-definition DTF print guaranteed. Drop-shoulder relaxed boxy fit for premium everyday style.',
     price: 550,
     originalPrice: 850,
     stock: 50,
-    category: 'Bengali Typography',
-    color: '#18181b', // Default Black as requested
+    category: 'Streetwear & Boxy',
+    color: '#18181b', // Default Black as in reference mockup
     availableSizes: ['S', 'M', 'L', 'XL', 'XXL'] as TShirtSize[],
     designScale: 54,
-    designPositionY: -6,
+    designPositionY: -4,
     designPositionX: 0,
     mockupStyle: 'crewneck' as 'crewneck' | 'oversized' | 'hoodie',
   });
 
   // Drafts array
   const [drafts, setDrafts] = useState<BulkDesignDraft[]>(() => {
-    // Initial pre-loaded sample drafts for instant preview
     return SAMPLE_GRAPHIC_DESIGNS.map((sample, idx) => ({
       id: `draft_sample_${idx + 1}`,
       fileName: sample.name,
       designDataUrl: sample.dataUrl,
       title: sample.title,
-      description: '১৮০+ জিএসএম ১০০% পিওর কম্বড কটন ফেব্রিক। কালার ও প্রিন্ট ১০০% গ্যারান্টিযুক্ত।',
+      description: '240+ GSM pure combed heavyweight cotton with durable high-density graphic print.',
       price: sample.price,
       originalPrice: sample.originalPrice,
       stock: 50,
@@ -69,7 +60,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
       color: '#18181b', // Default Black
       availableSizes: ['S', 'M', 'L', 'XL', 'XXL'],
       designScale: 54,
-      designPositionY: -6,
+      designPositionY: -4,
       designPositionX: 0,
       mockupStyle: 'crewneck',
       isSelected: true,
@@ -77,6 +68,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
   });
 
   const [activeEditingDraft, setActiveEditingDraft] = useState<BulkDesignDraft | null>(null);
+  const [editingViewMode, setEditingViewMode] = useState<TShirtViewMode>('front');
   const [isDragOver, setIsDragOver] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
   const [publishSuccessMsg, setPublishSuccessMsg] = useState<string | null>(null);
@@ -206,19 +198,19 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
   const handlePublish = (onlySelected: boolean = true) => {
     const toPublish = drafts.filter((d) => (!onlySelected || d.isSelected));
     if (toPublish.length === 0) {
-      alert('অনুগ্রহ করে অন্তত একটি টিশার্ট সিলেক্ট করুন।');
+      alert('Please select at least one t-shirt draft to publish.');
       return;
     }
 
     const newProducts: TShirtProduct[] = toPublish.map((draft, idx) => ({
       id: `prod_${Date.now()}_${idx}`,
-      title: draft.title || 'প্রিমিয়াম গ্রাফিক টিশার্ট',
+      title: draft.title || 'Premium Oversized Graphic Tee',
       description: draft.description || globalDefaults.description,
       price: Number(draft.price) || 550,
       originalPrice: Number(draft.originalPrice) || 850,
       stock: Number(draft.stock) || 50,
-      category: draft.category || 'Bengali Typography',
-      tags: [draft.category, 'T-Shirt', 'Graphic Tee'],
+      category: draft.category || 'Streetwear & Boxy',
+      tags: [draft.category, 'T-Shirt', 'Graphic Tee', 'Drop Shoulder'],
       designImage: draft.designDataUrl,
       designScale: draft.designScale,
       designPositionY: draft.designPositionY,
@@ -230,13 +222,13 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
       mockupStyle: draft.mockupStyle,
       rating: 5.0,
       reviewsCount: Math.floor(Math.random() * 30) + 12,
-      badge: idx % 2 === 0 ? '🔥 হট ড্রপ' : '★ নিউ এরাইভাল',
+      badge: idx % 2 === 0 ? '🔥 Hot Drop' : '★ New Arrival',
       createdAt: Date.now(),
       isPublished: true,
     }));
 
     onPublishProducts(newProducts);
-    setPublishSuccessMsg(`🎉 সফলভাবে ${newProducts.length}টি টিশার্ট ওয়েবসাইটে পাবলিশ ও লিস্টেড হয়েছে! কাস্টমাররা এখন এগুলো অর্ডার করতে পারবে।`);
+    setPublishSuccessMsg(`🎉 Successfully published ${newProducts.length} t-shirt(s) to the storefront! Customers can now order them.`);
 
     // Remove published drafts
     setDrafts((prev) => prev.filter((d) => onlySelected ? !d.isSelected : false));
@@ -258,7 +250,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
         if (elem) {
           const dataUrl = await nodeToDataUrl(elem, { pixelRatio: 2 });
           const base64Data = dataUrl.split(',')[1];
-          const safeName = (draft.title || `tshirt_${i + 1}`).replace(/[^a-zA-Z0-9\u0980-\u09FF_-]/g, '_');
+          const safeName = (draft.title || `tshirt_${i + 1}`).replace(/[^a-zA-Z0-9_-]/g, '_');
           zip.file(`${i + 1}_${safeName}.png`, base64Data, { base64: true });
         }
       }
@@ -266,7 +258,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
       triggerDownload(blob, `TShirt_Mockups_Bulk_${Date.now()}.zip`);
     } catch (err) {
       console.error(err);
-      alert('মকআপ জিপ তৈরি করতে ব্যর্থ হয়েছে।');
+      alert('Failed to generate mockup ZIP file.');
     } finally {
       setIsZipping(false);
     }
@@ -285,10 +277,10 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <span>Admin Bulk Mockup Generator & Auto-Publisher</span>
             </div>
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight">
-              বাল্ক টিশার্ট ডিজাইন আপলোড ও পাবলিশ স্টুডিও
+              Bulk T-Shirt Design Studio & Publisher
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              আপনার লোকাল ফাইল থেকে একাধিক স্বচ্ছ PNG ডিজাইন সিলেক্ট করুন। মুহূর্তের মধ্যে রেডিমেড ৩ডি কটন টিশার্ট মকআপ তৈরি হবে এবং এক ক্লিকে আপনার ই-কমার্স শপে পাবলিশ হয়ে যাবে।
+              Upload multiple transparent PNG design files from your local storage. High-resolution 3D oversized streetwear mockups are instantly generated and ready to list on your storefront with a single click.
             </p>
           </div>
 
@@ -298,7 +290,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md flex items-center gap-2 transition-all cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>কাস্টমার শপ ভিউ দেখুন ({publishedCount} আইটেম)</span>
+              <span>View Storefront ({publishedCount} listed)</span>
             </button>
 
             <button
@@ -306,7 +298,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               className="px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold text-xs sm:text-sm rounded-xl shadow-xs flex items-center gap-2 transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>নমুনা ডিজাইন লোড করুন</span>
+              <span>Load Sample Designs</span>
             </button>
           </div>
         </div>
@@ -326,14 +318,14 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             onClick={onNavigateToStore}
             className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shrink-0 cursor-pointer"
           >
-            শপে যান
+            Go to Store
           </button>
         </div>
       )}
 
       {/* Main Grid: Upload & Global Settings on Left, Drafts Grid on Right */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Upload Box + Global Defaults Form (5 Cols) */}
+        {/* Left Column: Upload Box + Global Defaults Form */}
         <div className="lg:col-span-5 space-y-6">
           {/* Drag & Drop Bulk Uploader */}
           <div
@@ -362,40 +354,40 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <Upload className="w-7 h-7 animate-bounce" />
             </div>
             <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-1">
-              লোকাল PNG ডিজাইন ফাইল ড্রপ করুন বা সিলেক্ট করুন
+              Drop Local PNG Designs or Click to Browse
             </h3>
             <p className="text-xs text-slate-500 mb-4">
-              স্বচ্ছ ব্যাকগ্রাউন্ডের একাধিক PNG ডিজাইন ফাইল একসাথে সিলেক্ট করুন
+              Select multiple transparent PNG files to automatically generate mockups
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs">
               <Plus className="w-4 h-4" />
-              <span>বাল্ক ফাইল ব্রাউজ করুন</span>
+              <span>Browse Local Files</span>
             </div>
           </div>
 
-          {/* Global Default Presets Card (সবার জন্য ডিফল্ট সেটিংস) */}
+          {/* Global Default Presets Card */}
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <div className="flex items-center gap-2">
                 <Sliders className="w-4 h-4 text-indigo-600" />
                 <h3 className="text-sm font-bold text-slate-900">
-                  সবার জন্য ডিফল্ট সেটিংস (Global Defaults)
+                  Global Defaults (Applied to All)
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={handleApplyDefaultsToAll}
                 className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
-                title="সকল ড্রাফটে এই ডিফল্ট সেটিংস প্রয়োগ করুন"
+                title="Apply settings across all drafts"
               >
                 Apply to All ({drafts.length})
               </button>
             </div>
 
-            {/* Default Color Selector (Default Black as requested) */}
+            {/* Default Color Selector */}
             <div className="space-y-2">
               <label className="block text-xs font-bold text-slate-700 flex items-center justify-between">
-                <span>ডিফল্ট টিশার্টের কালার (Default Black):</span>
+                <span>Default T-Shirt Color (Jet Black):</span>
                 <span className="font-mono text-[11px] text-slate-500">{globalDefaults.color}</span>
               </label>
               <div className="flex flex-wrap gap-2">
@@ -424,7 +416,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             <div className="grid grid-cols-3 gap-3">
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  বিক্রয় মূল্য (৳)
+                  Sale Price (৳)
                 </label>
                 <input
                   type="number"
@@ -436,7 +428,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  কাটা মূল্য (৳)
+                  Regular (৳)
                 </label>
                 <input
                   type="number"
@@ -448,7 +440,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  ডিফল্ট স্টক
+                  Default Stock
                 </label>
                 <input
                   type="number"
@@ -462,7 +454,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             {/* Default Category */}
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                ডিফল্ট ক্যাটাগরি
+                Default Category
               </label>
               <select
                 value={globalDefaults.category}
@@ -480,7 +472,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             {/* Default Description */}
             <div>
               <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                ডিফল্ট ডেস্ক্রিপশন
+                Default Description
               </label>
               <textarea
                 value={globalDefaults.description}
@@ -493,7 +485,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             {/* Default Print Scale & Position */}
             <div className="space-y-3 pt-2 border-t border-slate-100">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>বুকে প্রিন্ট সাইজ (Scale):</span>
+                <span>Graphic Print Scale:</span>
                 <span>{globalDefaults.designScale}%</span>
               </div>
               <input
@@ -506,7 +498,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               />
 
               <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>ভার্টিকাল পজিশন (Position Y):</span>
+                <span>Vertical Position (Y Offset):</span>
                 <span>{globalDefaults.designPositionY}px</span>
               </div>
               <input
@@ -521,7 +513,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Drafts Grid & Actions Bar (7 Cols) */}
+        {/* Right Column: Drafts Grid & Actions Bar */}
         <div className="lg:col-span-7 space-y-4">
           {/* Header Action Bar */}
           <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -533,7 +525,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                   onChange={(e) => handleSelectAll(e.target.checked)}
                   className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
                 />
-                <span>সব সিলেক্ট করুন ({selectedCount}/{drafts.length})</span>
+                <span>Select All ({selectedCount}/{drafts.length})</span>
               </label>
             </div>
 
@@ -544,7 +536,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
               >
                 <FileArchive className="w-4 h-4 text-indigo-600" />
-                <span>{isZipping ? 'জিপ তৈরি হচ্ছে...' : 'সব মকআপ ZIP ডাউনলোড'}</span>
+                <span>{isZipping ? 'Generating ZIP...' : 'Download All Mockups (ZIP)'}</span>
               </button>
 
               <button
@@ -553,7 +545,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
-                <span>সিলেক্টেড শপে পাবলিশ করুন ({selectedCount})</span>
+                <span>Publish Selected to Store ({selectedCount})</span>
               </button>
             </div>
           </div>
@@ -565,16 +557,16 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 <Package className="w-8 h-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-base font-bold text-slate-800">কোনো ড্রাফট ডিজাইন পাওয়া যায়নি</h4>
+                <h4 className="text-base font-bold text-slate-800">No Drafts Uploaded</h4>
                 <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                  বামে থেকে একাধিক PNG ফাইল আপলোড করুন অথবা রেডিমেড নমুনা ডিজাইনগুলো লোড করুন।
+                  Drag and drop PNG graphic files or click "Load Sample Designs" to test immediately.
                 </p>
               </div>
               <button
                 onClick={handleLoadSamples}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl cursor-pointer"
               >
-                নমুনা ডিজাইন লোড করুন
+                Load Sample Designs
               </button>
             </div>
           ) : (
@@ -604,16 +596,19 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
                     <div className="flex items-center gap-1">
                       <button
-                        onClick={() => setActiveEditingDraft(draft)}
+                        onClick={() => {
+                          setActiveEditingDraft(draft);
+                          setEditingViewMode('front');
+                        }}
                         className="p-1.5 hover:bg-slate-100 text-slate-600 hover:text-indigo-600 rounded-lg cursor-pointer transition-colors"
-                        title="মকআপ কাস্টমাইজ করুন"
+                        title="Customize Mockup"
                       >
                         <Sliders className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteDraft(draft.id)}
                         className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg cursor-pointer transition-colors"
-                        title="মুছে ফেলুন"
+                        title="Delete Draft"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -630,6 +625,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                       designPositionX={draft.designPositionX}
                       designPositionY={draft.designPositionY}
                       mockupStyle={draft.mockupStyle}
+                      showViewToggle={true}
                     />
 
                     {/* Color Swatch Dots on Mockup */}
@@ -656,7 +652,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                         type="text"
                         value={draft.title}
                         onChange={(e) => handleUpdateDraft(draft.id, { title: e.target.value })}
-                        placeholder="টিশার্টের টাইটেল..."
+                        placeholder="Product title..."
                         className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 font-bold text-slate-900 focus:outline-none focus:border-indigo-600 text-xs"
                       />
                     </div>
@@ -696,7 +692,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                     className="w-full py-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>ওয়েবসাইটে পাবলিশ করুন</span>
+                    <span>Publish to Store</span>
                   </button>
                 </div>
               ))}
@@ -713,7 +709,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <div className="flex items-center gap-2">
                 <Sliders className="w-5 h-5 text-indigo-600" />
                 <h3 className="font-bold text-slate-900 text-base">
-                  মকআপ কাস্টমাইজ ও ফাইন-টিউনিং
+                  Fine-Tune Mockup Placement & Color
                 </h3>
               </div>
               <button
@@ -734,6 +730,9 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                   designPositionX={activeEditingDraft.designPositionX}
                   designPositionY={activeEditingDraft.designPositionY}
                   mockupStyle={activeEditingDraft.mockupStyle}
+                  viewMode={editingViewMode}
+                  onToggleViewMode={setEditingViewMode}
+                  showViewToggle={true}
                   showPrintAreaGuide={true}
                 />
               </div>
@@ -742,7 +741,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <div className="space-y-4">
                 {/* Color Palette */}
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-700">টিশার্টের কালার:</label>
+                  <label className="block text-xs font-bold text-slate-700">T-Shirt Color:</label>
                   <div className="flex flex-wrap gap-2">
                     {TSHIRT_COLORS.map((c) => (
                       <button
@@ -762,7 +761,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 {/* Print Scale */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs font-bold text-slate-700">
-                    <span>প্রিন্ট সাইজ (Scale):</span>
+                    <span>Graphic Scale:</span>
                     <span>{activeEditingDraft.designScale}%</span>
                   </div>
                   <input
@@ -778,7 +777,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 {/* Vertical Position */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs font-bold text-slate-700">
-                    <span>ভার্টিকাল পজিশন (Position Y):</span>
+                    <span>Vertical Position (Y):</span>
                     <span>{activeEditingDraft.designPositionY}px</span>
                   </div>
                   <input
@@ -794,7 +793,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 {/* Horizontal Position */}
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs font-bold text-slate-700">
-                    <span>হরাইজন্টাল পজিশন (Position X):</span>
+                    <span>Horizontal Position (X):</span>
                     <span>{activeEditingDraft.designPositionX}px</span>
                   </div>
                   <input
@@ -811,7 +810,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                   onClick={() => setActiveEditingDraft(null)}
                   className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs cursor-pointer"
                 >
-                  সেভ ও ক্লোজ করুন
+                  Save & Close
                 </button>
               </div>
             </div>

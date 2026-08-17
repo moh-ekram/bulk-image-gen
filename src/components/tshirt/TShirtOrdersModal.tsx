@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, X, Clock, CheckCircle2, Truck, Check, AlertCircle, Phone, MapPin } from 'lucide-react';
+import { Package, X, Phone, MapPin } from 'lucide-react';
 import { CustomerOrder } from '../../types';
 
 interface TShirtOrdersModalProps {
@@ -25,10 +25,10 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
           <div className="flex items-center gap-2">
             <Package className="w-5 h-5 text-indigo-600" />
             <h2 className="font-extrabold text-slate-900 text-lg">
-              কাস্টমার অর্ডার ড্যাশবোর্ড (Order Management)
+              Customer Order Management Dashboard
             </h2>
             <span className="text-xs bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full">
-              {orders.length}টি অর্ডার
+              {orders.length} {orders.length === 1 ? 'Order' : 'Orders'}
             </span>
           </div>
           <button
@@ -46,9 +46,9 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
               <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
                 <Package className="w-8 h-8" />
               </div>
-              <h3 className="font-bold text-slate-800 text-sm">এখনো কোনো অর্ডার আসেনি</h3>
+              <h3 className="font-bold text-slate-800 text-sm">No Orders Received Yet</h3>
               <p className="text-xs text-slate-500">
-                কাস্টমাররা ওয়েবসাইট থেকে অর্ডার করলে এখানে সকল বিস্তারিত দেখতে পাবেন।
+                Orders placed by customers on the storefront will appear here with live updates.
               </p>
             </div>
           ) : (
@@ -64,7 +64,7 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
                       #{order.id}
                     </span>
                     <span className="text-slate-500">
-                      {new Date(order.createdAt).toLocaleDateString('bn-BD', {
+                      {new Date(order.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         hour: '2-digit',
@@ -74,7 +74,7 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-500 font-semibold">স্ট্যাটাস:</span>
+                    <span className="text-slate-500 font-semibold">Status:</span>
                     <select
                       value={order.status}
                       onChange={(e) => onUpdateOrderStatus(order.id, e.target.value as any)}
@@ -88,11 +88,11 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
                           : 'bg-amber-50 text-amber-800 border-amber-300'
                       }`}
                     >
-                      <option value="Pending">Pending (অপেক্ষমাণ)</option>
-                      <option value="Confirmed">Confirmed (ভেরিফাইড)</option>
-                      <option value="Shipped">Shipped (কুরিয়ারে দেওয়া)</option>
-                      <option value="Delivered">Delivered (ডেলিভার্ড)</option>
-                      <option value="Cancelled">Cancelled (বাতিল)</option>
+                      <option value="Pending">Pending (Awaiting Verification)</option>
+                      <option value="Confirmed">Confirmed (Processing)</option>
+                      <option value="Shipped">Shipped (In Courier)</option>
+                      <option value="Delivered">Delivered (Completed)</option>
+                      <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
                 </div>
@@ -111,13 +111,13 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
                       <span>{order.address} ({order.district})</span>
                     </div>
                     <div className="pt-1 text-[11px] font-bold text-emerald-700">
-                      পেমেন্ট মেথড: {order.paymentMethod === 'cod' ? 'Cash On Delivery' : order.paymentMethod.toUpperCase()}
+                      Payment: {order.paymentMethod === 'cod' ? 'Cash On Delivery' : order.paymentMethod.toUpperCase()}
                     </div>
                   </div>
 
                   {/* Items Ordered (7 cols) */}
                   <div className="md:col-span-7 space-y-2 bg-white p-3.5 rounded-xl border border-slate-200 text-xs">
-                    <span className="font-bold text-slate-700 block mb-1">অর্ডারকৃত টিশার্টসমূহ:</span>
+                    <span className="font-bold text-slate-700 block mb-1">Ordered Items:</span>
                     <div className="space-y-2">
                       {order.items.map((item) => (
                         <div key={item.id} className="flex items-center justify-between text-xs pb-1 border-b border-slate-100 last:border-none">
@@ -141,7 +141,7 @@ export const TShirtOrdersModal: React.FC<TShirtOrdersModalProps> = ({
                     </div>
 
                     <div className="flex justify-between items-baseline pt-2 border-t border-slate-200 font-bold text-slate-900 text-xs sm:text-sm">
-                      <span>সর্বমোট (ডেলিভারিসহ):</span>
+                      <span>Grand Total (incl. delivery):</span>
                       <span className="text-indigo-600 text-base font-black">৳{order.total}</span>
                     </div>
                   </div>

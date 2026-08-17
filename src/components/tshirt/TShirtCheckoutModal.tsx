@@ -3,16 +3,12 @@ import {
   CheckCircle2,
   X,
   Truck,
-  ShieldCheck,
   CreditCard,
   Banknote,
   Smartphone,
-  Sparkles,
   ShoppingBag,
-  ArrowLeft,
 } from 'lucide-react';
 import { CartItem, CustomerOrder } from '../../types';
-import { TShirtMockupView } from './TShirtMockupView';
 
 interface TShirtCheckoutModalProps {
   isOpen: boolean;
@@ -44,9 +40,9 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!name.trim()) errs.name = 'অনুগ্রহ করে আপনার পুরো নাম লিখুন';
-    if (!phone.trim() || phone.trim().length < 10) errs.phone = 'সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন';
-    if (!address.trim() || address.trim().length < 8) errs.address = 'সম্পূর্ণ ঠিকানা লিখুন (বাসা, রোড, এলাকা)';
+    if (!name.trim()) errs.name = 'Please enter your full name';
+    if (!phone.trim() || phone.trim().length < 10) errs.phone = 'Please enter a valid 11-digit phone number';
+    if (!address.trim() || address.trim().length < 8) errs.address = 'Please enter complete delivery address (House, Road, Area)';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -60,7 +56,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
       customerName: name,
       phone,
       address,
-      district: districtZone === 'inside_dhaka' ? 'ঢাকা সিটি (Inside Dhaka)' : 'ঢাকার বাইরে (Outside Dhaka)',
+      district: districtZone === 'inside_dhaka' ? 'Inside Dhaka' : 'Outside Dhaka',
       deliveryFee,
       paymentMethod,
       specialNotes,
@@ -84,7 +80,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-indigo-600" />
                 <h2 className="font-extrabold text-slate-900 text-lg">
-                  ক্যাশ অন ডেলিভারি চেকআউট (Order Details)
+                  Direct Checkout & Delivery
                 </h2>
               </div>
               <button
@@ -99,8 +95,8 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               {/* Order Summary Strip */}
               <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
                 <div className="text-xs font-bold text-slate-700 flex items-center justify-between">
-                  <span>অর্ডার সারসংক্ষেপ ({items.length}টি আইটেম):</span>
-                  <span className="font-mono text-indigo-600">সাবটোটাল: ৳{subtotal}</span>
+                  <span>Order Items ({items.length}):</span>
+                  <span className="font-mono text-indigo-600">Subtotal: ৳{subtotal}</span>
                 </div>
 
                 <div className="max-h-36 overflow-y-auto space-y-2 pr-1">
@@ -130,13 +126,13 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               <div className="space-y-3 text-xs">
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">
-                    আপনার সম্পূর্ণ নাম <span className="text-rose-500">*</span>
+                    Your Full Name <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="যেমন: তানভীর আহমেদ"
+                    placeholder="e.g. John Doe"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600"
                   />
                   {errors.name && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.name}</p>}
@@ -144,13 +140,13 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">
-                    মোবাইল নম্বর (১১ ডিজিট) <span className="text-rose-500">*</span>
+                    Mobile Phone (11 digits) <span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="যেমন: 017XXXXXXXX"
+                    placeholder="e.g. 017XXXXXXXX"
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600"
                   />
                   {errors.phone && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.phone}</p>}
@@ -158,13 +154,13 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">
-                    সম্পূর্ণ ডেলিভারি ঠিকানা <span className="text-rose-500">*</span>
+                    Full Delivery Address <span className="text-rose-500">*</span>
                   </label>
                   <textarea
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     rows={2}
-                    placeholder="বাসা নম্বর, রোড নম্বর, এলাকা, থানা ও জেলা..."
+                    placeholder="House / Apartment no., Road, Area, City..."
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:border-indigo-600"
                   />
                   {errors.address && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.address}</p>}
@@ -173,7 +169,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                 {/* Delivery Zone Selector */}
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">
-                    ডেলিভারি এরিয়া সিলেক্ট করুন
+                    Select Delivery Zone
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
@@ -187,9 +183,9 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         <Truck className="w-4 h-4 text-indigo-600" />
-                        <span>ঢাকা সিটির ভেতরে</span>
+                        <span>Inside Dhaka</span>
                       </div>
-                      <span className="font-mono">৳৬০</span>
+                      <span className="font-mono">৳60</span>
                     </button>
 
                     <button
@@ -203,9 +199,9 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         <Truck className="w-4 h-4 text-indigo-600" />
-                        <span>ঢাকার বাইরে</span>
+                        <span>Outside Dhaka</span>
                       </div>
-                      <span className="font-mono">৳১২০</span>
+                      <span className="font-mono">৳120</span>
                     </button>
                   </div>
                 </div>
@@ -213,7 +209,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                 {/* Payment Method Selector */}
                 <div>
                   <label className="block font-bold text-slate-700 mb-1">
-                    পেমেন্ট মেথড
+                    Payment Method
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     <button
@@ -226,7 +222,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       }`}
                     >
                       <Banknote className="w-4 h-4 text-emerald-600" />
-                      <span>ক্যাশ অন ডেলিভারি</span>
+                      <span>Cash on Delivery</span>
                     </button>
 
                     <button
@@ -239,7 +235,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       }`}
                     >
                       <Smartphone className="w-4 h-4 text-pink-600" />
-                      <span>বিকাশ (bKash)</span>
+                      <span>bKash</span>
                     </button>
 
                     <button
@@ -252,7 +248,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       }`}
                     >
                       <CreditCard className="w-4 h-4 text-orange-600" />
-                      <span>নগদ (Nagad)</span>
+                      <span>Nagad</span>
                     </button>
                   </div>
                 </div>
@@ -261,15 +257,15 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               {/* Total Calculation Strip */}
               <div className="p-4 bg-slate-900 text-white rounded-2xl space-y-2">
                 <div className="flex justify-between text-xs text-slate-300">
-                  <span>সাবটোটাল:</span>
+                  <span>Subtotal:</span>
                   <span>৳{subtotal}</span>
                 </div>
                 <div className="flex justify-between text-xs text-slate-300">
-                  <span>ডেলিভারি চার্জ:</span>
+                  <span>Delivery Charge:</span>
                   <span>৳{deliveryFee}</span>
                 </div>
                 <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-slate-800">
-                  <span>সর্বমোট প্রদেয় (Grand Total):</span>
+                  <span>Grand Total:</span>
                   <span className="text-amber-400">৳{grandTotal}</span>
                 </div>
               </div>
@@ -280,7 +276,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                 className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm sm:text-base rounded-2xl shadow-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
               >
                 <CheckCircle2 className="w-5 h-5" />
-                <span>অর্ডার নিশ্চিত করুন (Place Order)</span>
+                <span>Confirm & Place Order</span>
               </button>
             </form>
           </>
@@ -296,31 +292,31 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                 Order Confirmed • #{placedOrder.id}
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                ধন্যবাদ! আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে
+                Thank you! Your order has been placed.
               </h2>
               <p className="text-xs text-slate-500 max-w-md mx-auto">
-                আমাদের প্রতিনিধি শীঘ্রই <strong>{placedOrder.phone}</strong> নম্বরে কল করে অর্ডার ভেরিফাই করবেন।
+                Our support team will contact you shortly at <strong>{placedOrder.phone}</strong> to confirm dispatch details.
               </p>
             </div>
 
             {/* Order Details Card */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left text-xs space-y-3 max-w-md mx-auto">
               <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">গ্রাহকের নাম:</span>
+                <span className="text-slate-500">Customer Name:</span>
                 <span className="font-bold text-slate-900">{placedOrder.customerName}</span>
               </div>
               <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">ঠিকানা:</span>
+                <span className="text-slate-500">Delivery Address:</span>
                 <span className="font-semibold text-slate-800">{placedOrder.address}</span>
               </div>
               <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">পেমেন্ট মেথড:</span>
+                <span className="text-slate-500">Payment Method:</span>
                 <span className="font-bold text-emerald-700">
-                  {placedOrder.paymentMethod === 'cod' ? 'ক্যাশ অন ডেলিভারি' : placedOrder.paymentMethod.toUpperCase()}
+                  {placedOrder.paymentMethod === 'cod' ? 'Cash on Delivery' : placedOrder.paymentMethod.toUpperCase()}
                 </span>
               </div>
               <div className="flex justify-between text-sm font-extrabold text-slate-900 pt-1">
-                <span>সর্বমোট পরিশোধযোগ্য:</span>
+                <span>Total Payable:</span>
                 <span className="text-indigo-600">৳{placedOrder.total}</span>
               </div>
             </div>
@@ -329,7 +325,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               onClick={onClose}
               className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-md"
             >
-              শপে ফিরে যান
+              Back to Store
             </button>
           </div>
         )}

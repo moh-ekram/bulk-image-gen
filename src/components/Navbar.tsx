@@ -12,7 +12,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { downloadSampleExcel } from '../data/sampleMcqs';
-import { FacebookPageConfig, CartItem } from '../types';
+import { FacebookPageConfig } from '../types';
 
 export type AppMainSection = 'tshirt_store' | 'tshirt_studio' | 'mcq_studio';
 
@@ -62,14 +62,14 @@ export const Navbar: React.FC<Props> = ({
 
           <div>
             <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-              <span>{activeSection.startsWith('tshirt') ? 'T-Shirt Studio & Shop' : 'MCQ Canvas Studio'}</span>
+              <span>{activeSection.startsWith('tshirt') ? 'Streetwear T-Shirt Studio & Shop' : 'MCQ Canvas Studio'}</span>
               <span className="text-[10px] bg-slate-900 text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
                 PRO
               </span>
             </h1>
             <p className="text-[10px] text-slate-500 font-medium hidden sm:block">
               {activeSection.startsWith('tshirt')
-                ? 'E-Commerce Store & Bulk PNG Mockup Studio'
+                ? 'E-Commerce Storefront & Bulk 3D Mockup Generator'
                 : 'Social Media Bulk Quiz Image Studio'}
             </p>
           </div>
@@ -86,7 +86,7 @@ export const Navbar: React.FC<Props> = ({
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5 text-indigo-600" />
-            <span>টিশার্ট শপ</span>
+            <span>Storefront</span>
             <span className="bg-indigo-100 text-indigo-800 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full hidden sm:inline">
               {publishedProductsCount}
             </span>
@@ -101,7 +101,7 @@ export const Navbar: React.FC<Props> = ({
             }`}
           >
             <Palette className="w-3.5 h-3.5 text-amber-500" />
-            <span>বাল্ক মকআপ স্টুডিও</span>
+            <span>Bulk Mockup Studio</span>
           </button>
 
           <button
@@ -113,7 +113,7 @@ export const Navbar: React.FC<Props> = ({
             }`}
           >
             <Layers className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="hidden md:inline">MCQ কুইজ জেনারেটর</span>
+            <span className="hidden md:inline">MCQ Generator</span>
             <span className="md:hidden">MCQ</span>
           </button>
         </div>
@@ -126,10 +126,10 @@ export const Navbar: React.FC<Props> = ({
               <button
                 onClick={onOpenOrders}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
-                title="কাস্টমার অর্ডার ড্যাশবোর্ড"
+                title="Customer Orders Dashboard"
               >
                 <Package className="w-4 h-4 text-indigo-600" />
-                <span className="hidden sm:inline">অর্ডারসমূহ</span>
+                <span className="hidden sm:inline">Orders</span>
                 {ordersCount > 0 && (
                   <span className="bg-indigo-600 text-white font-mono text-[10px] px-1.5 py-0.2 rounded-full">
                     {ordersCount}
@@ -141,10 +141,10 @@ export const Navbar: React.FC<Props> = ({
               <button
                 onClick={onOpenCart}
                 className="flex items-center gap-2 px-3.5 py-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer relative"
-                title="শপিং কার্ট"
+                title="Shopping Cart"
               >
                 <ShoppingCart className="w-4 h-4" />
-                <span className="hidden sm:inline">কার্ট</span>
+                <span className="hidden sm:inline">Cart</span>
                 {cartItemsCount > 0 && (
                   <span className="bg-amber-400 text-slate-950 font-black text-[10px] px-1.5 py-0.2 rounded-full">
                     {cartItemsCount}
