@@ -65,14 +65,14 @@ export const Navbar: React.FC<Props> = ({
   };
 
   return (
-    <header className="w-full bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <header className="w-full bg-slate-900 border-b border-slate-800 sticky top-0 z-40 shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo & Title */}
         <div
           onClick={() => onSelectSection('tshirt_store')}
           className="flex items-center gap-2.5 sm:gap-3 shrink-0 cursor-pointer"
         >
-          <div className="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center text-white font-bold shadow-xs">
+          <div className="w-9 h-9 bg-black rounded-xl flex items-center justify-center text-white font-bold shadow-xs">
             {activeSection === 'admin_panel' ? (
               <ShieldCheck className="w-5 h-5 text-amber-400" />
             ) : activeSection.startsWith('tshirt') ? (
@@ -83,7 +83,7 @@ export const Navbar: React.FC<Props> = ({
           </div>
 
           <div>
-            <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+            <h1 className="text-sm sm:text-base font-black text-white tracking-tight flex items-center gap-1.5">
               <span>
                 {activeSection === 'admin_panel'
                   ? 'Admin Management Suite'
@@ -91,11 +91,11 @@ export const Navbar: React.FC<Props> = ({
                   ? 'Streetwear Studio & Shop'
                   : 'MCQ Canvas Studio'}
               </span>
-              <span className="text-[10px] bg-slate-900 text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
+              <span className="text-[10px] bg-black text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">
                 {activeSection === 'admin_panel' ? 'ADMIN' : 'PRO'}
               </span>
             </h1>
-            <p className="text-[10px] text-slate-500 font-medium hidden sm:block">
+            <p className="text-[10px] text-slate-400 font-medium hidden sm:block">
               {activeSection === 'admin_panel'
                 ? 'Storefront Orders, Inventory & Revenue Hub'
                 : activeSection.startsWith('tshirt')
@@ -106,18 +106,18 @@ export const Navbar: React.FC<Props> = ({
         </div>
 
         {/* Center Main Section Switcher Pill */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold shadow-2xs">
+        <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-800 text-xs font-bold shadow-2xs">
           <button
             onClick={() => onSelectSection('tshirt_store')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeSection === 'tshirt_store'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
-            <ShoppingBag className="w-3.5 h-3.5 text-indigo-600" />
+            <ShoppingBag className="w-3.5 h-3.5 text-indigo-400" />
             <span>Storefront</span>
-            <span className="bg-indigo-100 text-indigo-800 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full hidden sm:inline">
+            <span className="bg-indigo-900 text-indigo-300 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full hidden sm:inline">
               {publishedProductsCount}
             </span>
           </button>
@@ -126,8 +126,8 @@ export const Navbar: React.FC<Props> = ({
             onClick={() => onSelectSection('tshirt_studio')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeSection === 'tshirt_studio'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
             <Palette className="w-3.5 h-3.5 text-amber-500" />
@@ -140,21 +140,21 @@ export const Navbar: React.FC<Props> = ({
             onClick={handleAdminPanelClick}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeSection === 'admin_panel'
-                ? 'bg-slate-900 text-white shadow-xs'
+                ? 'bg-black text-white shadow-xs'
                 : adminUser
-                ? 'text-slate-900 bg-amber-100/80 hover:bg-amber-200/80 border border-amber-300/60'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'text-white bg-amber-900/80 hover:bg-amber-800/80 border border-amber-700/60'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
             {adminUser ? (
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
             ) : (
-              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <Lock className="w-3.5 h-3.5 text-slate-400" />
             )}
             <span className="hidden sm:inline">Admin Panel</span>
             <span className="sm:hidden">Admin</span>
             {pendingOrdersCount > 0 && (
-              <span className="bg-amber-400 text-slate-950 font-black text-[10px] px-1.5 py-0.2 rounded-full">
+              <span className="bg-amber-400 text-white font-black text-[10px] px-1.5 py-0.2 rounded-full">
                 {pendingOrdersCount}
               </span>
             )}
@@ -164,11 +164,11 @@ export const Navbar: React.FC<Props> = ({
             onClick={() => onSelectSection('mcq_studio')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
               activeSection === 'mcq_studio'
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'text-slate-300 hover:text-white'
             }`}
           >
-            <Layers className="w-3.5 h-3.5 text-indigo-600" />
+            <Layers className="w-3.5 h-3.5 text-indigo-400" />
             <span className="hidden md:inline">MCQ</span>
           </button>
         </div>
@@ -179,7 +179,7 @@ export const Navbar: React.FC<Props> = ({
           {adminUser ? (
             <button
               onClick={() => onSelectSection('admin_panel')}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 text-emerald-900 rounded-xl text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-950 border border-emerald-800 hover:bg-emerald-900 text-emerald-300 rounded-xl text-xs font-bold transition-all cursor-pointer"
               title={`Logged in as ${adminUser.name} (${adminUser.role})`}
             >
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -191,10 +191,10 @@ export const Navbar: React.FC<Props> = ({
           ) : (
             <button
               onClick={onOpenAdminLogin}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-100 rounded-xl text-xs font-bold transition-all cursor-pointer"
               title="Admin Login Gateway"
             >
-              <Lock className="w-3.5 h-3.5 text-slate-600" />
+              <Lock className="w-3.5 h-3.5 text-slate-300" />
               <span>Admin Log In</span>
             </button>
           )}
@@ -204,13 +204,13 @@ export const Navbar: React.FC<Props> = ({
               {/* Shopping Cart Button */}
               <button
                 onClick={onOpenCart}
-                className="flex items-center gap-2 px-3.5 py-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer relative"
+                className="flex items-center gap-2 px-3.5 py-2 bg-black hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer relative"
                 title="Shopping Cart"
               >
                 <ShoppingCart className="w-4 h-4" />
                 <span className="hidden sm:inline">Cart</span>
                 {cartItemsCount > 0 && (
-                  <span className="bg-amber-400 text-slate-950 font-black text-[10px] px-1.5 py-0.2 rounded-full">
+                  <span className="bg-amber-400 text-white font-black text-[10px] px-1.5 py-0.2 rounded-full">
                     {cartItemsCount}
                   </span>
                 )}
@@ -224,35 +224,35 @@ export const Navbar: React.FC<Props> = ({
                   onClick={onOpenFacebookSettings}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                     facebookConfig?.isConnected
-                      ? 'bg-blue-50 hover:bg-blue-100 border-blue-200 text-blue-900'
-                      : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
+                      ? 'bg-blue-950 hover:bg-blue-900 border-blue-800 text-blue-300'
+                      : 'bg-slate-950 hover:bg-slate-800 border-slate-800 text-slate-200'
                   }`}
                   title="Facebook Page Auto-Posting Settings"
                 >
-                  <Facebook className="w-4 h-4 text-blue-600 shrink-0" />
+                  <Facebook className="w-4 h-4 text-blue-400 shrink-0" />
                   <span className="hidden md:inline">
                     {facebookConfig?.isConnected && facebookConfig.pageName
                       ? facebookConfig.pageName
                       : 'FB Auto-Post'}
                   </span>
                   {facebookConfig?.isConnected && (
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 hidden sm:inline" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 hidden sm:inline" />
                   )}
                 </button>
               )}
 
               <button
                 onClick={downloadSampleExcel}
-                className="hidden lg:flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-200 rounded-xl text-xs font-semibold transition-all cursor-pointer"
                 title="Download Sample Excel File"
               >
-                <FileSpreadsheet className="w-4 h-4 text-indigo-600" />
+                <FileSpreadsheet className="w-4 h-4 text-indigo-400" />
                 <span>Sample Excel</span>
               </button>
 
               <button
                 onClick={onResetSampleMcqs}
-                className="p-2 text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition-all cursor-pointer"
+                className="p-2 text-slate-400 hover:text-slate-100 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-all cursor-pointer"
                 title="Reset to Sample MCQs"
               >
                 <RotateCcw className="w-4 h-4" />

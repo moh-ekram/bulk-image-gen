@@ -126,9 +126,9 @@ export const AdminProductModal: React.FC<Props> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in overflow-y-auto">
-      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden my-6 animate-in zoom-in-95">
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden my-6 animate-in zoom-in-95">
         {/* Header */}
-        <div className="bg-slate-900 px-6 py-4 text-white flex items-center justify-between">
+        <div className="bg-black px-6 py-4 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
               <ShoppingBag className="w-5 h-5" />
@@ -172,13 +172,13 @@ export const AdminProductModal: React.FC<Props> = ({
             </div>
 
             {/* Scale & Position Fine-Tuning */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-3 text-xs">
-              <span className="font-bold text-slate-700 block text-[11px] uppercase tracking-wider">
+            <div className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-3 text-xs">
+              <span className="font-bold text-slate-200 block text-[11px] uppercase tracking-wider">
                 Graphic Scaling & Placement
               </span>
 
               <div>
-                <div className="flex justify-between text-slate-600 mb-1">
+                <div className="flex justify-between text-slate-300 mb-1">
                   <span>Graphic Scale:</span>
                   <span className="font-bold font-mono">{designScale}%</span>
                 </div>
@@ -194,7 +194,7 @@ export const AdminProductModal: React.FC<Props> = ({
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <div className="flex justify-between text-slate-600 mb-1">
+                  <div className="flex justify-between text-slate-300 mb-1">
                     <span>Vertical (Y):</span>
                     <span className="font-bold font-mono">{designPositionY}</span>
                   </div>
@@ -208,7 +208,7 @@ export const AdminProductModal: React.FC<Props> = ({
                   />
                 </div>
                 <div>
-                  <div className="flex justify-between text-slate-600 mb-1">
+                  <div className="flex justify-between text-slate-300 mb-1">
                     <span>Horizontal (X):</span>
                     <span className="font-bold font-mono">{designPositionX}</span>
                   </div>
@@ -244,7 +244,7 @@ export const AdminProductModal: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={() => graphicInputRef.current?.click()}
-                className="w-full py-2 px-3 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="w-full py-2 px-3 bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Upload PNG Graphic Art</span>
@@ -253,7 +253,7 @@ export const AdminProductModal: React.FC<Props> = ({
               <button
                 type="button"
                 onClick={() => customPhotoInputRef.current?.click()}
-                className="w-full py-2 px-3 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="w-full py-2 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-200 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Upload className="w-3.5 h-3.5" />
                 <span>Upload Custom T-Shirt Photo Template</span>
@@ -266,7 +266,7 @@ export const AdminProductModal: React.FC<Props> = ({
             {/* Title & Badge */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="sm:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Product Title *
                 </label>
                 <input
@@ -275,12 +275,12 @@ export const AdminProductModal: React.FC<Props> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. Heavyweight Cyberpunk Oversized Tee"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 focus:border-indigo-600 focus:bg-white rounded-xl text-xs font-bold outline-hidden transition-all text-slate-900"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 focus:border-indigo-600 focus:bg-slate-900 rounded-xl text-xs font-bold outline-hidden transition-all text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Badge / Tag
                 </label>
                 <input
@@ -288,7 +288,7 @@ export const AdminProductModal: React.FC<Props> = ({
                   value={badge}
                   onChange={(e) => setBadge(e.target.value)}
                   placeholder="e.g. 🔥 Hot Drop"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 focus:border-indigo-600 focus:bg-white rounded-xl text-xs font-medium outline-hidden transition-all text-slate-900"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 focus:border-indigo-600 focus:bg-slate-900 rounded-xl text-xs font-medium outline-hidden transition-all text-white"
                 />
               </div>
             </div>
@@ -296,11 +296,11 @@ export const AdminProductModal: React.FC<Props> = ({
             {/* Category & Visibility */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Category</label>
+                <label className="block text-xs font-bold text-slate-200 mb-1">Category</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 focus:border-indigo-600 focus:bg-white rounded-xl text-xs font-semibold outline-hidden text-slate-900 cursor-pointer"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 focus:border-indigo-600 focus:bg-slate-900 rounded-xl text-xs font-semibold outline-hidden text-white cursor-pointer"
                 >
                   {TSHIRT_CATEGORIES.filter((c) => c !== 'All').map((cat) => (
                     <option key={cat} value={cat}>
@@ -311,16 +311,16 @@ export const AdminProductModal: React.FC<Props> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Storefront Visibility
                 </label>
                 <div className="flex items-center gap-2 pt-1.5">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-200">
                     <input
                       type="checkbox"
                       checked={isPublished}
                       onChange={(e) => setIsPublished(e.target.checked)}
-                      className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
+                      className="w-4 h-4 rounded text-indigo-400 focus:ring-indigo-500"
                     />
                     <span>Publish live in customer store</span>
                   </label>
@@ -329,9 +329,9 @@ export const AdminProductModal: React.FC<Props> = ({
             </div>
 
             {/* Pricing & Stock Numbers */}
-            <div className="grid grid-cols-3 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+            <div className="grid grid-cols-3 gap-3 bg-slate-950 p-3.5 rounded-xl border border-slate-800">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Sale Price (৳) *
                 </label>
                 <input
@@ -340,12 +340,12 @@ export const AdminProductModal: React.FC<Props> = ({
                   min="0"
                   value={price}
                   onChange={(e) => setPrice(Number(e.target.value))}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-300 focus:border-indigo-600 rounded-lg text-xs font-mono font-bold text-slate-900 outline-hidden"
+                  className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 focus:border-indigo-600 rounded-lg text-xs font-mono font-bold text-white outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Regular Price (৳)
                 </label>
                 <input
@@ -353,12 +353,12 @@ export const AdminProductModal: React.FC<Props> = ({
                   min="0"
                   value={originalPrice}
                   onChange={(e) => setOriginalPrice(Number(e.target.value))}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-300 focus:border-indigo-600 rounded-lg text-xs font-mono text-slate-500 line-through outline-hidden"
+                  className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 focus:border-indigo-600 rounded-lg text-xs font-mono text-slate-400 line-through outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-200 mb-1">
                   Inventory Units *
                 </label>
                 <input
@@ -367,14 +367,14 @@ export const AdminProductModal: React.FC<Props> = ({
                   required
                   value={stock}
                   onChange={(e) => setStock(Number(e.target.value))}
-                  className="w-full px-3 py-1.5 bg-white border border-slate-300 focus:border-indigo-600 rounded-lg text-xs font-mono font-bold text-slate-900 outline-hidden"
+                  className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 focus:border-indigo-600 rounded-lg text-xs font-mono font-bold text-white outline-hidden"
                 />
               </div>
             </div>
 
             {/* Available Sizes Selection */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-200 mb-1.5">
                 Available Sizes ({selectedSizes.length} active)
               </label>
               <div className="flex items-center gap-2">
@@ -387,8 +387,8 @@ export const AdminProductModal: React.FC<Props> = ({
                       onClick={() => toggleSize(size)}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold font-mono transition-all cursor-pointer border ${
                         isChecked
-                          ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
-                          : 'bg-white border-slate-200 text-slate-400 hover:border-slate-300'
+                          ? 'bg-black border-slate-700 text-white shadow-2xs'
+                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
                       }`}
                     >
                       {size}
@@ -400,7 +400,7 @@ export const AdminProductModal: React.FC<Props> = ({
 
             {/* Available Colors Selection */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              <label className="block text-xs font-bold text-slate-200 mb-1.5">
                 Available Colors & Default Base
               </label>
               <div className="flex flex-wrap items-center gap-2">
@@ -410,7 +410,7 @@ export const AdminProductModal: React.FC<Props> = ({
                   return (
                     <div
                       key={c.hex}
-                      className="flex items-center gap-1 bg-slate-50 border border-slate-200 px-2 py-1 rounded-lg"
+                      className="flex items-center gap-1 bg-slate-950 border border-slate-800 px-2 py-1 rounded-lg"
                     >
                       <button
                         type="button"
@@ -421,13 +421,13 @@ export const AdminProductModal: React.FC<Props> = ({
                         style={{ backgroundColor: c.hex }}
                         title={c.name}
                       />
-                      <span className="text-[10px] font-semibold text-slate-700">{c.name}</span>
+                      <span className="text-[10px] font-semibold text-slate-200">{c.name}</span>
                       {isSelected && (
                         <button
                           type="button"
                           onClick={() => setDefaultColor(c.hex)}
                           className={`text-[9px] px-1 rounded font-bold cursor-pointer ${
-                            isDefault ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-700'
+                            isDefault ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-slate-200'
                           }`}
                         >
                           {isDefault ? 'Primary' : 'Set'}
@@ -441,7 +441,7 @@ export const AdminProductModal: React.FC<Props> = ({
 
             {/* Description */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-200 mb-1">
                 Product Description & Fabric Specs
               </label>
               <textarea
@@ -449,16 +449,16 @@ export const AdminProductModal: React.FC<Props> = ({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Fabric weight, GSM, fit specs..."
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 focus:border-indigo-600 focus:bg-white rounded-xl text-xs font-medium outline-hidden transition-all text-slate-900"
+                className="w-full px-3 py-2 bg-slate-950 border border-slate-700 focus:border-indigo-600 focus:bg-slate-900 rounded-xl text-xs font-medium outline-hidden transition-all text-white"
               />
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition-colors cursor-pointer"
               >
                 Cancel
               </button>

@@ -94,29 +94,29 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 border border-slate-200 my-8">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-slate-900 rounded-xl shadow-2xl max-w-2xl w-full p-6 border border-slate-800 my-8">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm">
               <Facebook className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                 ফেসবুক পেজ অটো-পোস্টিং সেটআপ
-                <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded uppercase">
+                <span className="text-[10px] bg-blue-900 text-blue-300 font-bold px-2 py-0.5 rounded uppercase">
                   Facebook Graph API
                 </span>
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 এক ক্লিকে আপনার ফেসবুক পেজে অটোমেটিক MCQ ফটো পোস্ট ও শিডিউল করুন
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -124,13 +124,13 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
 
         {/* Connected Page Badge Status */}
         {verifiedPage && (
-          <div className="mb-5 p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-between">
+          <div className="mb-5 p-4 bg-emerald-950 border border-emerald-800 rounded-lg flex items-center justify-between">
             <div className="flex items-center gap-3">
               {verifiedPage.pagePictureUrl ? (
                 <img
                   src={verifiedPage.pagePictureUrl}
                   alt={verifiedPage.pageName}
-                  className="w-11 h-11 rounded-full border border-emerald-300 object-cover"
+                  className="w-11 h-11 rounded-full border border-emerald-700 object-cover"
                 />
               ) : (
                 <div className="w-11 h-11 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">
@@ -139,15 +139,15 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
               )}
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="font-bold text-slate-900 text-sm">{verifiedPage.pageName}</h3>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  <h3 className="font-bold text-white text-sm">{verifiedPage.pageName}</h3>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 </div>
-                <p className="text-xs text-slate-600">
+                <p className="text-xs text-slate-300">
                   {verifiedPage.category || 'Facebook Page'} • {verifiedPage.followersCount ? `${verifiedPage.followersCount} Followers` : 'Active'}
                 </p>
               </div>
             </div>
-            <span className="text-[11px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+            <span className="text-[11px] bg-emerald-900 text-emerald-300 font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5" />
               সংযুক্ত আছে
             </span>
@@ -157,13 +157,13 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
         {/* Form Inputs */}
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+            <label className="block text-xs font-bold text-slate-200 mb-1 flex items-center justify-between">
               <span>ফেসবুক পেজ আইডি (Page ID) <span className="text-red-500">*</span></span>
               <a
                 href="https://www.facebook.com/me/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] text-blue-600 hover:underline flex items-center gap-1"
+                className="text-[11px] text-blue-400 hover:underline flex items-center gap-1"
               >
                 <Globe className="w-3 h-3" />
                 Page ID কিভাবে পাবেন?
@@ -174,12 +174,12 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
               value={pageId}
               onChange={(e) => setPageId(e.target.value)}
               placeholder="যেমন: 1002348192301"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-600 font-mono"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-600 font-mono"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+            <label className="block text-xs font-bold text-slate-200 mb-1 flex items-center justify-between">
               <span>পেজ এক্সেস টোকেন (Page Access Token) <span className="text-red-500">*</span></span>
               <span className="text-[11px] text-slate-400 font-mono">pages_manage_posts</span>
             </label>
@@ -188,7 +188,7 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
               onChange={(e) => setPageAccessToken(e.target.value)}
               placeholder="EAAG..."
               rows={3}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-900 focus:outline-none focus:border-blue-600 font-mono break-all"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-blue-600 font-mono break-all"
             />
           </div>
 
@@ -197,15 +197,15 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
             <div
               className={`p-3 rounded-lg text-xs font-medium flex items-center gap-2 ${
                 statusMsg.type === 'success'
-                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                  ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                   : statusMsg.type === 'error'
-                  ? 'bg-rose-50 text-rose-800 border border-rose-200'
-                  : 'bg-blue-50 text-blue-800 border border-blue-200'
+                  ? 'bg-rose-950 text-rose-300 border border-rose-800'
+                  : 'bg-blue-950 text-blue-300 border border-blue-800'
               }`}
             >
-              {statusMsg.type === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />}
-              {statusMsg.type === 'error' && <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />}
-              {statusMsg.type === 'info' && <RefreshCw className="w-4 h-4 shrink-0 text-blue-600 animate-spin" />}
+              {statusMsg.type === 'success' && <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />}
+              {statusMsg.type === 'error' && <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />}
+              {statusMsg.type === 'info' && <RefreshCw className="w-4 h-4 shrink-0 text-blue-400 animate-spin" />}
               <span>{statusMsg.text}</span>
             </div>
           )}
@@ -214,7 +214,7 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
           <div className="flex items-center justify-end gap-3 pt-2">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
             >
               বন্ধ করুন
             </button>
@@ -239,25 +239,25 @@ export const FacebookSettingsModal: React.FC<FacebookSettingsModalProps> = ({
         </div>
 
         {/* Step-by-Step Guide for Getting Facebook Access Token */}
-        <div className="mt-6 pt-5 border-t border-slate-100 bg-slate-50/80 p-4 rounded-lg border border-slate-200/80">
-          <h4 className="text-xs font-bold text-slate-800 flex items-center gap-2 mb-2">
-            <HelpCircle className="w-4 h-4 text-blue-600" />
+        <div className="mt-6 pt-5 border-t border-slate-800 bg-slate-950/80 p-4 rounded-lg border border-slate-800/80">
+          <h4 className="text-xs font-bold text-slate-100 flex items-center gap-2 mb-2">
+            <HelpCircle className="w-4 h-4 text-blue-400" />
             <span>কিভাবে ফেসবুক পেজ এক্সেস টোকেন (Page Access Token) তৈরি করবেন?</span>
           </h4>
-          <ol className="list-decimal list-inside space-y-1.5 text-[11px] text-slate-600 leading-relaxed">
+          <ol className="list-decimal list-inside space-y-1.5 text-[11px] text-slate-300 leading-relaxed">
             <li>
               <a
                 href="https://developers.facebook.com/tools/explorer/"
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"
+                className="text-blue-400 font-semibold hover:underline inline-flex items-center gap-1"
               >
                 Meta Graph API Explorer <ExternalLink className="w-3 h-3" />
               </a> এ প্রবেশ করুন।
             </li>
-            <li>আপনার Facebook App এবং সংশ্লিষ্ট <strong className="text-slate-800">Facebook Page</strong> টি সিলেক্ট করুন।</li>
+            <li>আপনার Facebook App এবং সংশ্লিষ্ট <strong className="text-slate-100">Facebook Page</strong> টি সিলেক্ট করুন।</li>
             <li>
-              Permissions মেনু থেকে <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-blue-700 font-bold">pages_manage_posts</code> এবং <code className="bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono text-blue-700 font-bold">pages_read_engagement</code> পারমিশন যোগ করে <strong className="text-slate-800">Generate Access Token</strong> এ ক্লিক করুন।
+              Permissions মেনু থেকে <code className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 font-mono text-blue-400 font-bold">pages_manage_posts</code> এবং <code className="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 font-mono text-blue-400 font-bold">pages_read_engagement</code> পারমিশন যোগ করে <strong className="text-slate-100">Generate Access Token</strong> এ ক্লিক করুন।
             </li>
             <li>জেনারেট হওয়া টোকেনটি কপি করে উপরের বক্সে পেস্ট করুন।</li>
           </ol>

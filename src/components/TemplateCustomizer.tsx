@@ -14,35 +14,35 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
       name: 'Quiz Time! (Playful)',
       desc: 'Yellow note card with social reaction icons & bold option pills',
       badge: 'Playful',
-      color: 'bg-amber-100 text-amber-800 border border-amber-300',
+      color: 'bg-amber-900 text-amber-300 border border-amber-700',
     },
     {
       id: 'classic_bengali',
       name: 'Academic Exam',
       desc: 'Classic exam paper layout with ornate dividers & navy borders',
       badge: 'Academic',
-      color: 'bg-indigo-100 text-indigo-800 border border-indigo-300',
+      color: 'bg-indigo-900 text-indigo-300 border border-indigo-300',
     },
     {
       id: 'aesthetic_story',
       name: 'Aesthetic Story',
       desc: 'Teal canvas with elegant serif headers for social reels',
       badge: 'Social Story',
-      color: 'bg-teal-100 text-teal-800 border border-teal-300',
+      color: 'bg-teal-900 text-teal-300 border border-teal-700',
     },
     {
       id: 'gradient_poster',
       name: 'Gradient Poster (NEW)',
       desc: 'Vibrant multi-color gradient canvas with glassmorphism card',
       badge: 'Vibrant',
-      color: 'bg-purple-100 text-purple-800 border border-purple-300',
+      color: 'bg-purple-900 text-purple-300 border border-purple-700',
     },
     {
       id: 'academic_formal',
       name: 'Board Exam Formal (NEW)',
       desc: 'Official double-border academic test layout with crisp typography',
       badge: 'Official',
-      color: 'bg-slate-100 text-slate-900 border border-slate-300',
+      color: 'bg-slate-800 text-white border border-slate-700',
     },
     {
       id: 'modern_magazine',
@@ -63,14 +63,14 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
       name: 'Dark Cyber Neon',
       desc: 'Dark theme with glowing cyan accents & neon option badges',
       badge: 'Dark Mode',
-      color: 'bg-slate-900 text-cyan-300 border border-cyan-500',
+      color: 'bg-black text-cyan-300 border border-cyan-500',
     },
     {
       id: 'minimal_clean',
       name: 'Minimal Clean White',
       desc: 'Simple high-contrast white layout for maximum readability',
       badge: 'Minimal',
-      color: 'bg-slate-100 text-slate-800 border border-slate-300',
+      color: 'bg-slate-800 text-slate-100 border border-slate-700',
     },
   ];
 
@@ -132,17 +132,17 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
   ];
 
   return (
-    <div className="w-full bg-white border border-slate-200 rounded-lg p-6 shadow-xs text-slate-800 space-y-6">
+    <div className="w-full bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-xs text-slate-100 space-y-6">
       {/* Title */}
-      <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-        <div className="p-2.5 bg-indigo-50 border border-indigo-100 rounded text-indigo-600">
+      <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <div className="p-2.5 bg-indigo-950 border border-indigo-900 rounded text-indigo-400">
           <Palette className="w-5 h-5" />
         </div>
         <div>
-          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
+          <h2 className="text-base font-bold text-white flex items-center gap-2">
             Design & Template Customization
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             Choose templates, adjust layout dimensions, colors, fonts, and borders
           </p>
         </div>
@@ -150,8 +150,8 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
 
       {/* Template Selection */}
       <div>
-        <label className="block text-[11px] font-bold text-indigo-700 uppercase tracking-widest mb-3 flex items-center gap-2">
-          <Layout className="w-4 h-4 text-indigo-600" />
+        <label className="block text-[11px] font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+          <Layout className="w-4 h-4 text-indigo-400" />
           1. Select Design Template ({templates.length} Templates Available)
         </label>
 
@@ -164,22 +164,22 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
                 onClick={() => onChange({ ...config, templateId: tpl.id })}
                 className={`p-3.5 rounded-lg border text-left transition-all cursor-pointer relative flex flex-col justify-between ${
                   isSelected
-                    ? 'border-indigo-600 bg-indigo-50/70 ring-1 ring-indigo-600 shadow-xs'
-                    : 'border-slate-200 bg-slate-50/50 hover:border-slate-300 hover:bg-white'
+                    ? 'border-indigo-600 bg-indigo-950/70 ring-1 ring-indigo-600 shadow-xs'
+                    : 'border-slate-800 bg-slate-950/50 hover:border-slate-700 hover:bg-slate-900'
                 }`}
               >
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-bold text-sm text-slate-900">{tpl.name}</span>
+                    <span className="font-bold text-sm text-white">{tpl.name}</span>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${tpl.color}`}>
                       {tpl.badge}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 leading-snug">{tpl.desc}</p>
+                  <p className="text-xs text-slate-400 leading-snug">{tpl.desc}</p>
                 </div>
 
                 {isSelected && (
-                  <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-indigo-700">
+                  <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-indigo-400">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Active Template</span>
                   </div>
@@ -194,8 +194,8 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
         {/* Aspect Ratio */}
         <div>
-          <label className="block text-[11px] font-bold text-indigo-700 uppercase tracking-widest mb-2 flex items-center gap-2">
-            <Maximize2 className="w-4 h-4 text-indigo-600" />
+          <label className="block text-[11px] font-bold text-indigo-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <Maximize2 className="w-4 h-4 text-indigo-400" />
             2. Canvas Aspect Ratio
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -207,8 +207,8 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
                   onClick={() => onChange({ ...config, aspectRatio: ar.id })}
                   className={`p-2.5 rounded border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
                     isSelected
-                      ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold'
-                      : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300'
+                      ? 'border-indigo-600 bg-indigo-950 text-indigo-400 font-bold'
+                      : 'border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700'
                   }`}
                 >
                   <span className="text-base mb-0.5">{ar.iconStr}</span>
@@ -222,19 +222,19 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
 
         {/* Font Selection */}
         <div>
-          <label className="block text-[11px] font-bold text-indigo-700 uppercase tracking-widest mb-2 flex items-center gap-2">
-            <Type className="w-4 h-4 text-indigo-600" />
+          <label className="block text-[11px] font-bold text-indigo-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+            <Type className="w-4 h-4 text-indigo-400" />
             3. Typography Font Family
           </label>
           <select
             value={config.fontFamily}
             onChange={(e) => onChange({ ...config, fontFamily: e.target.value })}
-            className="w-full bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 cursor-pointer font-medium"
+            className="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-xs text-white focus:outline-none focus:border-indigo-600 cursor-pointer font-medium"
           >
             {fontGroups.map((group) => (
-              <optgroup key={group.group} label={group.group} className="font-bold text-slate-700 bg-slate-100">
+              <optgroup key={group.group} label={group.group} className="font-bold text-slate-200 bg-slate-800">
                 {group.fonts.map((f) => (
-                  <option key={f.id} value={f.id} className="font-normal text-slate-900 bg-white">
+                  <option key={f.id} value={f.id} className="font-normal text-white bg-slate-900">
                     {f.name}
                   </option>
                 ))}
@@ -243,16 +243,16 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
           </select>
 
           {/* Font Sample Preview Card */}
-          <div className="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded text-center">
+          <div className="mt-2 p-2.5 bg-slate-950 border border-slate-800 rounded text-center">
             <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block mb-1">Font Preview ({config.fontFamily})</span>
-            <p className="text-sm text-slate-900 leading-tight" style={{ fontFamily: `'${config.fontFamily}', sans-serif` }}>
+            <p className="text-sm text-white leading-tight" style={{ fontFamily: `'${config.fontFamily}', sans-serif` }}>
               MCQ Quiz Canvas • প্রশ্নের নমুনা ১
             </p>
           </div>
 
           {/* Question Prefix Option */}
           <div className="mt-3">
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-200 mb-1">
               Question Numbering Prefix
             </label>
             <input
@@ -260,7 +260,7 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
               value={config.questionPrefix}
               onChange={(e) => onChange({ ...config, questionPrefix: e.target.value })}
               placeholder="e.g. Question: or Q."
-              className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900 focus:outline-none focus:border-indigo-600"
+              className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white focus:outline-none focus:border-indigo-600"
             />
           </div>
         </div>
@@ -269,7 +269,7 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
       {/* Header & Footer Custom Text */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs font-semibold text-slate-200 mb-1">
             Header Title Text
           </label>
           <input
@@ -277,12 +277,12 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
             value={config.headerText}
             onChange={(e) => onChange({ ...config, headerText: e.target.value })}
             placeholder="e.g. Quiz Time! or EXAM QUESTION"
-            className="w-full bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600"
+            className="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-xs text-white focus:outline-none focus:border-indigo-600"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
+          <label className="block text-xs font-semibold text-slate-200 mb-1">
             Footer / Call-To-Action Subtitle
           </label>
           <input
@@ -290,21 +290,21 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
             value={config.footerText}
             onChange={(e) => onChange({ ...config, footerText: e.target.value })}
             placeholder="e.g. Comment your answer below"
-            className="w-full bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600"
+            className="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-xs text-white focus:outline-none focus:border-indigo-600"
           />
         </div>
       </div>
 
       {/* Color Customization Palette */}
-      <div className="pt-2 border-t border-slate-100">
-        <label className="block text-[11px] font-bold text-indigo-700 uppercase tracking-widest mb-3 flex items-center gap-2">
-          <Palette className="w-4 h-4 text-indigo-600" />
+      <div className="pt-2 border-t border-slate-800">
+        <label className="block text-[11px] font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+          <Palette className="w-4 h-4 text-indigo-400" />
           4. Custom Theme Color Palette
         </label>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-200 mb-1">
               Primary Accent Color
             </label>
             <div className="flex items-center gap-2">
@@ -312,19 +312,19 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
                 type="color"
                 value={config.primaryColor}
                 onChange={(e) => onChange({ ...config, primaryColor: e.target.value })}
-                className="w-8 h-8 rounded border border-slate-200 cursor-pointer p-0"
+                className="w-8 h-8 rounded border border-slate-800 cursor-pointer p-0"
               />
               <input
                 type="text"
                 value={config.primaryColor}
                 onChange={(e) => onChange({ ...config, primaryColor: e.target.value })}
-                className="flex-1 bg-slate-50 border border-slate-200 rounded p-1.5 text-xs font-mono text-slate-900 uppercase"
+                className="flex-1 bg-slate-950 border border-slate-800 rounded p-1.5 text-xs font-mono text-white uppercase"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-200 mb-1">
               Background Color
             </label>
             <div className="flex items-center gap-2">
@@ -332,19 +332,19 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
                 type="color"
                 value={config.backgroundColor.startsWith('#') ? config.backgroundColor : '#647cf6'}
                 onChange={(e) => onChange({ ...config, backgroundColor: e.target.value })}
-                className="w-8 h-8 rounded border border-slate-200 cursor-pointer p-0"
+                className="w-8 h-8 rounded border border-slate-800 cursor-pointer p-0"
               />
               <input
                 type="text"
                 value={config.backgroundColor}
                 onChange={(e) => onChange({ ...config, backgroundColor: e.target.value })}
-                className="flex-1 bg-slate-50 border border-slate-200 rounded p-1.5 text-xs font-mono text-slate-900"
+                className="flex-1 bg-slate-950 border border-slate-800 rounded p-1.5 text-xs font-mono text-white"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-slate-200 mb-1">
               Watermark / Branding Tag
             </label>
             <input
@@ -352,20 +352,20 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
               value={config.watermarkText}
               onChange={(e) => onChange({ ...config, watermarkText: e.target.value })}
               placeholder="e.g. MCQ Canvas Studio"
-              className="w-full bg-slate-50 border border-slate-200 rounded p-2 text-xs text-slate-900"
+              className="w-full bg-slate-950 border border-slate-800 rounded p-2 text-xs text-white"
             />
           </div>
         </div>
 
         {/* Preset palette buttons */}
         <div className="flex items-center gap-1.5 mt-3">
-          <span className="text-[11px] font-semibold text-slate-500 mr-2">Quick Presets:</span>
+          <span className="text-[11px] font-semibold text-slate-400 mr-2">Quick Presets:</span>
           {presetColors.map((color) => (
             <button
               key={color}
               onClick={() => onChange({ ...config, primaryColor: color, backgroundColor: color })}
               style={{ backgroundColor: color }}
-              className="w-6 h-6 rounded-full border border-white shadow-xs cursor-pointer hover:scale-110 transition-transform"
+              className="w-6 h-6 rounded-full border border-slate-900 shadow-xs cursor-pointer hover:scale-110 transition-transform"
               title={color}
             />
           ))}
@@ -373,10 +373,10 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
       </div>
 
       {/* Font Sizes & Options Toggle */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-slate-100">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 border-t border-slate-800">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Question Font Size: <span className="text-indigo-600 font-bold">{config.questionFontSize}px</span>
+          <label className="block text-xs font-semibold text-slate-200 mb-1">
+            Question Font Size: <span className="text-indigo-400 font-bold">{config.questionFontSize}px</span>
           </label>
           <input
             type="range"
@@ -389,8 +389,8 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">
-            Options Font Size: <span className="text-indigo-600 font-bold">{config.optionsFontSize}px</span>
+          <label className="block text-xs font-semibold text-slate-200 mb-1">
+            Options Font Size: <span className="text-indigo-400 font-bold">{config.optionsFontSize}px</span>
           </label>
           <input
             type="range"
@@ -403,7 +403,7 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
         </div>
 
         <div className="flex items-center justify-start pt-4">
-          <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+          <label className="flex items-center gap-2 text-xs font-semibold text-slate-200 cursor-pointer">
             <input
               type="checkbox"
               checked={config.highlightCorrect}
@@ -411,7 +411,7 @@ export const TemplateCustomizer: React.FC<Props> = ({ config, onChange }) => {
               className="w-4 h-4 rounded accent-green-600 cursor-pointer"
             />
             <span className="flex items-center gap-1.5">
-              <CheckSquare className="w-4 h-4 text-green-600" />
+              <CheckSquare className="w-4 h-4 text-green-400" />
               Highlight Correct Answer in Green
             </span>
           </label>

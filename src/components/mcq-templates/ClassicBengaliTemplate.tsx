@@ -91,7 +91,7 @@ export const ClassicBengaliTemplate: React.FC<Props> = ({ mcq, config }) => {
                   className={`w-9 h-9 rounded-full border-2 flex items-center justify-center font-extrabold text-lg shrink-0 ${
                     isCorrect
                       ? 'border-emerald-600 bg-emerald-600 text-white'
-                      : 'border-[#1e3a8a] text-[#1e3a8a] bg-white'
+                      : 'border-[#1e3a8a] text-[#1e3a8a] bg-slate-900'
                   }`}
                 >
                   {opt.label}
@@ -112,9 +112,9 @@ export const ClassicBengaliTemplate: React.FC<Props> = ({ mcq, config }) => {
         </div>
 
         {/* Footer info */}
-        <div className="z-10 w-full pt-4 mt-auto border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500 font-medium">
+        <div className="z-10 w-full pt-4 mt-auto border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 font-medium">
           <span>{mcq.category || config.watermarkText || 'MCQ Quiz'}</span>
-          <span className="font-semibold text-slate-700">{config.footerText || 'উত্তর জানা থাকলে কমেন্ট করুন'}</span>
+          <span className="font-semibold text-slate-200">{config.footerText || 'উত্তর জানা থাকলে কমেন্ট করুন'}</span>
         </div>
       </div>
     </div>

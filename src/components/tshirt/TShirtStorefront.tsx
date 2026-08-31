@@ -81,7 +81,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
     <div className="space-y-8">
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-6 right-6 z-50 bg-black text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 animate-in slide-in-from-bottom-5">
           <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <span className="text-xs sm:text-sm font-semibold">{toastMsg}</span>
         </div>
@@ -144,8 +144,8 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === category
-                    ? 'bg-slate-900 text-white shadow-md'
-                    : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800'
                 }`}
               >
                 {category}
@@ -162,14 +162,14 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 placeholder="Search t-shirts & designs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-600 shadow-2xs"
+                className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs font-medium text-slate-100 placeholder-slate-400 focus:outline-none focus:border-indigo-600 shadow-2xs"
               />
             </div>
 
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none shadow-2xs cursor-pointer"
+              className="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs font-bold text-slate-200 focus:outline-none shadow-2xs cursor-pointer"
             >
               <option value="featured">Featured Drops</option>
               <option value="price-low">Price: Low to High</option>
@@ -179,12 +179,12 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+        <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
           <span>Found {filteredProducts.length} premium design{filteredProducts.length !== 1 ? 's' : ''}</span>
           {products.length === 0 && (
             <button
               onClick={onOpenStudio}
-              className="text-indigo-600 hover:underline font-bold"
+              className="text-indigo-400 hover:underline font-bold"
             >
               Upload PNG designs from Admin Studio
             </button>
@@ -194,13 +194,13 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
 
       {/* Product Showcase Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-3xl p-16 text-center space-y-4 shadow-xs">
-          <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-16 text-center space-y-4 shadow-xs">
+          <div className="w-16 h-16 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-slate-400">
             <ShoppingBag className="w-8 h-8" />
           </div>
           <div className="space-y-1 max-w-sm mx-auto">
-            <h3 className="text-base font-bold text-slate-900">No Products Found</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-base font-bold text-white">No Products Found</h3>
+            <p className="text-xs text-slate-400">
               Try resetting your search query or upload fresh PNG designs in the Bulk Mockup Studio.
             </p>
           </div>
@@ -219,13 +219,13 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
             return (
               <div
                 key={product.id}
-                className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
+                className="bg-slate-900 border border-slate-800/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col group"
               >
                 {/* Mockup Card Header & Interactive Image */}
-                <div className="relative bg-slate-50 p-2 overflow-hidden">
+                <div className="relative bg-slate-950 p-2 overflow-hidden">
                   {/* Badge */}
                   {product.badge && (
-                    <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-slate-900/90 backdrop-blur-xs text-white text-[10px] font-bold rounded-lg shadow-xs">
+                    <span className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-black/90 backdrop-blur-xs text-white text-[10px] font-bold rounded-lg shadow-xs">
                       {product.badge}
                     </span>
                   )}
@@ -248,7 +248,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                   </div>
 
                   {/* Quick Color Swatch Preview Dots on Bottom of Card */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-white/95 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-slate-900/95 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-800/80 shadow-xs">
                     <div className="flex items-center gap-1.5">
                       {product.availableColors.slice(0, 5).map((hex) => (
                         <button
@@ -259,7 +259,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                             setActiveCardColors((prev) => ({ ...prev, [product.id]: hex }));
                           }}
                           className={`w-4 h-4 rounded-full border cursor-pointer transition-transform ${
-                            currentColor === hex ? 'border-indigo-600 scale-125 ring-1 ring-indigo-300' : 'border-slate-300 hover:scale-110'
+                            currentColor === hex ? 'border-indigo-600 scale-125 ring-1 ring-indigo-300' : 'border-slate-700 hover:scale-110'
                           }`}
                           style={{ backgroundColor: hex }}
                           title={`Color: ${hex}`}
@@ -267,7 +267,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       ))}
                     </div>
 
-                    <span className="text-[10px] font-bold text-slate-500">
+                    <span className="text-[10px] font-bold text-slate-400">
                       {product.availableColors.length} Shades
                     </span>
                   </div>
@@ -276,8 +276,8 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 {/* Card Content & Order CTA */}
                 <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                   <div className="space-y-1.5">
-                    <div className="flex items-center justify-between text-[11px] text-slate-500">
-                      <span className="font-semibold text-indigo-600">{product.category}</span>
+                    <div className="flex items-center justify-between text-[11px] text-slate-400">
+                      <span className="font-semibold text-indigo-400">{product.category}</span>
                       <div className="flex items-center gap-1 text-amber-500 font-bold">
                         <Star className="w-3 h-3 fill-amber-400" />
                         <span>{product.rating.toFixed(1)}</span>
@@ -287,17 +287,17 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
 
                     <h3
                       onClick={() => handleOpenDetailModal(product)}
-                      className="font-bold text-slate-900 text-sm leading-snug line-clamp-2 hover:text-indigo-600 cursor-pointer transition-colors"
+                      className="font-bold text-white text-sm leading-snug line-clamp-2 hover:text-indigo-400 cursor-pointer transition-colors"
                     >
                       {product.title}
                     </h3>
                   </div>
 
                   {/* Pricing and Quick Order Buttons */}
-                  <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="space-y-3 pt-2 border-t border-slate-800">
                     <div className="flex items-baseline justify-between">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-base font-extrabold text-slate-900">
+                        <span className="text-base font-extrabold text-white">
                           ৳{product.price}
                         </span>
                         {product.originalPrice > product.price && (
@@ -307,7 +307,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                         )}
                       </div>
 
-                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded">
                         In Stock ({product.stock})
                       </span>
                     </div>
@@ -316,16 +316,16 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       <button
                         type="button"
                         onClick={() => handleAddToCartWithToast(product, product.availableSizes[0] || 'L', currentColor, 1)}
-                        className="py-2 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        className="py-2 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                       >
-                        <ShoppingBag className="w-3.5 h-3.5 text-indigo-600" />
+                        <ShoppingBag className="w-3.5 h-3.5 text-indigo-400" />
                         <span>Add to Cart</span>
                       </button>
 
                       <button
                         type="button"
                         onClick={() => onDirectCheckout(product, product.availableSizes[0] || 'L', currentColor, 1)}
-                        className="py-2 px-2.5 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                        className="py-2 px-2.5 bg-black hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                       >
                         <Zap className="w-3.5 h-3.5 text-amber-400" />
                         <span>Buy Now</span>
@@ -342,17 +342,17 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
       {/* Product Detail Modal */}
       {previewProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative my-8">
+          <div className="bg-slate-900 rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative my-8">
             <button
               onClick={() => setPreviewProduct(null)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer transition-colors"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center cursor-pointer transition-colors"
             >
               ✕
             </button>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               {/* Big Interactive Mockup View with Front/Back Toggle */}
-              <div className="bg-slate-50 rounded-2xl p-2 border border-slate-200 relative">
+              <div className="bg-slate-950 rounded-2xl p-2 border border-slate-800 relative">
                 <TShirtMockupView
                   color={modalColor}
                   designImage={previewProduct.designImage}
@@ -365,7 +365,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                   onToggleViewMode={setModalViewMode}
                   showViewToggle={true}
                 />
-                <div className="text-center pt-2 pb-1 text-[11px] font-bold text-slate-500">
+                <div className="text-center pt-2 pb-1 text-[11px] font-bold text-slate-400">
                   Streetwear 3D Boxy Cut • Click Front / Back to Preview
                 </div>
               </div>
@@ -373,13 +373,13 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
               {/* Product Specifications & Order Form */}
               <div className="space-y-5">
                 <div className="space-y-1.5">
-                  <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">
+                  <span className="text-xs font-bold text-indigo-400 bg-indigo-950 px-2.5 py-1 rounded-md">
                     {previewProduct.category}
                   </span>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900 leading-snug">
+                  <h2 className="text-lg sm:text-xl font-black text-white leading-snug">
                     {previewProduct.title}
                   </h2>
-                  <div className="flex items-center gap-3 text-xs text-slate-500">
+                  <div className="flex items-center gap-3 text-xs text-slate-400">
                     <div className="flex items-center text-amber-500 font-bold">
                       <Star className="w-3.5 h-3.5 fill-amber-400" />
                       <span className="ml-1">{previewProduct.rating.toFixed(1)}</span>
@@ -387,13 +387,13 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                     <span>•</span>
                     <span>{previewProduct.reviewsCount} reviews</span>
                     <span>•</span>
-                    <span className="text-emerald-600 font-bold">In Stock ({previewProduct.stock} pcs)</span>
+                    <span className="text-emerald-400 font-bold">In Stock ({previewProduct.stock} pcs)</span>
                   </div>
                 </div>
 
                 {/* Price */}
-                <div className="flex items-baseline gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <span className="text-2xl font-black text-slate-900">
+                <div className="flex items-baseline gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800">
+                  <span className="text-2xl font-black text-white">
                     ৳{previewProduct.price}
                   </span>
                   {previewProduct.originalPrice > previewProduct.price && (
@@ -401,14 +401,14 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       ৳{previewProduct.originalPrice}
                     </span>
                   )}
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded ml-auto">
+                  <span className="text-xs font-bold text-emerald-400 bg-emerald-900/70 px-2 py-0.5 rounded ml-auto">
                     Cash on Delivery
                   </span>
                 </div>
 
                 {/* Color Selection Palette */}
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold text-slate-800">
+                  <label className="block text-xs font-bold text-slate-100">
                     Select Fabric Color:
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -419,8 +419,8 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                         onClick={() => setModalColor(c.hex)}
                         className={`w-8 h-8 rounded-full border-2 cursor-pointer transition-all flex items-center justify-center ${
                           modalColor === c.hex
-                            ? 'border-indigo-600 scale-110 shadow-sm ring-2 ring-indigo-200'
-                            : 'border-slate-300 hover:scale-105'
+                            ? 'border-indigo-600 scale-110 shadow-sm ring-2 ring-indigo-800'
+                            : 'border-slate-700 hover:scale-105'
                         }`}
                         style={{ backgroundColor: c.hex }}
                         title={c.name}
@@ -432,11 +432,11 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                 {/* Size Selection & Size Guide */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-800">Select Size:</label>
+                    <label className="text-xs font-bold text-slate-100">Select Size:</label>
                     <button
                       type="button"
                       onClick={() => setShowSizeGuide(!showSizeGuide)}
-                      className="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer"
+                      className="text-[11px] font-bold text-indigo-400 hover:underline flex items-center gap-1 cursor-pointer"
                     >
                       <Info className="w-3 h-3" />
                       <span>Size Guide Chart</span>
@@ -451,8 +451,8 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                         onClick={() => setModalSize(size)}
                         className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                           modalSize === size
-                            ? 'bg-slate-900 text-white shadow-xs'
-                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                            ? 'bg-black text-white shadow-xs'
+                            : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
                         }`}
                       >
                         {size}
@@ -462,19 +462,19 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
 
                   {/* Size Guide Table Toggle */}
                   {showSizeGuide && (
-                    <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] space-y-2 animate-in fade-in">
-                      <div className="font-bold text-slate-800">Measurement Chart (Inches):</div>
-                      <div className="grid grid-cols-4 gap-1 text-slate-600 font-mono text-center">
-                        <div className="font-bold bg-slate-200 py-1 rounded">Size</div>
-                        <div className="font-bold bg-slate-200 py-1 rounded">Chest</div>
-                        <div className="font-bold bg-slate-200 py-1 rounded">Length</div>
-                        <div className="font-bold bg-slate-200 py-1 rounded">Sleeve</div>
+                    <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] space-y-2 animate-in fade-in">
+                      <div className="font-bold text-slate-100">Measurement Chart (Inches):</div>
+                      <div className="grid grid-cols-4 gap-1 text-slate-300 font-mono text-center">
+                        <div className="font-bold bg-slate-700 py-1 rounded">Size</div>
+                        <div className="font-bold bg-slate-700 py-1 rounded">Chest</div>
+                        <div className="font-bold bg-slate-700 py-1 rounded">Length</div>
+                        <div className="font-bold bg-slate-700 py-1 rounded">Sleeve</div>
                         {SIZE_CHART.map((sc) => (
                           <React.Fragment key={sc.size}>
-                            <div className="font-bold bg-white py-1">{sc.size}</div>
-                            <div className="bg-white py-1">{sc.chest}</div>
-                            <div className="bg-white py-1">{sc.length}</div>
-                            <div className="bg-white py-1">{sc.sleeve}</div>
+                            <div className="font-bold bg-slate-900 py-1">{sc.size}</div>
+                            <div className="bg-slate-900 py-1">{sc.chest}</div>
+                            <div className="bg-slate-900 py-1">{sc.length}</div>
+                            <div className="bg-slate-900 py-1">{sc.sleeve}</div>
                           </React.Fragment>
                         ))}
                       </div>
@@ -484,20 +484,20 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
 
                 {/* Quantity */}
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-800">Quantity:</span>
-                  <div className="flex items-center border border-slate-300 rounded-xl overflow-hidden bg-slate-50">
+                  <span className="text-xs font-bold text-slate-100">Quantity:</span>
+                  <div className="flex items-center border border-slate-700 rounded-xl overflow-hidden bg-slate-950">
                     <button
                       type="button"
                       onClick={() => setModalQty((prev) => Math.max(1, prev - 1))}
-                      className="p-2 hover:bg-slate-200 text-slate-700 cursor-pointer"
+                      className="p-2 hover:bg-slate-700 text-slate-200 cursor-pointer"
                     >
                       <Minus className="w-3.5 h-3.5" />
                     </button>
-                    <span className="px-4 font-bold text-xs text-slate-900">{modalQty}</span>
+                    <span className="px-4 font-bold text-xs text-white">{modalQty}</span>
                     <button
                       type="button"
                       onClick={() => setModalQty((prev) => prev + 1)}
-                      className="p-2 hover:bg-slate-200 text-slate-700 cursor-pointer"
+                      className="p-2 hover:bg-slate-700 text-slate-200 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                     </button>
@@ -512,9 +512,9 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       handleAddToCartWithToast(previewProduct, modalSize, modalColor, modalQty);
                       setPreviewProduct(null);
                     }}
-                    className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
+                    className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-100 font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
-                    <ShoppingBag className="w-4 h-4 text-indigo-600" />
+                    <ShoppingBag className="w-4 h-4 text-indigo-400" />
                     <span>Add to Cart</span>
                   </button>
 
@@ -524,7 +524,7 @@ export const TShirtStorefront: React.FC<TShirtStorefrontProps> = ({
                       onDirectCheckout(previewProduct, modalSize, modalColor, modalQty);
                       setPreviewProduct(null);
                     }}
-                    className="py-3 px-4 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
+                    className="py-3 px-4 bg-black hover:bg-indigo-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all"
                   >
                     <Zap className="w-4 h-4 text-amber-400" />
                     <span>Buy Now</span>

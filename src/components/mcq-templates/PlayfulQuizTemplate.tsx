@@ -51,7 +51,7 @@ export const PlayfulQuizTemplate: React.FC<Props> = ({ mcq, config, index = 1 })
 
       {/* Facebook style Reaction Bar floating on top */}
       {config.showReactionsBar && (
-        <div className="z-20 mb-3 -mt-2 bg-white/95 border-2 border-slate-900 rounded-full px-4 py-1.5 flex items-center gap-2.5 shadow-[3px_3px_0px_#000000] relative">
+        <div className="z-20 mb-3 -mt-2 bg-slate-900/95 border-2 border-slate-700 rounded-full px-4 py-1.5 flex items-center gap-2.5 shadow-[3px_3px_0px_#000000] relative">
           <span className="text-lg hover:scale-125 transition-transform">👍</span>
           <span className="text-lg hover:scale-125 transition-transform">❤️</span>
           <span className="text-lg hover:scale-125 transition-transform">😡</span>
@@ -77,19 +77,19 @@ export const PlayfulQuizTemplate: React.FC<Props> = ({ mcq, config, index = 1 })
         {/* Main Cream Card */}
         <div
           style={{ backgroundColor: config.cardBgColor || '#fffdf0' }}
-          className="relative z-10 rounded-3xl border-2 border-slate-900 p-6 flex flex-col items-center justify-between min-h-[360px] text-slate-900 shadow-sm"
+          className="relative z-10 rounded-3xl border-2 border-slate-700 p-6 flex flex-col items-center justify-between min-h-[360px] text-white shadow-sm"
         >
           {/* Interactive Heading Box with Handles */}
           <div className="relative px-6 py-1.5 my-1 border-2 border-blue-500/80 border-dashed rounded-lg flex items-center justify-center">
             {/* Corner Handle Dots */}
-            <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-white border-2 border-blue-600 rounded-sm" />
-            <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-white border-2 border-blue-600 rounded-sm" />
-            <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-white border-2 border-blue-600 rounded-sm" />
-            <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-white border-2 border-blue-600 rounded-sm" />
+            <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-slate-900 border-2 border-blue-600 rounded-sm" />
+            <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-slate-900 border-2 border-blue-600 rounded-sm" />
+            <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-slate-900 border-2 border-blue-600 rounded-sm" />
+            <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-slate-900 border-2 border-blue-600 rounded-sm" />
 
             <h2
               style={{ fontSize: `${config.titleFontSize || 28}px` }}
-              className="font-extrabold tracking-tight text-center text-slate-900"
+              className="font-extrabold tracking-tight text-center text-white"
             >
               {config.headerText || 'Quiz Time!'}
             </h2>
@@ -106,7 +106,7 @@ export const PlayfulQuizTemplate: React.FC<Props> = ({ mcq, config, index = 1 })
           <div className="w-full my-4 text-center px-2">
             <p
               style={{ fontSize: `${config.questionFontSize || 18}px` }}
-              className="font-bold text-slate-800 leading-snug"
+              className="font-bold text-slate-100 leading-snug"
             >
               {mcq.question}
             </p>
@@ -127,11 +127,11 @@ export const PlayfulQuizTemplate: React.FC<Props> = ({ mcq, config, index = 1 })
                     backgroundColor: isCorrect ? '#22c55e' : (config.primaryColor || '#fdbd58'),
                     color: isCorrect ? '#ffffff' : '#0f172a',
                   }}
-                  className="w-full rounded-full border-2 border-slate-900 px-3 py-2 flex items-center justify-between shadow-[2px_2px_0px_#000000] transition-all"
+                  className="w-full rounded-full border-2 border-slate-700 px-3 py-2 flex items-center justify-between shadow-[2px_2px_0px_#000000] transition-all"
                 >
                   <div className="flex items-center gap-3 w-full">
                     {/* Circle Badge with Option Letter */}
-                    <span className="w-8 h-8 rounded-full bg-white text-slate-900 border-2 border-slate-900 flex items-center justify-center font-extrabold text-sm shrink-0">
+                    <span className="w-8 h-8 rounded-full bg-slate-900 text-white border-2 border-slate-700 flex items-center justify-center font-extrabold text-sm shrink-0">
                       {opt.label}
                     </span>
                     <span
@@ -147,9 +147,9 @@ export const PlayfulQuizTemplate: React.FC<Props> = ({ mcq, config, index = 1 })
           </div>
 
           {/* Footer / Watermark */}
-          <div className="w-full pt-2 flex items-center justify-between text-xs text-slate-600 font-medium">
+          <div className="w-full pt-2 flex items-center justify-between text-xs text-slate-300 font-medium">
             <span>{config.categoryCol || mcq.category || ''}</span>
-            <div className="flex items-center gap-1.5 font-bold text-slate-800 ml-auto">
+            <div className="flex items-center gap-1.5 font-bold text-slate-100 ml-auto">
               <span>{config.footerText || 'Comment your answer'}</span>
               <span className="text-base">💬</span>
             </div>

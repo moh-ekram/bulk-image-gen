@@ -73,19 +73,19 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs overflow-y-auto animate-in fade-in">
-      <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative my-8">
+      <div className="bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-800 relative my-8">
         {!placedOrder ? (
           <>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <ShoppingBag className="w-5 h-5 text-indigo-600" />
-                <h2 className="font-extrabold text-slate-900 text-lg">
+                <ShoppingBag className="w-5 h-5 text-indigo-400" />
+                <h2 className="font-extrabold text-white text-lg">
                   Direct Checkout & Delivery
                 </h2>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-300 hover:bg-slate-800 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -93,28 +93,28 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
             <form onSubmit={handlePlaceOrder} className="space-y-5 pt-4">
               {/* Order Summary Strip */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-                <div className="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3">
+                <div className="text-xs font-bold text-slate-200 flex items-center justify-between">
                   <span>Order Items ({items.length}):</span>
-                  <span className="font-mono text-indigo-600">Subtotal: ৳{subtotal}</span>
+                  <span className="font-mono text-indigo-400">Subtotal: ৳{subtotal}</span>
                 </div>
 
                 <div className="max-h-36 overflow-y-auto space-y-2 pr-1">
                   {items.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-slate-200">
+                    <div key={item.id} className="flex items-center justify-between text-xs bg-slate-900 p-2 rounded-xl border border-slate-800">
                       <div className="flex items-center gap-2 min-w-0">
                         <div
-                          className="w-3.5 h-3.5 rounded-full border border-slate-300 shrink-0"
+                          className="w-3.5 h-3.5 rounded-full border border-slate-700 shrink-0"
                           style={{ backgroundColor: item.selectedColor }}
                         />
-                        <span className="font-semibold text-slate-800 truncate">
+                        <span className="font-semibold text-slate-100 truncate">
                           {item.product.title}
                         </span>
-                        <span className="text-slate-500 font-mono text-[11px]">
+                        <span className="text-slate-400 font-mono text-[11px]">
                           ({item.selectedSize} × {item.quantity})
                         </span>
                       </div>
-                      <span className="font-bold text-slate-900 shrink-0">
+                      <span className="font-bold text-white shrink-0">
                         ৳{item.product.price * item.quantity}
                       </span>
                     </div>
@@ -125,7 +125,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               {/* Customer Inputs */}
               <div className="space-y-3 text-xs">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-slate-200 mb-1">
                     Your Full Name <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -133,13 +133,13 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. John Doe"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none focus:border-indigo-600"
                   />
-                  {errors.name && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.name}</p>}
+                  {errors.name && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.name}</p>}
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-slate-200 mb-1">
                     Mobile Phone (11 digits) <span className="text-rose-500">*</span>
                   </label>
                   <input
@@ -147,13 +147,13 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="e.g. 017XXXXXXXX"
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-semibold text-white focus:outline-none focus:border-indigo-600"
                   />
-                  {errors.phone && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.phone}</p>}
+                  {errors.phone && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.phone}</p>}
                 </div>
 
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-slate-200 mb-1">
                     Full Delivery Address <span className="text-rose-500">*</span>
                   </label>
                   <textarea
@@ -161,14 +161,14 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                     onChange={(e) => setAddress(e.target.value)}
                     rows={2}
                     placeholder="House / Apartment no., Road, Area, City..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium text-slate-900 focus:outline-none focus:border-indigo-600"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs font-medium text-white focus:outline-none focus:border-indigo-600"
                   />
-                  {errors.address && <p className="text-[11px] text-rose-600 mt-1 font-semibold">{errors.address}</p>}
+                  {errors.address && <p className="text-[11px] text-rose-400 mt-1 font-semibold">{errors.address}</p>}
                 </div>
 
                 {/* Delivery Zone Selector */}
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-slate-200 mb-1">
                     Select Delivery Zone
                   </label>
                   <div className="grid grid-cols-2 gap-3">
@@ -177,12 +177,12 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       onClick={() => setDistrictZone('inside_dhaka')}
                       className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between cursor-pointer transition-all ${
                         districtZone === 'inside_dhaka'
-                          ? 'bg-indigo-50 border-indigo-600 text-indigo-900 shadow-xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-700'
+                          ? 'bg-indigo-950 border-indigo-600 text-indigo-300 shadow-xs'
+                          : 'bg-slate-950 border-slate-800 text-slate-200'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-indigo-600" />
+                        <Truck className="w-4 h-4 text-indigo-400" />
                         <span>Inside Dhaka</span>
                       </div>
                       <span className="font-mono">৳60</span>
@@ -193,12 +193,12 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       onClick={() => setDistrictZone('outside_dhaka')}
                       className={`p-3 rounded-xl border text-xs font-bold flex items-center justify-between cursor-pointer transition-all ${
                         districtZone === 'outside_dhaka'
-                          ? 'bg-indigo-50 border-indigo-600 text-indigo-900 shadow-xs'
-                          : 'bg-slate-50 border-slate-200 text-slate-700'
+                          ? 'bg-indigo-950 border-indigo-600 text-indigo-300 shadow-xs'
+                          : 'bg-slate-950 border-slate-800 text-slate-200'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <Truck className="w-4 h-4 text-indigo-600" />
+                        <Truck className="w-4 h-4 text-indigo-400" />
                         <span>Outside Dhaka</span>
                       </div>
                       <span className="font-mono">৳120</span>
@@ -208,7 +208,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
 
                 {/* Payment Method Selector */}
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">
+                  <label className="block font-bold text-slate-200 mb-1">
                     Payment Method
                   </label>
                   <div className="grid grid-cols-3 gap-2">
@@ -217,11 +217,11 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       onClick={() => setPaymentMethod('cod')}
                       className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer ${
                         paymentMethod === 'cod'
-                          ? 'bg-emerald-50 border-emerald-600 text-emerald-900 ring-1 ring-emerald-300'
-                          : 'bg-slate-50 border-slate-200 text-slate-700'
+                          ? 'bg-emerald-950 border-emerald-600 text-emerald-300 ring-1 ring-emerald-700'
+                          : 'bg-slate-950 border-slate-800 text-slate-200'
                       }`}
                     >
-                      <Banknote className="w-4 h-4 text-emerald-600" />
+                      <Banknote className="w-4 h-4 text-emerald-400" />
                       <span>Cash on Delivery</span>
                     </button>
 
@@ -230,11 +230,11 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       onClick={() => setPaymentMethod('bkash')}
                       className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer ${
                         paymentMethod === 'bkash'
-                          ? 'bg-pink-50 border-pink-600 text-pink-900 ring-1 ring-pink-300'
-                          : 'bg-slate-50 border-slate-200 text-slate-700'
+                          ? 'bg-pink-950 border-pink-600 text-pink-300 ring-1 ring-pink-700'
+                          : 'bg-slate-950 border-slate-800 text-slate-200'
                       }`}
                     >
-                      <Smartphone className="w-4 h-4 text-pink-600" />
+                      <Smartphone className="w-4 h-4 text-pink-400" />
                       <span>bKash</span>
                     </button>
 
@@ -243,11 +243,11 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
                       onClick={() => setPaymentMethod('nagad')}
                       className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer ${
                         paymentMethod === 'nagad'
-                          ? 'bg-orange-50 border-orange-600 text-orange-900 ring-1 ring-orange-300'
-                          : 'bg-slate-50 border-slate-200 text-slate-700'
+                          ? 'bg-orange-950 border-orange-600 text-orange-300 ring-1 ring-orange-700'
+                          : 'bg-slate-950 border-slate-800 text-slate-200'
                       }`}
                     >
-                      <CreditCard className="w-4 h-4 text-orange-600" />
+                      <CreditCard className="w-4 h-4 text-orange-400" />
                       <span>Nagad</span>
                     </button>
                   </div>
@@ -255,7 +255,7 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
               </div>
 
               {/* Total Calculation Strip */}
-              <div className="p-4 bg-slate-900 text-white rounded-2xl space-y-2">
+              <div className="p-4 bg-black text-white rounded-2xl space-y-2">
                 <div className="flex justify-between text-xs text-slate-300">
                   <span>Subtotal:</span>
                   <span>৳{subtotal}</span>
@@ -283,47 +283,47 @@ export const TShirtCheckoutModal: React.FC<TShirtCheckoutModalProps> = ({
         ) : (
           /* Order Confirmed Celebration Screen */
           <div className="text-center py-6 space-y-5 animate-in zoom-in-95">
-            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 shadow-lg">
+            <div className="w-16 h-16 mx-auto rounded-full bg-emerald-900 flex items-center justify-center text-emerald-400 shadow-lg">
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+              <span className="text-xs font-bold text-indigo-400 bg-indigo-950 px-3 py-1 rounded-full">
                 Order Confirmed • #{placedOrder.id}
               </span>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+              <h2 className="text-xl sm:text-2xl font-black text-white">
                 Thank you! Your order has been placed.
               </h2>
-              <p className="text-xs text-slate-500 max-w-md mx-auto">
+              <p className="text-xs text-slate-400 max-w-md mx-auto">
                 Our support team will contact you shortly at <strong>{placedOrder.phone}</strong> to confirm dispatch details.
               </p>
             </div>
 
             {/* Order Details Card */}
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left text-xs space-y-3 max-w-md mx-auto">
-              <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">Customer Name:</span>
-                <span className="font-bold text-slate-900">{placedOrder.customerName}</span>
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 text-left text-xs space-y-3 max-w-md mx-auto">
+              <div className="flex justify-between pb-2 border-b border-slate-800">
+                <span className="text-slate-400">Customer Name:</span>
+                <span className="font-bold text-white">{placedOrder.customerName}</span>
               </div>
-              <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">Delivery Address:</span>
-                <span className="font-semibold text-slate-800">{placedOrder.address}</span>
+              <div className="flex justify-between pb-2 border-b border-slate-800">
+                <span className="text-slate-400">Delivery Address:</span>
+                <span className="font-semibold text-slate-100">{placedOrder.address}</span>
               </div>
-              <div className="flex justify-between pb-2 border-b border-slate-200">
-                <span className="text-slate-500">Payment Method:</span>
-                <span className="font-bold text-emerald-700">
+              <div className="flex justify-between pb-2 border-b border-slate-800">
+                <span className="text-slate-400">Payment Method:</span>
+                <span className="font-bold text-emerald-400">
                   {placedOrder.paymentMethod === 'cod' ? 'Cash on Delivery' : placedOrder.paymentMethod.toUpperCase()}
                 </span>
               </div>
-              <div className="flex justify-between text-sm font-extrabold text-slate-900 pt-1">
+              <div className="flex justify-between text-sm font-extrabold text-white pt-1">
                 <span>Total Payable:</span>
-                <span className="text-indigo-600">৳{placedOrder.total}</span>
+                <span className="text-indigo-400">৳{placedOrder.total}</span>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-md"
+              className="px-6 py-3 bg-black hover:bg-slate-800 text-white font-bold text-xs sm:text-sm rounded-xl cursor-pointer shadow-md"
             >
               Back to Store
             </button>

@@ -359,7 +359,7 @@ export default function App() {
   const pendingOrdersCount = orders.filter((o) => o.status === 'Pending').length;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       {/* Global Navbar */}
       <Navbar
         activeSection={activeSection}
@@ -439,25 +439,25 @@ export default function App() {
             />
           ) : (
             /* Unauthenticated Admin Lock Screen Gate */
-            <div className="max-w-md mx-auto my-12 bg-white border border-slate-200 rounded-3xl p-8 text-center shadow-xl space-y-6 animate-in zoom-in-95">
+            <div className="max-w-md mx-auto my-12 bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center shadow-xl space-y-6 animate-in zoom-in-95">
               <div className="w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-500 mx-auto">
                 <Lock className="w-8 h-8" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-black text-slate-900">Admin Authentication Required</h2>
-                <p className="text-xs text-slate-500 leading-relaxed">
+                <h2 className="text-xl font-black text-white">Admin Authentication Required</h2>
+                <p className="text-xs text-slate-400 leading-relaxed">
                   The Management Panel is strictly restricted to authenticated store managers and administrators. Please log in with your master credentials to continue.
                 </p>
               </div>
 
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-1">
-                <span className="font-bold text-slate-900 block">Default Credentials:</span>
-                <span className="font-mono text-indigo-700 font-bold block">User: admin | Pass: admin123</span>
+              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 text-xs text-slate-300 space-y-1">
+                <span className="font-bold text-white block">Default Credentials:</span>
+                <span className="font-mono text-indigo-400 font-bold block">User: admin | Pass: admin123</span>
               </div>
 
               <button
                 onClick={() => setIsAdminLoginModalOpen(true)}
-                className="w-full py-3 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 bg-black hover:bg-indigo-600 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Log In as Administrator</span>
@@ -470,16 +470,16 @@ export default function App() {
         {activeSection === 'mcq_studio' && (
           <div className="space-y-6 animate-in fade-in">
             {/* Feature Welcome / Instruction Strip */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-indigo-950 text-indigo-400 border border-indigo-900 flex items-center justify-center shrink-0">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-2">
+                  <h2 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
                     MCQ Canvas Studio & Social Media Auto-Poster
                   </h2>
-                  <p className="text-xs text-slate-600 mt-0.5">
+                  <p className="text-xs text-slate-300 mt-0.5">
                     Upload Excel spreadsheets or edit MCQs directly to generate high-resolution social media posters and post to Facebook.
                   </p>
                 </div>
@@ -499,13 +499,13 @@ export default function App() {
               {/* Left Column: Tools & Config (7 cols) */}
               <div className="lg:col-span-7 space-y-6">
                 {/* Tab Switching Navigation */}
-                <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 border border-slate-200 rounded-xl">
+                <div className="flex items-center gap-1.5 p-1 bg-slate-700/80 border border-slate-800 rounded-xl">
                   <button
                     onClick={() => setActiveTab('customizer')}
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       activeTab === 'customizer'
                         ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
                     }`}
                   >
                     <Palette className="w-4 h-4" />
@@ -517,7 +517,7 @@ export default function App() {
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       activeTab === 'uploader'
                         ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
                     }`}
                   >
                     <FileSpreadsheet className="w-4 h-4" />
@@ -529,7 +529,7 @@ export default function App() {
                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       activeTab === 'editor'
                         ? 'bg-indigo-600 text-white shadow-xs'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
                     }`}
                   >
                     <ListFilter className="w-4 h-4" />
@@ -574,7 +574,7 @@ export default function App() {
                     onOpenFacebookPost={(item, imgUrl) => setFbPostTarget({ mcq: item, imageDataUrl: imgUrl })}
                   />
                 ) : (
-                  <div className="p-8 bg-white border border-slate-200 rounded-2xl text-center text-slate-500 shadow-xs">
+                  <div className="p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center text-slate-400 shadow-xs">
                     <HelpCircle className="w-8 h-8 mx-auto mb-2 text-slate-400" />
                     <p className="text-sm font-semibold">No MCQ questions loaded</p>
                   </div>
@@ -586,9 +586,9 @@ export default function App() {
       </main>
 
       {/* Global Footer */}
-      <footer className="mt-auto border-t border-slate-200 bg-white py-4 px-4 sm:px-8 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <footer className="mt-auto border-t border-slate-800 bg-slate-900 py-4 px-4 sm:px-8 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-800">{storeSettings.storeName}</span>
+          <span className="font-bold text-slate-100">{storeSettings.storeName}</span>
           <span>•</span>
           <span>E-Commerce & MCQ Canvas Studio</span>
         </div>
@@ -607,7 +607,7 @@ export default function App() {
                 setIsAdminLoginModalOpen(true);
               }
             }}
-            className="text-slate-600 hover:text-indigo-600 font-semibold cursor-pointer underline"
+            className="text-slate-300 hover:text-indigo-400 font-semibold cursor-pointer underline"
           >
             {adminUser ? 'Admin Console' : 'Admin Login'}
           </button>

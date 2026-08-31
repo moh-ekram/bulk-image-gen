@@ -331,9 +331,9 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
       {/* Success Notification Alert */}
       {publishSuccessMsg && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4 text-emerald-900 text-xs sm:text-sm font-semibold shadow-xs animate-in fade-in">
+        <div className="p-4 bg-emerald-950 border border-emerald-800 rounded-xl flex items-center justify-between gap-4 text-emerald-300 text-xs sm:text-sm font-semibold shadow-xs animate-in fade-in">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
             <span>{publishSuccessMsg}</span>
           </div>
           <button
@@ -358,10 +358,10 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             onDragLeave={() => setIsDragOver(false)}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200 bg-white shadow-xs ${
+            className={`border-2 border-dashed rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200 bg-slate-900 shadow-xs ${
               isDragOver
-                ? 'border-indigo-500 bg-indigo-50/50 scale-[1.01]'
-                : 'border-slate-300 hover:border-indigo-400 hover:bg-slate-50/50'
+                ? 'border-indigo-500 bg-indigo-950/50 scale-[1.01]'
+                : 'border-slate-700 hover:border-indigo-400 hover:bg-slate-950/50'
             }`}
           >
             <input
@@ -372,13 +372,13 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               onChange={(e) => e.target.files && handleFiles(e.target.files)}
               className="hidden"
             />
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 mb-4 shadow-xs">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-950 border border-indigo-900 flex items-center justify-center text-indigo-400 mb-4 shadow-xs">
               <Upload className="w-7 h-7 animate-bounce" />
             </div>
-            <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-1">
+            <h3 className="text-sm sm:text-base font-bold text-slate-100 mb-1">
               Drop Local PNG Designs or Click to Browse
             </h3>
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-xs text-slate-400 mb-4">
               Select multiple transparent PNG files to automatically generate mockups
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-xs">
@@ -388,22 +388,22 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
           </div>
 
           {/* Custom Base Mockup Photo Template Uploader */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-indigo-600" />
-                <h3 className="text-sm font-bold text-slate-900">
+                <Sparkles className="w-4 h-4 text-indigo-400" />
+                <h3 className="text-sm font-bold text-white">
                   T-Shirt Base Mockup Template
                 </h3>
               </div>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                customMockupBase ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600'
+                customMockupBase ? 'bg-indigo-900 text-indigo-400' : 'bg-slate-800 text-slate-300'
               }`}>
                 {customMockupBase ? 'Custom Photo Active' : '3D Realistic Studio Mode'}
               </span>
             </div>
 
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-slate-400 leading-relaxed">
               Upload your own real photoshoot or custom T-shirt photo (PNG/JPG) to use as the base mockup for all designs.
             </p>
 
@@ -416,18 +416,18 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             />
 
             {customMockupBase ? (
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
                 <div className="flex items-center gap-3">
                   <img
                     src={customMockupBase}
                     alt="Active Custom Base Mockup"
-                    className="w-14 h-14 object-contain rounded-lg bg-white border border-slate-200"
+                    className="w-14 h-14 object-contain rounded-lg bg-slate-900 border border-slate-800"
                   />
                   <div className="flex-1 min-w-0 space-y-0.5">
-                    <span className="text-xs font-bold text-slate-800 block truncate">
+                    <span className="text-xs font-bold text-slate-100 block truncate">
                       Custom T-Shirt Photo Template
                     </span>
-                    <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                    <span className="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
                       <CheckCircle2 className="w-3.5 h-3.5" /> Applied to all designs
                     </span>
                   </div>
@@ -437,7 +437,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                   <button
                     type="button"
                     onClick={() => mockupBaseInputRef.current?.click()}
-                    className="flex-1 py-1.5 bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                    className="flex-1 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Change Photo
                   </button>
@@ -447,7 +447,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                       setCustomMockupBase(null);
                       setDrafts((prev) => prev.map((d) => ({ ...d, customMockupImage: undefined })));
                     }}
-                    className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition-colors cursor-pointer"
+                    className="px-3 py-1.5 bg-rose-950 hover:bg-rose-900 text-rose-400 font-bold text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Reset
                   </button>
@@ -457,7 +457,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <button
                 type="button"
                 onClick={() => mockupBaseInputRef.current?.click()}
-                className="w-full py-2.5 px-4 bg-slate-50 hover:bg-indigo-50 border-2 border-dashed border-slate-300 hover:border-indigo-400 text-slate-700 hover:text-indigo-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full py-2.5 px-4 bg-slate-950 hover:bg-indigo-950 border-2 border-dashed border-slate-700 hover:border-indigo-400 text-slate-200 hover:text-indigo-400 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <Upload className="w-4 h-4" />
                 <span>Upload Custom T-Shirt Photo Template</span>
@@ -466,18 +466,18 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
           </div>
 
           {/* Global Default Presets Card */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xs space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-indigo-600" />
-                <h3 className="text-sm font-bold text-slate-900">
+                <Sliders className="w-4 h-4 text-indigo-400" />
+                <h3 className="text-sm font-bold text-white">
                   Global Defaults (Applied to All)
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={handleApplyDefaultsToAll}
-                className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                className="text-[11px] font-bold text-indigo-400 hover:text-indigo-300 bg-indigo-950 hover:bg-indigo-900 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
                 title="Apply settings across all drafts"
               >
                 Apply to All ({drafts.length})
@@ -486,9 +486,9 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
             {/* Default Color Selector */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-700 flex items-center justify-between">
+              <label className="block text-xs font-bold text-slate-200 flex items-center justify-between">
                 <span>Default T-Shirt Color (Jet Black):</span>
-                <span className="font-mono text-[11px] text-slate-500">{globalDefaults.color}</span>
+                <span className="font-mono text-[11px] text-slate-400">{globalDefaults.color}</span>
               </label>
               <div className="flex flex-wrap gap-2">
                 {TSHIRT_COLORS.map((c) => (
@@ -498,14 +498,14 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                     onClick={() => setGlobalDefaults({ ...globalDefaults, color: c.hex })}
                     className={`w-7 h-7 rounded-full border-2 transition-all cursor-pointer flex items-center justify-center ${
                       globalDefaults.color === c.hex
-                        ? 'border-indigo-600 scale-110 shadow-sm ring-2 ring-indigo-200'
-                        : 'border-slate-300 hover:scale-105'
+                        ? 'border-indigo-600 scale-110 shadow-sm ring-2 ring-indigo-800'
+                        : 'border-slate-700 hover:scale-105'
                     }`}
                     style={{ backgroundColor: c.hex }}
                     title={c.name}
                   >
                     {globalDefaults.color === c.hex && (
-                      <Check className={`w-3.5 h-3.5 ${c.textColor === 'light' ? 'text-white' : 'text-slate-900'}`} />
+                      <Check className={`w-3.5 h-3.5 ${c.textColor === 'light' ? 'text-white' : 'text-white'}`} />
                     )}
                   </button>
                 ))}
@@ -515,51 +515,51 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
             {/* Default Pricing & Stock */}
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                <label className="block text-[11px] font-bold text-slate-200 mb-1">
                   Sale Price (৳)
                 </label>
                 <input
                   type="number"
                   value={globalDefaults.price}
                   onChange={(e) => setGlobalDefaults({ ...globalDefaults, price: Number(e.target.value) })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-900"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs font-bold text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                <label className="block text-[11px] font-bold text-slate-200 mb-1">
                   Regular (৳)
                 </label>
                 <input
                   type="number"
                   value={globalDefaults.originalPrice}
                   onChange={(e) => setGlobalDefaults({ ...globalDefaults, originalPrice: Number(e.target.value) })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs font-bold text-slate-400"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                <label className="block text-[11px] font-bold text-slate-200 mb-1">
                   Default Stock
                 </label>
                 <input
                   type="number"
                   value={globalDefaults.stock}
                   onChange={(e) => setGlobalDefaults({ ...globalDefaults, stock: Number(e.target.value) })}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-bold text-slate-900"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs font-bold text-white"
                 />
               </div>
             </div>
 
             {/* Default Category */}
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 mb-1">
+              <label className="block text-[11px] font-bold text-slate-200 mb-1">
                 Default Category
               </label>
               <select
                 value={globalDefaults.category}
                 onChange={(e) => setGlobalDefaults({ ...globalDefaults, category: e.target.value })}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-900"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs font-semibold text-white"
               >
                 {TSHIRT_CATEGORIES.filter((c) => c !== 'All').map((cat) => (
                   <option key={cat} value={cat}>
@@ -571,20 +571,20 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
             {/* Default Description */}
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 mb-1">
+              <label className="block text-[11px] font-bold text-slate-200 mb-1">
                 Default Description
               </label>
               <textarea
                 value={globalDefaults.description}
                 onChange={(e) => setGlobalDefaults({ ...globalDefaults, description: e.target.value })}
                 rows={3}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 leading-relaxed"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-slate-100 leading-relaxed"
               />
             </div>
 
             {/* Default Print Scale & Position */}
-            <div className="space-y-3 pt-2 border-t border-slate-100">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+            <div className="space-y-3 pt-2 border-t border-slate-800">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-200">
                 <span>Graphic Print Scale:</span>
                 <span>{globalDefaults.designScale}%</span>
               </div>
@@ -597,7 +597,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                 className="w-full accent-indigo-600 cursor-pointer"
               />
 
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-200">
                 <span>Vertical Position (Y Offset):</span>
                 <span>{globalDefaults.designPositionY}px</span>
               </div>
@@ -616,14 +616,14 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
         {/* Right Column: Drafts Grid & Actions Bar */}
         <div className="lg:col-span-7 space-y-4">
           {/* Header Action Bar */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-100">
                 <input
                   type="checkbox"
                   checked={drafts.length > 0 && drafts.every((d) => d.isSelected)}
                   onChange={(e) => handleSelectAll(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+                  className="w-4 h-4 text-indigo-400 rounded border-slate-700 focus:ring-indigo-500 cursor-pointer"
                 />
                 <span>Select All ({selectedCount}/{drafts.length})</span>
               </label>
@@ -633,9 +633,9 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <button
                 onClick={handleDownloadAllZip}
                 disabled={isZipping || drafts.length === 0}
-                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
               >
-                <FileArchive className="w-4 h-4 text-indigo-600" />
+                <FileArchive className="w-4 h-4 text-indigo-400" />
                 <span>{isZipping ? 'Generating ZIP...' : 'Download All Mockups (ZIP)'}</span>
               </button>
 
@@ -652,13 +652,13 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
           {/* Drafts List / Grid */}
           {drafts.length === 0 ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-4 shadow-xs">
-              <div className="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center space-y-4 shadow-xs">
+              <div className="w-16 h-16 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-slate-400">
                 <Package className="w-8 h-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-base font-bold text-slate-800">No Drafts Uploaded</h4>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                <h4 className="text-base font-bold text-slate-100">No Drafts Uploaded</h4>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto">
                   Drag and drop PNG graphic files or click "Load Sample Designs" to test immediately.
                 </p>
               </div>
@@ -674,10 +674,10 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               {drafts.map((draft) => (
                 <div
                   key={draft.id}
-                  className={`bg-white border rounded-2xl p-3.5 transition-all duration-200 shadow-xs space-y-3 relative group ${
+                  className={`bg-slate-900 border rounded-2xl p-3.5 transition-all duration-200 shadow-xs space-y-3 relative group ${
                     draft.isSelected
-                      ? 'border-indigo-500 ring-2 ring-indigo-100'
-                      : 'border-slate-200 hover:border-slate-300'
+                      ? 'border-indigo-500 ring-2 ring-indigo-900'
+                      : 'border-slate-800 hover:border-slate-700'
                   }`}
                 >
                   {/* Top Header: Checkbox + Action Buttons */}
@@ -687,9 +687,9 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                         type="checkbox"
                         checked={draft.isSelected}
                         onChange={() => handleToggleSelect(draft.id)}
-                        className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer"
+                        className="w-4 h-4 text-indigo-400 rounded border-slate-700 focus:ring-indigo-500 cursor-pointer"
                       />
-                      <span className="text-[11px] font-bold text-slate-600 truncate max-w-[140px]">
+                      <span className="text-[11px] font-bold text-slate-300 truncate max-w-[140px]">
                         {draft.fileName}
                       </span>
                     </label>
@@ -700,14 +700,14 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                           setActiveEditingDraft(draft);
                           setEditingViewMode('front');
                         }}
-                        className="p-1.5 hover:bg-slate-100 text-slate-600 hover:text-indigo-600 rounded-lg cursor-pointer transition-colors"
+                        className="p-1.5 hover:bg-slate-800 text-slate-300 hover:text-indigo-400 rounded-lg cursor-pointer transition-colors"
                         title="Customize Mockup"
                       >
                         <Sliders className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteDraft(draft.id)}
-                        className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg cursor-pointer transition-colors"
+                        className="p-1.5 hover:bg-rose-950 text-slate-400 hover:text-rose-400 rounded-lg cursor-pointer transition-colors"
                         title="Delete Draft"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -716,7 +716,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                   </div>
 
                   {/* Rendered Mockup Preview */}
-                  <div className="relative rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
+                  <div className="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800">
                     <TShirtMockupView
                       id={`draft-mockup-${draft.id}`}
                       color={draft.color}
@@ -730,14 +730,14 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                     />
 
                     {/* Color Swatch Dots on Mockup */}
-                    <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-white/90 backdrop-blur-xs p-1 rounded-full border border-slate-200/80 shadow-xs">
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-slate-900/90 backdrop-blur-xs p-1 rounded-full border border-slate-800/80 shadow-xs">
                       {TSHIRT_COLORS.slice(0, 5).map((c) => (
                         <button
                           key={c.hex}
                           type="button"
                           onClick={() => handleUpdateDraft(draft.id, { color: c.hex })}
                           className={`w-4 h-4 rounded-full border cursor-pointer ${
-                            draft.color === c.hex ? 'border-indigo-600 ring-1 ring-indigo-400' : 'border-slate-300'
+                            draft.color === c.hex ? 'border-indigo-600 ring-1 ring-indigo-400' : 'border-slate-700'
                           }`}
                           style={{ backgroundColor: c.hex }}
                           title={c.name}
@@ -754,25 +754,25 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                         value={draft.title}
                         onChange={(e) => handleUpdateDraft(draft.id, { title: e.target.value })}
                         placeholder="Product title..."
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 font-bold text-slate-900 focus:outline-none focus:border-indigo-600 text-xs"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 font-bold text-white focus:outline-none focus:border-indigo-600 text-xs"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg px-2 py-1">
-                        <span className="text-[11px] font-bold text-slate-500">৳</span>
+                      <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 rounded-lg px-2 py-1">
+                        <span className="text-[11px] font-bold text-slate-400">৳</span>
                         <input
                           type="number"
                           value={draft.price}
                           onChange={(e) => handleUpdateDraft(draft.id, { price: Number(e.target.value) })}
-                          className="w-full bg-transparent font-bold text-slate-900 focus:outline-none text-xs"
+                          className="w-full bg-transparent font-bold text-white focus:outline-none text-xs"
                         />
                       </div>
 
                       <select
                         value={draft.category}
                         onChange={(e) => handleUpdateDraft(draft.id, { category: e.target.value })}
-                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-semibold text-slate-700 focus:outline-none"
+                        className="w-full bg-slate-950 border border-slate-800 rounded-lg px-2 py-1 text-[11px] font-semibold text-slate-200 focus:outline-none"
                       >
                         {TSHIRT_CATEGORIES.filter((c) => c !== 'All').map((cat) => (
                           <option key={cat} value={cat}>
@@ -790,7 +790,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                       handleUpdateDraft(draft.id, { isSelected: true });
                       handlePublish(true);
                     }}
-                    className="w-full py-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    className="w-full py-2 bg-black hover:bg-indigo-600 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Publish to Store</span>
@@ -804,18 +804,18 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
       {/* Single Item Fine-Tuning Modal */}
       {activeEditingDraft && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 border border-slate-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+          <div className="bg-slate-900 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 border border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
-                <Sliders className="w-5 h-5 text-indigo-600" />
-                <h3 className="font-bold text-slate-900 text-base">
+                <Sliders className="w-5 h-5 text-indigo-400" />
+                <h3 className="font-bold text-white text-base">
                   Fine-Tune Mockup Placement & Color
                 </h3>
               </div>
               <button
                 onClick={() => setActiveEditingDraft(null)}
-                className="p-1 text-slate-400 hover:text-slate-600 rounded-lg cursor-pointer"
+                className="p-1 text-slate-400 hover:text-slate-300 rounded-lg cursor-pointer"
               >
                 ✕
               </button>
@@ -823,7 +823,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
               {/* Live Mockup View */}
-              <div className="bg-slate-50 rounded-xl p-2 border border-slate-200">
+              <div className="bg-slate-950 rounded-xl p-2 border border-slate-800">
                 <TShirtMockupView
                   color={activeEditingDraft.color}
                   designImage={activeEditingDraft.designDataUrl}
@@ -843,7 +843,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
               <div className="space-y-4">
                 {/* Color Palette */}
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-bold text-slate-700">T-Shirt Color:</label>
+                  <label className="block text-xs font-bold text-slate-200">T-Shirt Color:</label>
                   <div className="flex flex-wrap gap-2">
                     {TSHIRT_COLORS.map((c) => (
                       <button
@@ -851,7 +851,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
                         type="button"
                         onClick={() => handleUpdateDraft(activeEditingDraft.id, { color: c.hex })}
                         className={`w-7 h-7 rounded-full border-2 cursor-pointer transition-all ${
-                          activeEditingDraft.color === c.hex ? 'border-indigo-600 ring-2 ring-indigo-200 scale-110' : 'border-slate-300'
+                          activeEditingDraft.color === c.hex ? 'border-indigo-600 ring-2 ring-indigo-800 scale-110' : 'border-slate-700'
                         }`}
                         style={{ backgroundColor: c.hex }}
                         title={c.name}
@@ -862,7 +862,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
                 {/* Print Scale */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs font-bold text-slate-700">
+                  <div className="flex justify-between text-xs font-bold text-slate-200">
                     <span>Graphic Scale:</span>
                     <span>{activeEditingDraft.designScale}%</span>
                   </div>
@@ -878,7 +878,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
                 {/* Vertical Position */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs font-bold text-slate-700">
+                  <div className="flex justify-between text-xs font-bold text-slate-200">
                     <span>Vertical Position (Y):</span>
                     <span>{activeEditingDraft.designPositionY}px</span>
                   </div>
@@ -894,7 +894,7 @@ export const TShirtBulkStudio: React.FC<TShirtBulkStudioProps> = ({
 
                 {/* Horizontal Position */}
                 <div className="space-y-1">
-                  <div className="flex justify-between text-xs font-bold text-slate-700">
+                  <div className="flex justify-between text-xs font-bold text-slate-200">
                     <span>Horizontal Position (X):</span>
                     <span>{activeEditingDraft.designPositionX}px</span>
                   </div>

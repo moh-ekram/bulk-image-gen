@@ -135,19 +135,19 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-xl shadow-2xl max-w-3xl w-full p-6 border border-slate-200 my-8">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-slate-900 rounded-xl shadow-2xl max-w-3xl w-full p-6 border border-slate-800 my-8">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+        <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm">
               <Facebook className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                 ফেসবুক পেজে সরাসরি পোস্ট করুন
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 {facebookConfig.isConnected && facebookConfig.pageName
                   ? `কানেক্টেড পেজ: ${facebookConfig.pageName}`
                   : 'আপনার ফেসবুক পেজে MCQ ফটো ও ক্যাপশন পাবলিকলি পোস্ট করুন'}
@@ -156,17 +156,17 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {!facebookConfig.isConnected ? (
-          <div className="py-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-300 p-6">
-            <Facebook className="w-12 h-12 mx-auto mb-3 text-blue-600 opacity-80" />
-            <h3 className="text-sm font-bold text-slate-800">কোনো ফেসবুক পেজ কানেক্ট করা নেই</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-4">
+          <div className="py-8 text-center bg-slate-950 rounded-xl border border-dashed border-slate-700 p-6">
+            <Facebook className="w-12 h-12 mx-auto mb-3 text-blue-400 opacity-80" />
+            <h3 className="text-sm font-bold text-slate-100">কোনো ফেসবুক পেজ কানেক্ট করা নেই</h3>
+            <p className="text-xs text-slate-400 max-w-md mx-auto mt-1 mb-4">
               ছবি পোস্ট করার আগে আপনার ফেসবুক পেজের ID এবং Access Token সেটআপ করতে হবে।
             </p>
             <button
@@ -181,13 +181,13 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Left: Image Card Preview */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-200">
                 <span>পোস্টার প্রিভিউ (Image Preview)</span>
-                <span className="text-[10px] bg-indigo-100 text-indigo-700 font-mono px-2 py-0.5 rounded">
+                <span className="text-[10px] bg-indigo-900 text-indigo-400 font-mono px-2 py-0.5 rounded">
                   1080x1080 HD
                 </span>
               </div>
-              <div className="bg-slate-100 p-2 rounded-lg border border-slate-200 aspect-square flex items-center justify-center overflow-hidden">
+              <div className="bg-slate-800 p-2 rounded-lg border border-slate-800 aspect-square flex items-center justify-center overflow-hidden">
                 <img
                   src={imageDataUrl}
                   alt="MCQ Poster"
@@ -199,14 +199,14 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
             {/* Right: Caption & Publish Actions */}
             <div className="space-y-4 flex flex-col justify-between">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1 flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-200 mb-1 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <FileText className="w-3.5 h-3.5 text-blue-600" />
+                    <FileText className="w-3.5 h-3.5 text-blue-400" />
                     <span>পোস্ট ক্যাপশন (Facebook Caption)</span>
                   </span>
                   <button
                     onClick={() => setCaption(buildDefaultCaption(mcq))}
-                    className="text-[11px] text-blue-600 hover:underline flex items-center gap-1"
+                    className="text-[11px] text-blue-400 hover:underline flex items-center gap-1"
                   >
                     <Sparkles className="w-3 h-3" />
                     অটো রিফ্রেশ
@@ -216,33 +216,33 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                   value={caption}
                   onChange={(e) => setCaption(e.target.value)}
                   rows={6}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-800 focus:outline-none focus:border-blue-600 font-sans leading-relaxed"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-100 focus:outline-none focus:border-blue-600 font-sans leading-relaxed"
                 />
               </div>
 
               {/* Schedule Option Toggle */}
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
+              <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-800">
+                  <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-100">
                     <input
                       type="checkbox"
                       checked={isScheduled}
                       onChange={(e) => setIsScheduled(e.target.checked)}
-                      className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 text-blue-400 rounded border-slate-700 focus:ring-blue-500 cursor-pointer"
                     />
-                    <Calendar className="w-4 h-4 text-blue-600" />
+                    <Calendar className="w-4 h-4 text-blue-400" />
                     <span>পোস্ট শিডিউল করুন (Schedule Post for Later)</span>
                   </label>
                 </div>
 
                 {isScheduled && (
-                  <div className="pt-2 border-t border-slate-200 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-slate-500 shrink-0" />
+                  <div className="pt-2 border-t border-slate-800 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-slate-400 shrink-0" />
                     <input
                       type="datetime-local"
                       value={scheduleDateTime}
                       onChange={(e) => setScheduleDateTime(e.target.value)}
-                      className="bg-white border border-slate-300 rounded px-2.5 py-1.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-blue-600 w-full"
+                      className="bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-blue-600 w-full"
                     />
                   </div>
                 )}
@@ -253,14 +253,14 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                 <div
                   className={`p-3 rounded-lg text-xs font-medium ${
                     publishResult.success
-                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                      : 'bg-rose-50 text-rose-800 border border-rose-200'
+                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+                      : 'bg-rose-950 text-rose-300 border border-rose-800'
                   }`}
                 >
                   {publishResult.success ? (
                     <div className="space-y-1.5">
-                      <div className="flex items-center gap-2 font-bold text-emerald-900">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <div className="flex items-center gap-2 font-bold text-emerald-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                         <span>
                           {publishResult.scheduledText
                             ? `পোস্টটি ${publishResult.scheduledText} এর জন্য সফলভাবে শিডিউল করা হয়েছে!`
@@ -272,7 +272,7 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                           href={publishResult.postUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 font-bold text-blue-700 hover:underline text-xs"
+                          className="inline-flex items-center gap-1.5 font-bold text-blue-400 hover:underline text-xs"
                         >
                           <span>ফেসবুকে পোস্টটি দেখুন</span>
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -281,7 +281,7 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                      <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
                       <span>{publishResult.error}</span>
                     </div>
                   )}
@@ -289,10 +289,10 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
               )}
 
               {/* Actions */}
-              <div className="pt-2 flex items-center justify-between border-t border-slate-100">
+              <div className="pt-2 flex items-center justify-between border-t border-slate-800">
                 <button
                   onClick={onOpenSettings}
-                  className="text-xs text-slate-500 hover:text-slate-800 underline cursor-pointer"
+                  className="text-xs text-slate-400 hover:text-slate-100 underline cursor-pointer"
                 >
                   পেজ চেঞ্জ করুন
                 </button>
@@ -300,7 +300,7 @@ export const FacebookPublisherModal: React.FC<FacebookPublisherModalProps> = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={onClose}
-                    className="px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                    className="px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors cursor-pointer"
                   >
                     বাতিল
                   </button>

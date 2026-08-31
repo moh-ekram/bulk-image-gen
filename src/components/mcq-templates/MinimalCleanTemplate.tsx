@@ -36,12 +36,12 @@ export const MinimalCleanTemplate: React.FC<Props> = ({ mcq, config }) => {
         fontFamily: `"${config.fontFamily}", "Inter", sans-serif`,
         backgroundColor: config.backgroundColor || '#f8fafc',
       }}
-      className="relative flex flex-col items-center justify-between p-8 text-slate-900 select-none"
+      className="relative flex flex-col items-center justify-between p-8 text-white select-none"
     >
-      <div className="w-full max-w-[480px] h-full my-auto bg-white rounded-2xl border border-slate-200/90 p-8 shadow-sm flex flex-col justify-between">
+      <div className="w-full max-w-[480px] h-full my-auto bg-slate-900 rounded-2xl border border-slate-800/90 p-8 shadow-sm flex flex-col justify-between">
         {/* Top bar */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950 px-3 py-1 rounded-full">
             {config.headerText || 'MULTIPLE CHOICE'}
           </span>
           <span className="text-xs font-medium text-slate-400">
@@ -53,7 +53,7 @@ export const MinimalCleanTemplate: React.FC<Props> = ({ mcq, config }) => {
         <div className="my-auto py-4">
           <h2
             style={{ fontSize: `${config.questionFontSize || 22}px` }}
-            className="font-bold text-slate-800 leading-snug"
+            className="font-bold text-slate-100 leading-snug"
           >
             {mcq.question}
           </h2>
@@ -73,11 +73,11 @@ export const MinimalCleanTemplate: React.FC<Props> = ({ mcq, config }) => {
                 className={`w-full p-3.5 rounded-xl border flex items-center gap-3.5 transition-all ${
                   isCorrect
                     ? 'bg-emerald-50 border-emerald-500 text-emerald-900'
-                    : 'bg-slate-50/80 border-slate-200 text-slate-800'
+                    : 'bg-slate-950/80 border-slate-800 text-slate-100'
                 }`}
               >
                 <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${
-                  isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'
+                  isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-700 text-slate-200'
                 }`}>
                   {opt.label}
                 </span>
@@ -90,9 +90,9 @@ export const MinimalCleanTemplate: React.FC<Props> = ({ mcq, config }) => {
         </div>
 
         {/* Footer */}
-        <div className="pt-4 mt-auto border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <div className="pt-4 mt-auto border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
           <span>{config.watermarkText || 'MCQ Builder'}</span>
-          <span className="font-medium text-slate-700">{config.footerText || 'Comment your answer'}</span>
+          <span className="font-medium text-slate-200">{config.footerText || 'Comment your answer'}</span>
         </div>
       </div>
     </div>

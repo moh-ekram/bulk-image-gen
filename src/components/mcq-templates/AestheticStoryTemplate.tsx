@@ -55,7 +55,7 @@ export const AestheticStoryTemplate: React.FC<Props> = ({ mcq, config }) => {
       {/* Floating White Center Card */}
       <div
         style={{ backgroundColor: config.cardBgColor || '#ffffff' }}
-        className="z-10 w-full max-w-[420px] rounded-sm p-8 shadow-2xl flex flex-col items-center justify-center my-auto border border-white/40"
+        className="z-10 w-full max-w-[420px] rounded-sm p-8 shadow-2xl flex flex-col items-center justify-center my-auto border border-slate-900/40"
       >
         {/* Question Text */}
         <h2

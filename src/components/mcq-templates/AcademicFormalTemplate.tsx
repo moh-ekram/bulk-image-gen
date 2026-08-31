@@ -40,16 +40,16 @@ export const AcademicFormalTemplate: React.FC<Props> = ({ mcq, config, index = 1
       className="relative flex flex-col items-center justify-between p-6 select-none border-8 border-slate-700"
     >
       {/* Outer Formal Double Border */}
-      <div className="w-full h-full border-2 border-slate-700 p-6 flex flex-col justify-between bg-white shadow-xl">
+      <div className="w-full h-full border-2 border-slate-700 p-6 flex flex-col justify-between bg-slate-900 shadow-xl">
         {/* Header Header Bar */}
         <div className="border-b-2 border-slate-800 pb-3 text-center">
           <h1
             style={{ fontSize: `${config.titleFontSize || 24}px` }}
-            className="font-bold text-slate-900 tracking-wider uppercase font-serif"
+            className="font-bold text-white tracking-wider uppercase font-serif"
           >
             {config.headerText || 'OFFICIAL BOARD EXAMINATION'}
           </h1>
-          <p className="text-[11px] text-slate-600 font-sans tracking-widest mt-0.5 uppercase">
+          <p className="text-[11px] text-slate-300 font-sans tracking-widest mt-0.5 uppercase">
             {mcq.category || 'MODEL TEST QUESTION PAPER'}
           </p>
         </div>
@@ -58,12 +58,12 @@ export const AcademicFormalTemplate: React.FC<Props> = ({ mcq, config, index = 1
         <div className="my-auto py-4">
           {/* Question Text */}
           <div className="flex items-start gap-2 mb-6">
-            <span className="font-bold text-slate-900 text-lg font-serif shrink-0">
+            <span className="font-bold text-white text-lg font-serif shrink-0">
               {config.questionPrefix || 'Q.'} {index}.
             </span>
             <h2
               style={{ fontSize: `${config.questionFontSize || 19}px` }}
-              className="font-bold text-slate-900 leading-relaxed font-serif"
+              className="font-bold text-white leading-relaxed font-serif"
             >
               {mcq.question}
             </h2>
@@ -90,14 +90,14 @@ export const AcademicFormalTemplate: React.FC<Props> = ({ mcq, config, index = 1
                     className={`w-6 h-6 rounded flex items-center justify-center font-bold text-xs border ${
                       isCorrect
                         ? 'bg-green-600 text-white border-green-700'
-                        : 'bg-slate-100 text-slate-800 border-slate-300'
+                        : 'bg-slate-800 text-slate-100 border-slate-700'
                     }`}
                   >
                     {opt.label}
                   </span>
                   <span
                     style={{ fontSize: `${config.optionsFontSize || 15}px` }}
-                    className={`font-medium ${isCorrect ? 'text-green-900 font-bold' : 'text-slate-800'}`}
+                    className={`font-medium ${isCorrect ? 'text-green-900 font-bold' : 'text-slate-100'}`}
                   >
                     {opt.text}
                   </span>
@@ -108,9 +108,9 @@ export const AcademicFormalTemplate: React.FC<Props> = ({ mcq, config, index = 1
         </div>
 
         {/* Footer info */}
-        <div className="border-t-2 border-slate-800 pt-3 flex items-center justify-between text-xs text-slate-600 font-sans">
+        <div className="border-t-2 border-slate-800 pt-3 flex items-center justify-between text-xs text-slate-300 font-sans">
           <span>{config.footerText || 'Select one option'}</span>
-          <span className="font-bold tracking-wider uppercase text-slate-800">
+          <span className="font-bold tracking-wider uppercase text-slate-100">
             {config.watermarkText || 'EXAM STUDIO'}
           </span>
         </div>

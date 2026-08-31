@@ -41,7 +41,7 @@ export const TechTerminalTemplate: React.FC<Props> = ({ mcq, config, index = 1 }
       className="relative flex flex-col justify-between p-6 select-none border-2 border-sky-900 overflow-hidden"
     >
       {/* Terminal Window Header Bar */}
-      <div className="bg-slate-900 border border-sky-800/80 rounded-t-lg p-3 flex items-center justify-between">
+      <div className="bg-black border border-sky-800/80 rounded-t-lg p-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="w-3 h-3 rounded-full bg-red-500 inline-block" />
           <span className="w-3 h-3 rounded-full bg-amber-500 inline-block" />
@@ -92,7 +92,7 @@ export const TechTerminalTemplate: React.FC<Props> = ({ mcq, config, index = 1 }
                   <span
                     className={`font-mono font-bold text-xs px-2 py-1 rounded ${
                       isCorrect
-                        ? 'bg-green-500 text-slate-950'
+                        ? 'bg-green-500 text-white'
                         : 'bg-sky-950 text-sky-400 border border-sky-800'
                     }`}
                   >

@@ -51,12 +51,12 @@ export const GradientPosterTemplate: React.FC<Props> = ({ mcq, config, index = 1
       className="relative flex flex-col items-center justify-between p-7 select-none overflow-hidden"
     >
       {/* Decorative background blur shapes */}
-      <div className="absolute -top-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -top-16 -left-16 w-64 h-64 bg-slate-900/10 rounded-full blur-2xl pointer-events-none" />
       <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-yellow-300/20 rounded-full blur-2xl pointer-events-none" />
 
       {/* Header Badge */}
       <div className="z-10 text-center pt-2">
-        <span className="bg-white/20 backdrop-blur-md text-white font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/30 shadow-sm inline-block">
+        <span className="bg-slate-900/20 backdrop-blur-md text-white font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full border border-slate-900/30 shadow-sm inline-block">
           {config.headerText || 'EXAM QUIZ'}
         </span>
       </div>
@@ -72,8 +72,8 @@ export const GradientPosterTemplate: React.FC<Props> = ({ mcq, config, index = 1
         className={`z-10 w-full max-w-[460px] p-6 shadow-2xl flex flex-col justify-between my-auto backdrop-blur-xl ${getRadiusClass()}`}
       >
         {/* Category tag & Index */}
-        <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded border border-indigo-100">
+        <div className="flex items-center justify-between border-b border-slate-800/80 pb-3 mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-950 px-2.5 py-0.5 rounded border border-indigo-900">
             {mcq.category || `Question #${index}`}
           </span>
           <span className="text-xs font-bold text-slate-400">
@@ -84,7 +84,7 @@ export const GradientPosterTemplate: React.FC<Props> = ({ mcq, config, index = 1
         {/* Question Text */}
         <h2
           style={{ fontSize: `${config.questionFontSize || 20}px` }}
-          className="font-bold text-slate-900 mb-5 leading-snug"
+          className="font-bold text-white mb-5 leading-snug"
         >
           {mcq.question}
         </h2>
@@ -110,7 +110,7 @@ export const GradientPosterTemplate: React.FC<Props> = ({ mcq, config, index = 1
                 <span
                   className={`w-7 h-7 rounded-lg font-bold text-xs flex items-center justify-center shrink-0 ${
                     isCorrect
-                      ? 'bg-white text-green-700'
+                      ? 'bg-slate-900 text-green-700'
                       : 'bg-indigo-600 text-white'
                   }`}
                 >
@@ -128,8 +128,8 @@ export const GradientPosterTemplate: React.FC<Props> = ({ mcq, config, index = 1
         </div>
 
         {/* Footer info inside card */}
-        <div className="mt-5 pt-3 border-t border-slate-100 text-center">
-          <p className="text-xs font-medium text-slate-500 italic">
+        <div className="mt-5 pt-3 border-t border-slate-800 text-center">
+          <p className="text-xs font-medium text-slate-400 italic">
             {config.footerText || 'Choose the correct answer below'}
           </p>
         </div>

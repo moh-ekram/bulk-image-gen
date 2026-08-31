@@ -62,7 +62,7 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
     >
       {/* View Toggle Badge (Front / Back) */}
       {showViewToggle && (
-        <div className="absolute top-3 right-3 z-20 flex items-center bg-slate-900/80 backdrop-blur-md p-0.5 rounded-lg border border-slate-700/50 shadow-md text-[10px] font-bold">
+        <div className="absolute top-3 right-3 z-20 flex items-center bg-black/80 backdrop-blur-md p-0.5 rounded-lg border border-slate-700/50 shadow-md text-[10px] font-bold">
           <button
             type="button"
             onClick={(e) => {
@@ -494,7 +494,7 @@ export const TShirtMockupView: React.FC<TShirtMockupViewProps> = ({
           </div>
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">
-            <div className="w-12 h-12 rounded-full border border-dashed border-slate-400/60 flex items-center justify-center text-slate-400 mb-1">
+            <div className="w-12 h-12 rounded-full border border-dashed border-slate-600/60 flex items-center justify-center text-slate-400 mb-1">
               +
             </div>
             <span className="text-[10px] font-semibold text-slate-400">
